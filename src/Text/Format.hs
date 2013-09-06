@@ -16,16 +16,19 @@
 --
 -- Example:
 --
--- >>> formatPerson =
--- >>>   print (now "Person's name is " . ident . text . now ", age is " . hex . now "\n")
--- >>>         "Dave"
--- >>>         "Jones"
--- >>>         35
+-- @
+-- formatPerson =
+--   print (now \"Person's name is \" . ident . text . now \", age is \" . hex . now \"\n\")
+--         \"Dave\"
+--         \"Jones\"
+--         35
+-- @
 
 module Text.Format
   (
+    Format
   -- * Holey generators
-    now
+  , now
   , later
   , wrap
   , run
@@ -50,7 +53,6 @@ module Text.Format
   , left
   , right
   ) where
-
 
 import           Data.Monoid
 import qualified Data.Text as S (Text)
@@ -87,7 +89,7 @@ later f k d a = k (\m -> d (f a <> m))
 wrap :: (m -> r) -> Wrap r m a t
 wrap f k d = k (\m' -> d (f m'))
 
--- | Identity on "later".
+-- | Identity on later.
 ident :: Monoid m => ((m -> r) -> b) -> (m -> r) -> m -> b
 ident = later id
 
