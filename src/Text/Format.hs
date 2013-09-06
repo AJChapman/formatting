@@ -25,8 +25,9 @@
 -- @
 
 module Text.Format
-  (
-    Format
+  ( Format
+  , Build
+  , Wrap
   -- * Holey generators
   , now
   , later
@@ -42,6 +43,7 @@ module Text.Format
   , build
   , text
   , stext
+  , string
   -- * Integers
   , hex
   -- * Floats
@@ -52,6 +54,10 @@ module Text.Format
   -- * Padding
   , left
   , right
+  -- * Re-exports
+  , Text
+  , Builder
+  , Buildable
   ) where
 
 import           Data.Monoid
