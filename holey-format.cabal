@@ -1,5 +1,5 @@
 name:                holey-format
-version:             1.0.0
+version:             1.1.0
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 license:             BSD3

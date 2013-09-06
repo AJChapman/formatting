@@ -58,6 +58,7 @@ import           Data.Text.Buildable    (Buildable)
 import qualified Data.Text.Buildable    as B
 import qualified Data.Text.Format       as T
 import           Data.Text.Lazy (Text)
+import qualified Data.Text.Lazy as T
 import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as T
 import qualified Data.Text.Lazy.IO      as T
@@ -114,13 +115,17 @@ hprint h f = f ($ mempty) (T.hPutStr h . T.toLazyText)
 build :: Buildable a => Build a
 build = later B.build
 
--- | Output a builder.
+-- | Output a lazy text.
 text :: Build Text
 text = later T.fromLazyText
 
--- | Output a builder.
+-- | Output a strict text.
 stext :: Build S.Text
 stext = later T.fromText
+
+-- | Output a string.
+string :: Build String
+string = later (T.fromLazyText . T.pack)
 
 -- | Render an integer using hexadecimal notation. (No leading 0x is added.)
 -- hex :: Build Integer
