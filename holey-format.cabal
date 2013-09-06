@@ -1,0 +1,19 @@
+name:                holey-format
+version:             0.1.0.0
+synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
+description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
+license:             BSD3
+license-file:        LICENSE
+author:              Chris Done, Shachaf Ben-Kiki
+maintainer:          chrisdone@gmail.com
+copyright:           2013 Chris Done, Shachaf Ben-Kiki
+category:            Text
+build-type:          Simple
+cabal-version:       >=1.8
+
+library
+  exposed-modules:   Text.Format
+  build-depends:     base >= 4 && < 5,
+                     text-format,
+                     text
+  hs-source-dirs:    src
