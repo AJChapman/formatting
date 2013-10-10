@@ -1,5 +1,5 @@
-name:                holey-format
-version:             2.0.0
+name:                formatting
+version:             3.0.0
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 license:             BSD3
@@ -12,10 +12,10 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 library
-  exposed-modules:   Text.Format,
-                     Text.Format.Holey,
-                     Text.Format.Formatters,
-                     Text.Format.ShortFormatters
+  exposed-modules:   Formatting,
+                     Formatting.Holey,
+                     Formatting.Formatters,
+                     Formatting.ShortFormatters
   build-depends:     base >= 4 && < 5,
                      text-format,
                      text

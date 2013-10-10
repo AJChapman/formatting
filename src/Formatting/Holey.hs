@@ -4,7 +4,7 @@
 {-# OPTIONS -Wall #-}
 
 -- |
--- Module      : Text.Format
+-- Module      : Formatting.Holey
 -- Copyright   : (c) 2013 Chris Done, 2013 Shachaf Ben-Kiki
 -- License     : BSD3
 -- Maintainer  : chrisdone@gmail.com
@@ -13,7 +13,7 @@
 --
 -- Copy of the holey monoids library but with constructor exported.
 
-module Text.Format.Holey
+module Formatting.Holey
   (
   -- * Formatting library
   Format,

@@ -13,23 +13,23 @@
 --
 -- Combinator-based type-safe formatting (like printf() or FORMAT) for Text.
 --
--- Examples:
+-- Example:
 --
 -- >>> format ("Person's name is " %text% ", age is " %hex) "Dave" 54
 
-module Text.Format
+module Formatting
   (
   -- * Top-level functions
   format,
   fprint,
   hprint,
   -- * Formatting library
-  module Text.Format.Holey,
-  module Text.Format.Formatters
+  module Formatting.Holey,
+  module Formatting.Formatters
  ) where
 
-import           Text.Format.Holey
-import           Text.Format.Formatters
+import           Formatting.Holey
+import           Formatting.Formatters
 
 import           Data.Text.Lazy (Text)
 import           Data.Text.Lazy.Builder (Builder)
