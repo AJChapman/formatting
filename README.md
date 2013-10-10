@@ -6,7 +6,7 @@ Format things as strings:
 
 or with short-names:
 
-    format ("Person's name is " %x% ", age is " %x) "Dave" 54
+    format ("Person's name is " %t% ", age is " %x) "Dave" 54
 
 Similar to C's `printf`:
 
