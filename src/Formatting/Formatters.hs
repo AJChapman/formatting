@@ -33,6 +33,7 @@ module Formatting.Formatters
   -- * Bases
   hex,
   -- * Buildables
+  build,
   Buildable
   ) where
 
@@ -41,6 +42,7 @@ import           Formatting.Holey
 import qualified Data.Text as S
 import qualified Data.Text as T
 import           Data.Text.Buildable    (Buildable)
+import qualified Data.Text.Buildable    as B (build)
 import qualified Data.Text.Format       as T
 import           Data.Text.Lazy (Text)
 import           Data.Text.Lazy.Builder (Builder)
@@ -66,6 +68,10 @@ string = later (T.fromText . T.pack)
 -- | Build a builder.
 builder :: Format Builder
 builder = later id
+
+-- | Build anything that implements the "Buildable" class.
+build :: Buildable a => Format a
+build = later B.build
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
 int :: Integral a => Format a

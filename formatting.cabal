@@ -21,3 +21,7 @@ library
                      text-format,
                      text
   hs-source-dirs:    src
+
+source-repository head
+  type:     git
+  location: http://github.com/chrisdone/formatting
