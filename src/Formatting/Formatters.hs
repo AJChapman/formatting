@@ -27,6 +27,7 @@ module Formatting.Formatters
   fixed,
   prec,
   shortest,
+  commas,
   -- * Padding
   left,
   right,
@@ -39,12 +40,14 @@ module Formatting.Formatters
 
 import           Formatting.Holey
 
+import           Data.Monoid
 import qualified Data.Text as S
 import qualified Data.Text as T
 import           Data.Text.Buildable    (Buildable)
 import qualified Data.Text.Buildable    as B (build)
 import qualified Data.Text.Format       as T
 import           Data.Text.Lazy (Text)
+import qualified Data.Text.Lazy as LT
 import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as T
 
@@ -111,3 +114,17 @@ left i c = later (T.left i c)
 -- wide, if necessary filling with character c.
 right :: Buildable a => Int -> Char -> Format a
 right i c = later (T.right i c)
+
+-- | Add commas to an integral, e.g 12000 -> \ "12,000".
+commas :: (Buildable n,Integral n) => Format n
+commas = later (commaize) where
+  commaize = T.fromLazyText .
+             LT.reverse .
+             foldr merge "" .
+             LT.zip ("000" <> cycle' ",00") .
+             LT.reverse .
+             T.toLazyText .
+             B.build
+  merge (f,c) rest | f == ',' = "," <> LT.singleton c <> rest
+                   | otherwise = LT.singleton c <> rest
+  cycle' xs = xs <> cycle' xs
