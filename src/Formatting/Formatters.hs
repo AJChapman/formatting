@@ -80,7 +80,7 @@ build = later B.build
 int :: Integral a => Format a
 int = later T.shortest
 
--- | Render some floating point with the usual notation, e.g. 123.32 => "123.32"
+-- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format a
 float = later (T.shortest)
 
