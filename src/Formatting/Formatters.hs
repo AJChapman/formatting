@@ -15,17 +15,25 @@
 
 module Formatting.Formatters
   (
-  -- * Formatters
+  -- * Text/string types
   text,
-  hex,
   stext,
   string,
+  builder,
+  -- * Numbers
+  int,
+  float,
   expt,
   fixed,
   prec,
   shortest,
+  -- * Padding
   left,
-  right
+  right,
+  -- * Bases
+  hex,
+  -- * Buildables
+  Buildable
   ) where
 
 import           Formatting.Holey
@@ -35,6 +43,7 @@ import qualified Data.Text as T
 import           Data.Text.Buildable    (Buildable)
 import qualified Data.Text.Format       as T
 import           Data.Text.Lazy (Text)
+import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as T
 
 -- | Output a lazy text.
@@ -43,7 +52,7 @@ text = later T.fromLazyText
 
 -- | Render an integer using hexadecimal notation. (No leading 0x is
 -- added.)
-hex :: Format Integer
+hex :: Integral a => Format a
 hex = later T.hex
 
 -- | Output a strict text.
@@ -53,6 +62,18 @@ stext = later T.fromText
 -- | Output a string.
 string :: Format String
 string = later (T.fromText . T.pack)
+
+-- | Build a builder.
+builder :: Format Builder
+builder = later id
+
+-- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
+int :: Integral a => Format a
+int = later T.shortest
+
+-- | Render some floating point with the usual notation, e.g. 123.32 => "123.32"
+float :: Real a => Format a
+float = later (T.shortest)
 
 -- | Render a floating point number using scientific/engineering
 -- notation (e.g. 2.3e123), with the given number of decimal places.

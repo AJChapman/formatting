@@ -15,12 +15,15 @@
 --
 -- Example:
 --
--- >>> format ("Person's name is " %text% ", age is " %hex) "Dave" 54
+-- >>> format ("Person's name is " % text % ", age is " % hex) "Dave" 54
+--
+-- See "Formatting.Formatters" for a complete list of formatting combinators.
 
 module Formatting
   (
   -- * Top-level functions
   format,
+  bprint,
   fprint,
   hprint,
   -- * Formatting library
@@ -40,6 +43,10 @@ import           System.IO
 -- | Run the formatter and return a "Text" value.
 format :: Holey Builder Text a -> a
 format m = runHM m T.toLazyText
+
+-- | Run the formatter and return a "Builder" value.
+bprint :: Holey Builder Builder a -> a
+bprint m = runHM m id
 
 -- | Run the formatter and print out the text to stdout.
 fprint :: Holey Builder (IO ()) a -> a

@@ -1,5 +1,5 @@
 name:                formatting
-version:             3.0.0
+version:             3.0.1
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 license:             BSD3
@@ -15,7 +15,8 @@ library
   exposed-modules:   Formatting,
                      Formatting.Holey,
                      Formatting.Formatters,
-                     Formatting.ShortFormatters
+                     Formatting.ShortFormatters,
+                     Formatting.Examples
   build-depends:     base >= 4 && < 5,
                      text-format,
                      text
