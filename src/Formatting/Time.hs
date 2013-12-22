@@ -3,89 +3,91 @@
 
 -- | Formatters for time.
 
-module Formatting.Time
-    where
+module Formatting.Time where
 
-import Data.Time
-import System.Locale
-import Data.Text (Text)
+import           Formatting.Holey
+
+import           Data.Text (Text)
 import qualified Data.Text as T
+import           Data.Text.Buildable
+import           Data.Time
+import           System.Locale
 
 -- * For 'TimeZone' (and 'ZonedTime' and 'UTCTime'):
 
 -- | Timezone offset on the format @-HHMM@.
-tz :: FormatTime t => t -> Text
-tz = fmt "%z"
+tz :: FormatTime a => Format a
+tz = later (build . fmt "%z")
 
 -- | Timezone name.
-tzName :: FormatTime t => t -> Text
-tzName = fmt "%Z"
+tzName :: FormatTime a => Format a
+tzName = later (build . fmt "%Z")
 
 -- | As 'dateTimeFmt' @locale@ (e.g. @%a %b %e %H:%M:%S %Z %Y@).
-datetime :: FormatTime t => t -> Text
-datetime = fmt "%c"
+datetime :: FormatTime a => Format a
+datetime = later (build . fmt "%c")
 
 -- * For 'TimeOfDay' (and 'LocalTime' and 'ZonedTime' and 'UTCTime'):
 
 -- | Same as @%H:%M@.
-hm :: FormatTime t => t -> Text
-hm = fmt "%R"
+hm :: FormatTime a => Format a
+hm = later (build . fmt "%R")
 
 -- | Same as @%H:%M:%S@.
-hms :: FormatTime t => t -> Text
-hms = fmt "%T"
+hms :: FormatTime a => Format a
+hms = later (build . fmt "%T")
 
 -- | As 'timeFmt' @locale@ (e.g. @%H:%M:%S@).
-hmsL :: FormatTime t => t -> Text
-hmsL = fmt "%X"
+hmsL :: FormatTime a => Format a
+hmsL = later (build . fmt "%X")
 
 -- | As 'time12Fmt' @locale@ (e.g. @%I:%M:%S %p@).
-hmsPL :: FormatTime t => t -> Text
-hmsPL = fmt "%r"
+hmsPL :: FormatTime a => Format a
+hmsPL = later (build . fmt "%r")
 
 -- | Day half from ('amPm' @locale@), converted to lowercase, @am@,
 -- @pm@.
-dayHalf :: FormatTime t => t -> Text
-dayHalf = fmt "%P"
+dayHalf :: FormatTime a => Format a
+dayHalf = later (build . fmt "%P")
 
 -- | Day half from ('amPm' @locale@), @AM@, @PM@.
-dayHalfU :: FormatTime t => t -> Text
-dayHalfU = fmt "%p"
+dayHalfU :: FormatTime a => Format a
+dayHalfU = later (build . fmt "%p")
 
 -- | Hour, 24-hour, leading 0 as needed, @00@ - @23@.
-hour24 :: FormatTime t => t -> Text
-hour24 = fmt "%H"
+hour24 :: FormatTime a => Format a
+hour24 = later (build . fmt "%H")
 
 -- | Hour, 12-hour, leading 0 as needed, @01@ - @12@.
-hour12 :: FormatTime t => t -> Text
-hour12 = fmt "%I"
+hour12 :: FormatTime a => Format a
+hour12 = later (build . fmt "%I")
 
 -- | Hour, 24-hour, leading space as needed, @ 0@ - @23@.
-hour24S :: FormatTime t => t -> Text
-hour24S = fmt "%k"
+hour24S :: FormatTime a => Format a
+hour24S = later (build . fmt "%k")
 
 -- | Hour, 12-hour, leading space as needed, @ 1@ - @12@.
-hour12S :: FormatTime t => t -> Text
-hour12S = fmt "%l"
+hour12S :: FormatTime a => Format a
+hour12S = later (build . fmt "%l")
 
 -- | Minute, @00@ - @59@.
-minute :: FormatTime t => t -> Text
-minute = fmt "%M"
+minute :: FormatTime a => Format a
+minute = later (build . fmt "%M")
 
 -- | Second, without decimal part, @00@ - @60@.
-second :: FormatTime t => t -> Text
-second = fmt "%S"
+second :: FormatTime a => Format a
+second = later (build . fmt "%S")
 
 -- | Picosecond, including trailing zeros, @000000000000@ -
 -- @999999999999@.
-pico :: FormatTime t => t -> Text
-pico = fmt "%q"
+pico :: FormatTime a => Format a
+pico = later (build . fmt "%q")
 
 -- | Decimal point and up to 12 second decimals, without trailing
 -- zeros. For a whole number of seconds, this produces the empty
 -- string.
-decimals :: FormatTime t => t -> Text
-decimals = fmt "%Q"
+decimals :: FormatTime a => Format a
+decimals = later (build . fmt "%Q")
 
 -- * For 'UTCTime' and 'ZonedTime'
 --
@@ -93,108 +95,108 @@ decimals = fmt "%Q"
 -- the Unix epoch, this is a negative number. Note that in @%s.%q@ and @%s%Q@
 -- the decimals are positive, not negative. For example, 0.9 seconds
 -- before the Unix epoch is formatted as @-1.1@ with @%s%Q@.
-epoch :: FormatTime t => t -> Text
-epoch = fmt "%s"
+epoch :: FormatTime a => Format a
+epoch = later (build . fmt "%s")
 
 -- * For 'Day' (and 'LocalTime' and 'ZonedTime' and 'UTCTime'):
 
 -- | Same as @%m\/%d\/%y@.
-dateSlash :: FormatTime t => t -> Text
-dateSlash = fmt "%D"
+dateSlash :: FormatTime a => Format a
+dateSlash = later (build . fmt "%D")
 
 -- | Same as @%Y-%m-%d@.
-dateDash :: FormatTime t => t -> Text
-dateDash = fmt "%F"
+dateDash :: FormatTime a => Format a
+dateDash = later (build . fmt "%F")
 
 -- | As 'dateFmt' @locale@ (e.g. @%m\/%d\/%y@).
-dateSlashL :: FormatTime t => t -> Text
-dateSlashL = fmt "%x"
+dateSlashL :: FormatTime a => Format a
+dateSlashL = later (build . fmt "%x")
 
 -- | Year.
-year :: FormatTime t => t -> Text
-year = fmt "%Y"
+year :: FormatTime a => Format a
+year = later (build . fmt "%Y")
 
 -- | Last two digits of year, @00@ - @99@.
-yy :: FormatTime t => t -> Text
-yy = fmt "%y"
+yy :: FormatTime a => Format a
+yy = later (build . fmt "%y")
 
 -- | Century (being the first two digits of the year), @00@ - @99@.
-century :: FormatTime t => t -> Text
-century = fmt "%C"
+century :: FormatTime a => Format a
+century = later (build . fmt "%C")
 
 -- | Month name, long form ('fst' from 'months' @locale@), @January@ -
 -- @December@.
-monthName :: FormatTime t => t -> Text
-monthName = fmt "%B"
+monthName :: FormatTime a => Format a
+monthName = later (build . fmt "%B")
 
 -- | @ %H] month name, short form ('snd' from 'months' @locale@),
 -- @Jan@ - @Dec@.
-monthNameShort :: FormatTime t => t -> Text
-monthNameShort = fmt "%b"
+monthNameShort :: FormatTime a => Format a
+monthNameShort = later (build . fmt "%b")
 
 -- | Month of year, leading 0 as needed, @01@ - @12@.
-month :: FormatTime t => t -> Text
-month = fmt "%m"
+month :: FormatTime a => Format a
+month = later (build . fmt "%m")
 
 -- | Day of month, leading 0 as needed, @01@ - @31@.
-dayOfMonth :: FormatTime t => t -> Text
-dayOfMonth = fmt "%d"
+dayOfMonth :: FormatTime a => Format a
+dayOfMonth = later (build . fmt "%d")
 
 -- | Day of month, leading space as needed, @ 1@ - @31@.
-dayOfMonthS :: FormatTime t => t -> Text
-dayOfMonthS = fmt "%e"
+dayOfMonthS :: FormatTime a => Format a
+dayOfMonthS = later (build . fmt "%e")
 
 -- | Day of year for Ordinal Date format, @001@ - @366@.
-day :: FormatTime t => t -> Text
-day = fmt "%j"
+day :: FormatTime a => Format a
+day = later (build . fmt "%j")
 
 -- | Year for Week Date format e.g. @2013@.
-weekYear :: FormatTime t => t -> Text
-weekYear = fmt "%G"
+weekYear :: FormatTime a => Format a
+weekYear = later (build . fmt "%G")
 
 -- | Last two digits of year for Week Date format, @00@ - @99@.
-weekYY :: FormatTime t => t -> Text
-weekYY = fmt "%g"
+weekYY :: FormatTime a => Format a
+weekYY = later (build . fmt "%g")
 
 -- | Century (first two digits of year) for Week Date format, @00@ -
 -- @99@.
-weekCentury :: FormatTime t => t -> Text
-weekCentury = fmt "%f"
+weekCentury :: FormatTime a => Format a
+weekCentury = later (build . fmt "%f")
 
 -- | Week for Week Date format, @01@ - @53@.
-week :: FormatTime t => t -> Text
-week = fmt "%V"
+week :: FormatTime a => Format a
+week = later (build . fmt "%V")
 
 -- | Day for Week Date format, @1@ - @7@.
-dayOfWeek :: FormatTime t => t -> Text
-dayOfWeek = fmt "%u"
+dayOfWeek :: FormatTime a => Format a
+dayOfWeek = later (build . fmt "%u")
 
 -- | Day of week, short form ('snd' from 'wDays' @locale@), @Sun@ -
 -- @Sat@.
-dayNameShort :: FormatTime t => t -> Text
-dayNameShort = fmt "%a"
+dayNameShort :: FormatTime a => Format a
+dayNameShort = later (build . fmt "%a")
 
 -- | Day of week, long form ('fst' from 'wDays' @locale@), @Sunday@ -
 -- @Saturday@.
-dayName :: FormatTime t => t -> Text
-dayName = fmt "%A"
+dayName :: FormatTime a => Format a
+dayName = later (build . fmt "%A")
 
 -- | Week number of year, where weeks start on Sunday (as
 -- 'sundayStartWeek'), @00@ - @53@.
-weekFromZero :: FormatTime t => t -> Text
-weekFromZero = fmt "%U"
+weekFromZero :: FormatTime a => Format a
+weekFromZero = later (build . fmt "%U")
 
 -- | Day of week number, @0@ (= Sunday) - @6@ (= Saturday).
-dayOfWeekFromZero :: FormatTime t => t -> Text
-dayOfWeekFromZero = fmt "%w"
+dayOfWeekFromZero :: FormatTime a => Format a
+dayOfWeekFromZero = later (build . fmt "%w")
 
 -- | Week number of year, where weeks start on Monday (as
 -- 'mondayStartWeek'), @00@ - @53@.
-weekOfYearMon :: FormatTime t => t -> Text
-weekOfYearMon = fmt "%W"
+weekOfYearMon :: FormatTime a => Format a
+weekOfYearMon = later (build . fmt "%W")
 
 -- * Internal.
 
 -- | Formatter call. Probably don't want to use this.
-fmt :: FormatTime t => Text -> t -> Text
+fmt :: FormatTime a => Text -> a -> Text
 fmt f = T.pack . formatTime defaultTimeLocale (T.unpack f)
