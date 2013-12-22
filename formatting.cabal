@@ -16,10 +16,13 @@ library
                      Formatting.Holey,
                      Formatting.Formatters,
                      Formatting.ShortFormatters,
-                     Formatting.Examples
+                     Formatting.Examples,
+                     Formatting.Time
   build-depends:     base >= 4 && < 5,
                      text-format,
-                     text
+                     text,
+                     time,
+                     old-locale
   hs-source-dirs:    src
 
 source-repository head
