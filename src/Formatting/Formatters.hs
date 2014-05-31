@@ -20,6 +20,7 @@ module Formatting.Formatters
   stext,
   string,
   builder,
+  fconst,
   -- * Numbers
   int,
   float,
@@ -71,6 +72,10 @@ string = later (T.fromText . T.pack)
 -- | Build a builder.
 builder :: Format Builder
 builder = later id
+
+-- | Like `const` but for formatters.
+fconst :: Builder -> Format a
+fconst m = later (const m)
 
 -- | Build anything that implements the "Buildable" class.
 build :: Buildable a => Format a
