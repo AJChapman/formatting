@@ -1,14 +1,30 @@
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Formatters for time.
+--
+-- Example:
+--
+-- @
+-- REPL> before <- getCurrentTime
+-- REPL> after <- getCurrentTime
+-- REPL> format (hms % \" - \" % hms % \" = \" % diff False) before after (before,after)
+-- \"19:05:06 - 19:05:08 = 3 seconds\"
+-- REPL>
+-- @
+--
 
 module Formatting.Time where
 
+import           Data.List
+import           Data.Text.Lazy.Builder
+import           Formatting.Formatters  hiding (build)
 import           Formatting.Holey
+import           Formatting.Internal
 
-import           Data.Text (Text)
-import qualified Data.Text as T
+import           Data.Text              (Text)
+import qualified Data.Text              as T
 import           Data.Text.Buildable
 import           Data.Time
 import           System.Locale
@@ -194,6 +210,46 @@ dayOfWeekFromZero = later (build . fmt "%w")
 -- 'mondayStartWeek'), @00@ - @53@.
 weekOfYearMon :: FormatTime a => Format a
 weekOfYearMon = later (build . fmt "%W")
+
+-- | Display a time span as one time relative to another. Equiv. to
+-- (t1 - t2) for some (t1,t2) pair.
+diff :: Bool                      -- ^ Display 'in/ago'?
+     -> Format (UTCTime, UTCTime) -- ^ Example: '3 seconds ago', 'in three days'.
+diff fix =
+  later (fromLazyText . diffed)
+  where
+    diffed (t1,t2) =
+      case find (\(s,_,_) -> abs ts >= s) ranges of
+        Nothing -> "unknown"
+        Just (_,f,base) -> format (prefix % f % suffix) (toInt ts base)
+      where ts = diffUTCTime t1 t2
+            prefix = now (if fix && ts > 0 then "in " else "")
+            suffix = now (if fix && ts < 0 then " ago" else "")
+    toInt ts base = abs (round (ts / base))
+    ranges =
+      [(0,int % " seconds",1)
+      ,(minute,fconst "a minute",0)
+      ,(minute*2,int % " minutes",minute)
+      ,(minute*30,fconst "half an hour",0)
+      ,(minute*31,int % " minutes",minute)
+      ,(hour,fconst "an hour",0)
+      ,(hour*2,int % " hours",hour)
+      ,(hour*3,fconst "a few hours",0)
+      ,(hour*4,int % " hours",hour)
+      ,(day,fconst "a day",0)
+      ,(day*2,int % " days",day)
+      ,(week,fconst "a week",0)
+      ,(week*2,int % " weeks",week)
+      ,(month,fconst "a month",0)
+      ,(month*2,int % " months",month)
+      ,(year,fconst "a year",0)
+      ,(year*2,int % " years",year)]
+      where year = month * 12
+            month = day * 30
+            week = day * 7
+            day = hour * 24
+            hour = minute * 60
+            minute = 60
 
 -- * Internal.
 
