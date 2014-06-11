@@ -158,6 +158,12 @@ month = later (build . fmt "%m")
 dayOfMonth :: FormatTime a => Format a
 dayOfMonth = later (build . fmt "%d")
 
+-- | Day of month, @1st@, @2nd@, @25th@, etc.
+dayOfMonthOrd :: FormatTime a => Format a
+dayOfMonthOrd = later (bprint ords . toInt)
+  where toInt :: FormatTime a => a -> Int
+        toInt = read . formatTime defaultTimeLocale "%d"
+
 -- | Day of month, leading space as needed, @ 1@ - @31@.
 dayOfMonthS :: FormatTime a => Format a
 dayOfMonthS = later (build . fmt "%e")
@@ -219,7 +225,7 @@ diff fix =
   later (fromLazyText . diffed)
   where
     diffed (t1,t2) =
-      case find (\(s,_,_) -> abs ts >= s) ranges of
+      case find (\(s,_,_) -> abs ts >= s) (reverse ranges) of
         Nothing -> "unknown"
         Just (_,f,base) -> format (prefix % f % suffix) (toInt ts base)
       where ts = diffUTCTime t1 t2

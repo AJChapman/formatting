@@ -29,6 +29,7 @@ module Formatting.Formatters
   prec,
   shortest,
   commas,
+  ords,
   -- * Padding
   left,
   right,
@@ -133,3 +134,17 @@ commas = later (commaize) where
   merge (f,c) rest | f == ',' = "," <> LT.singleton c <> rest
                    | otherwise = LT.singleton c <> rest
   cycle' xs = xs <> cycle' xs
+
+-- | Add a suffix to an integral, e.g. 1st, 2nd, 3rd, 21st.
+ords :: Integral n => Format n
+ords = later go
+  where go n
+          | tens > 3 && tens < 21 = T.shortest n <> "th"
+          | otherwise =
+            T.shortest n <>
+            case n `mod` 10 of
+              1 -> "st"
+              2 -> "nd"
+              3 -> "rd"
+              _ -> "th"
+          where tens = n `mod` 100
