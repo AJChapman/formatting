@@ -25,6 +25,7 @@ library
                      time,
                      old-locale
   hs-source-dirs:    src
+  ghc-options:       -O2
 
 source-repository head
   type:     git
