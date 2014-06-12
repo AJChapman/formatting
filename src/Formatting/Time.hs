@@ -1,5 +1,4 @@
 {-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Formatters for time.
