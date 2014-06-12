@@ -217,19 +217,20 @@ dayOfWeekFromZero = later (build . fmt "%w")
 weekOfYearMon :: FormatTime a => Format a
 weekOfYearMon = later (build . fmt "%W")
 
--- | Display a time span as one time relative to another. Equiv. to
--- (t1 - t2) for some (t1,t2) pair.
-diff :: Bool                      -- ^ Display 'in/ago'?
-     -> Format (UTCTime, UTCTime) -- ^ Example: '3 seconds ago', 'in three days'.
+-- | Display a time span as one time relative to another. Input is
+-- assumed to be seconds. Typical inputs are 'NominalDiffTime' and
+-- 'DiffTime'.
+diff :: (RealFrac n)
+     => Bool     -- ^ Display 'in/ago'?
+     -> Format n -- ^ Example: '3 seconds ago', 'in three days'.
 diff fix =
   later (fromLazyText . diffed)
   where
-    diffed (t1,t2) =
+    diffed ts =
       case find (\(s,_,_) -> abs ts >= s) (reverse ranges) of
         Nothing -> "unknown"
         Just (_,f,base) -> format (prefix % f % suffix) (toInt ts base)
-      where ts = diffUTCTime t1 t2
-            prefix = now (if fix && ts > 0 then "in " else "")
+      where prefix = now (if fix && ts > 0 then "in " else "")
             suffix = now (if fix && ts < 0 then " ago" else "")
     toInt ts base = abs (round (ts / base))
     ranges =
