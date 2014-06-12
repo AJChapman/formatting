@@ -217,6 +217,8 @@ dayOfWeekFromZero = later (build . fmt "%w")
 weekOfYearMon :: FormatTime a => Format a
 weekOfYearMon = later (build . fmt "%W")
 
+-- * Time spans, diffs, 'NominalDiffTime', 'DiffTime', etc.
+
 -- | Display a time span as one time relative to another. Input is
 -- assumed to be seconds. Typical inputs are 'NominalDiffTime' and
 -- 'DiffTime'.
@@ -224,12 +226,12 @@ diff :: (RealFrac n)
      => Bool     -- ^ Display 'in/ago'?
      -> Format n -- ^ Example: '3 seconds ago', 'in three days'.
 diff fix =
-  later (fromLazyText . diffed)
+  later diffed
   where
     diffed ts =
       case find (\(s,_,_) -> abs ts >= s) (reverse ranges) of
         Nothing -> "unknown"
-        Just (_,f,base) -> format (prefix % f % suffix) (toInt ts base)
+        Just (_,f,base) -> bprint (prefix % f % suffix) (toInt ts base)
       where prefix = now (if fix && ts > 0 then "in " else "")
             suffix = now (if fix && ts < 0 then " ago" else "")
     toInt ts base = abs (round (ts / base))
@@ -257,6 +259,41 @@ diff fix =
             day = hour * 24
             hour = minute * 60
             minute = 60
+
+-- | Display the absolute value time span in years.
+years :: (RealFrac n)
+      => Int -- ^ Decimal places.
+      -> Format n
+years n = later (bprint (fixed n) . abs . count)
+  where count n = n / 365 / 24 / 60 / 60
+
+-- | Display the absolute value time span in days.
+days :: (RealFrac n)
+      => Int -- ^ Decimal places.
+      -> Format n
+days n = later (bprint (fixed n) . abs . count)
+  where count n = n / 24 / 60 / 60
+
+-- | Display the absolute value time span in hours.
+hours :: (RealFrac n)
+      => Int -- ^ Decimal places.
+      -> Format n
+hours n = later (bprint (fixed n) . abs . count)
+  where count n = n / 60 / 60
+
+-- | Display the absolute value time span in minutes.
+minutes :: (RealFrac n)
+      => Int -- ^ Decimal places.
+      -> Format n
+minutes n = later (bprint (fixed n) . abs . count)
+  where count n = n / 60
+
+-- | Display the absolute value time span in seconds.
+seconds :: (RealFrac n)
+      => Int -- ^ Decimal places.
+      -> Format n
+seconds n = later (bprint (fixed n) . abs . count)
+  where count n = n
 
 -- * Internal.
 
