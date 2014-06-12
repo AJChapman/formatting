@@ -3,17 +3,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Formatters for time.
---
--- Example:
---
--- @
--- REPL> before <- getCurrentTime
--- REPL> after <- getCurrentTime
--- REPL> format (hms % \" - \" % hms % \" = \" % diff False) before after (before,after)
--- \"19:05:06 - 19:05:08 = 3 seconds\"
--- REPL>
--- @
---
 
 module Formatting.Time where
 
