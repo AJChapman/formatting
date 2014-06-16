@@ -157,7 +157,7 @@ You can include things verbatim in the formatter:
 ``` haskell
 > format (now "This is printed now.")
 "This is printed now."
-``
+```
 
 Although with `OverloadedStrings` you can just use string literals:
 
@@ -170,8 +170,8 @@ You can handle things later which makes the formatter accept arguments:
 
 ``` haskell
 > format (later (const "This is printed later.")) ()
-This is printed later."
-``
+"This is printed later."
+```
 
 The type of the function passed to `later` should return an instance
 of `Monoid`.
@@ -182,13 +182,13 @@ later :: (a -> m) -> Holey m r (a -> r)
 
 The function you format with (`format`, `bprint`, etc.)
 will determine the monoid of choice. In the case of this library, the
-top-level formating functions expect you to build a text Builder:
+top-level formating functions expect you to build a text `Builder`:
 
 ``` haskell
 format :: Holey Builder Text a -> a
-
-hprint :: Handle -> Holey Builder (IO ()) a -> a
 ```
+
+Because builders are efficient generators.
 
 So in this case we will be expected to produce Builders from arguments:
 
@@ -232,7 +232,25 @@ Although a better, more general combinator might be:
 
 Now you can use it to maybe format things:
 
-```
-λ> format (mfmt "Nope!" int) (readMaybe "foo")
+``` haskell
+> format (mfmt "Nope!" int) (readMaybe "foo")
 "Nope!"
+```
+
+## Scientific
+
+If you're using a type which provides its own builder, like the
+`Scientific` type:
+
+``` haskell
+import Data.Text.Lazy.Builder.Scientific
+scientificBuilder :: Scientific -> Builder
+formatScientificBuilder :: FPFormat -> Maybe Int -> Scientific -> Builder
+```
+
+Then you can use `later` easily:
+
+``` haskell
+> format (later scientificBuilder) 23.4
+"23.4"
 ```
