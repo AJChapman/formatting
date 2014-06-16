@@ -23,6 +23,7 @@ module Formatting
   (
   -- * Top-level functions
   format,
+  sformat,
   bprint,
   fprint,
   hprint,
