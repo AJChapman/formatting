@@ -224,7 +224,8 @@ diff fix =
             suffix = now (if fix && ts < 0 then " ago" else "")
     toInt ts base = abs (round (ts / base))
     ranges =
-      [(0,int % " seconds",1)
+      [(0,int % " milliseconds",0.001)
+      ,(1,int % " seconds",1)
       ,(minute,fconst "a minute",0)
       ,(minute*2,int % " minutes",minute)
       ,(minute*30,fconst "half an hour",0)
