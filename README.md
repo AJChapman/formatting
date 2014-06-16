@@ -149,3 +149,90 @@ and Common Lisp's `FORMAT`:
 > format (days 0 % " days") (diffUTCTime old now)
 "12585 days"
 ```
+
+## Extension
+
+You can include things verbatim in the formatter:
+
+``` haskell
+> format (now "This is printed now.")
+"This is printed now."
+``
+
+Although with `OverloadedStrings` you can just use string literals:
+
+``` haskell
+> format "This is printed now."
+"This is printed now."
+```
+
+You can handle things later which makes the formatter accept arguments:
+
+``` haskell
+> format (later (const "This is printed later.")) ()
+This is printed later."
+``
+
+The type of the function passed to `later` should return an instance
+of `Monoid`.
+
+``` haskell
+later :: (a -> m) -> Holey m r (a -> r)
+```
+
+The function you format with (`format`, `bprint`, etc.)
+will determine the monoid of choice. In the case of this library, the
+top-level formating functions expect you to build a text Builder:
+
+``` haskell
+format :: Holey Builder Text a -> a
+
+hprint :: Handle -> Holey Builder (IO ()) a -> a
+```
+
+So in this case we will be expected to produce Builders from arguments:
+
+``` haskell
+format . later :: (a -> Builder) -> a -> Text
+```
+
+To do that for common types you can just re-use the formatting library
+and use bprint:
+
+``` haskell
+ > :t bprint
+bprint :: Holey Builder Builder a -> a
+> :t bprint int 23
+bprint int 23 :: Builder
+```
+
+Coming back to `later`, we can now use it to build our own printer
+combinators:
+
+``` haskell
+> let mint = later (maybe "" (bprint int))
+> :t mint
+mint :: Holey Builder r (Maybe Integer -> r)
+```
+
+Now `mint` is a formatter to show `Maybe Integer`:
+
+``` haskell
+> format mint (readMaybe "23")
+"23"
+> format mint (readMaybe "foo")
+""
+```
+
+Although a better, more general combinator might be:
+
+``` haskell
+> let mfmt x f = later (maybe x (bprint f))
+```
+
+Now you can use it to maybe format things:
+
+```
+λ> format (mfmt "Nope!" int) (readMaybe "foo")
+"Nope!"
+```
