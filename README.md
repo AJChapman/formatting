@@ -69,6 +69,10 @@ and Common Lisp's `FORMAT`:
 "23.3333"
 > format shortest 0.0
 "0"
+> format sci 2.3
+"2.3"
+> format (scifmt Fixed (Just 0)) 2.3
+"2"
 ```
 
 ## 1,242: Commas
@@ -254,3 +258,7 @@ Then you can use `later` easily:
 > format (later scientificBuilder) 23.4
 "23.4"
 ```
+
+Actually, there are now already two handy combinators (`sci` and
+`scifmt`) for the `Scientific` type as shown above in the Decimals
+section.

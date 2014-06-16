@@ -27,6 +27,8 @@ module Formatting.Formatters
   expt,
   fixed,
   prec,
+  sci,
+  scifmt,
   shortest,
   commas,
   ords,
@@ -45,13 +47,15 @@ import           Formatting.Holey
 import           Data.Monoid
 import qualified Data.Text as S
 import qualified Data.Text as T
-import           Data.Text.Buildable    (Buildable)
-import qualified Data.Text.Buildable    as B (build)
-import qualified Data.Text.Format       as T
+import           Data.Text.Buildable (Buildable)
+import qualified Data.Text.Buildable as B (build)
+import qualified Data.Text.Format as T
 import           Data.Text.Lazy (Text)
 import qualified Data.Text.Lazy as LT
 import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as T
+import           Data.Text.Lazy.Builder.Scientific
+import           Data.Scientific
 
 -- | Output a lazy text.
 text :: Format Text
@@ -110,6 +114,14 @@ prec i = later (T.prec i)
 -- digits that correctly represent it.
 shortest :: Real a => Format a
 shortest = later T.shortest
+
+-- | Render a scientific number.
+sci :: Format Scientific
+sci = later scientificBuilder
+
+-- | Render a scientific number with options.
+scifmt :: FPFormat -> Maybe Int -> Format Scientific
+scifmt f i = later (formatScientificBuilder f i)
 
 -- | Pad the left hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
