@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -17,12 +18,13 @@ module Formatting.Holey
   (
   -- * Formatting library
   Format,
-  Holey (..),
+  Holey,
+  HoleyT (..),
   (%),
+  (%.),
   now,
   bind,
-  later,
-  hmap
+  later
   ) where
 
 import Data.Monoid
@@ -40,7 +42,12 @@ type Format a = forall r. Holey Builder r (a -> r)
 -- this order allows holey monoids to be composed using `.`, stacking
 -- the expected arguments. Note that the `Monoid` constraint is only
 -- used in the identity 'Holey' and in composing two 'Holey's.
-newtype Holey m r a = Holey { runHM :: (m -> r) -> a }
+newtype HoleyT r a m = Holey { runHM :: (m -> r) -> a }
+
+type Holey m r a = HoleyT r a m
+
+instance Functor (HoleyT r a) where
+  fmap g m = Holey (\k -> runHM m (k . g))
 
 -- | Very useful instance for writing format string.
 instance (IsString m, a ~ r) => IsString (Holey m r a) where
@@ -49,6 +56,11 @@ instance (IsString m, a ~ r) => IsString (Holey m r a) where
 -- | Composition operator. The same as category composition.
 (%) :: Monoid n => Holey n b c -> Holey n b1 b -> Holey n b1 c
 f % g = f `bind` \a -> g `bind` \b -> now (a `mappend` b)
+
+-- | Function compose two holeys. Will feed the result of one holey
+-- into another.
+(%.) :: Holey m r (a -> b) -> Holey a b c -> Holey m r c
+(%.) (Holey a) (Holey b) = Holey (b . a)
 
 -- | Insert a constant monoidal value.
 now :: m -> Holey m r r
@@ -63,7 +75,3 @@ m `bind` f = Holey $ \k -> runHM m (\a -> runHM (f a) k)
 -- converted to the monoid type using the given conversion function.
 later :: (a -> m) -> Holey m r (a -> r)
 later f = Holey (. f)
-
--- | Convert between underlying 'Monoid' types.
-hmap :: (m -> n) -> Holey m r a -> Holey n r a
-hmap g m = Holey (\k -> runHM m (k . g))
