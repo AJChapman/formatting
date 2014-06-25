@@ -154,6 +154,15 @@ and Common Lisp's `FORMAT`:
 "12585 days"
 ```
 
+## Compose formatters
+
+`%.` is like `%` but feeds one formatter into another:
+
+``` haskell
+λ> format (left 2 '0' %. hex) 10
+"0a"
+```
+
 ## Extension
 
 You can include things verbatim in the formatter:
