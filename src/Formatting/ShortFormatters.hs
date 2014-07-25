@@ -15,6 +15,7 @@
 
 module Formatting.ShortFormatters where
 
+import           Formatting.Formatters (bin, int, oct)
 import           Formatting.Holey
 
 import qualified Data.Text.Buildable as B (build)
@@ -29,9 +30,22 @@ import qualified Data.Text.Lazy.Builder as T
 t :: Format Text
 t = later T.fromLazyText
 
+-- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
+d :: Integral a => Format a
+d = int
+
+-- | Render an integer using binary notation. (No leading 0b is
+-- added.)
+b :: Integral a => Format a
+b = bin
+
+-- | Render an integer using octal notation. (No leading 0o is added.)
+o :: Integral a => Format a
+o = oct
+
 -- | Render an integer using hexadecimal notation. (No leading 0x is
 -- added.)
-x :: Format Integer
+x :: Integral a => Format a
 x = later T.hex
 
 -- | Output a strict text.

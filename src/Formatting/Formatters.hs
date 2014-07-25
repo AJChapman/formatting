@@ -39,7 +39,13 @@ module Formatting.Formatters
   left,
   right,
   -- * Bases
+  base,
+  bin,
+  oct,
   hex,
+  prefixBin,
+  prefixOct,
+  prefixHex,
   -- * Buildables
   build,
   Buildable
@@ -47,6 +53,8 @@ module Formatting.Formatters
 
 import           Formatting.Holey
 
+import           Data.Char (chr, ord)
+import           Numeric (showIntAtBase)
 import           Data.Monoid
 import qualified Data.Text as S
 import qualified Data.Text as T
@@ -63,11 +71,6 @@ import           Data.Scientific
 -- | Output a lazy text.
 text :: Format Text
 text = later T.fromLazyText
-
--- | Render an integer using hexadecimal notation. (No leading 0x is
--- added.)
-hex :: Integral a => Format a
-hex = later T.hex
 
 -- | Output a strict text.
 stext :: Format S.Text
@@ -182,3 +185,65 @@ ords = later go
               3 -> "rd"
               _ -> "th"
           where tens = n `mod` 100
+
+-- Bases
+base :: Integral a => Int -> Format a
+base numBase = later (B.build . atBase numBase)
+                
+-- | Render an integer using binary notation. (No leading 0b is
+-- added.) Defined as @bin = 'base' 2@.
+bin :: Integral a => Format a
+bin = base 2
+{-# INLINE bin #-}
+
+-- | Render an integer using octal notation. (No leading 0o is
+-- added.) Defined as @oct = 'base' 8@.
+oct :: Integral a => Format a
+oct = base 8
+{-# INLINE oct #-}
+
+-- | Render an integer using hexadecimal notation. (No leading 0x is
+-- added.) Has a specialized implementation. 
+hex :: Integral a => Format a
+hex = later T.hex
+{-# INLINE hex #-}
+
+-- | Render an integer using binary notation with a leading 0b.
+prefixBin :: Integral a => Format a
+prefixBin = "0b" % bin
+{-# INLINE prefixBin #-}
+
+-- | Render an integer using octal notation with a leading 0o.
+prefixOct :: Integral a => Format a
+prefixOct = "0o" % oct
+{-# INLINE prefixOct #-}
+
+-- | Render an integer using hexadecimal notation with a leading 0x.
+prefixHex :: Integral a => Format a
+prefixHex = "0x" % hex
+{-# INLINE prefixHex #-}
+
+-- The following code is mostly taken from `Numeric.Lens.' (from
+-- `lens') and modified.
+
+-- | Internal function that converts a number to a base base-2 through
+-- base-36.
+atBase :: Integral a => Int -> a -> String
+atBase b _ | b < 2 || b > 36 = error ("base: Invalid base " ++ show b)
+atBase b n =
+  showSigned' (showIntAtBase (toInteger b) intToDigit') (toInteger n) ""
+{-# INLINE atBase #-}
+
+-- | A simpler variant of 'Numeric.showSigned' that only prepends a dash and
+-- doesn't know about parentheses
+showSigned' :: Real a => (a -> ShowS) -> a -> ShowS
+showSigned' f n
+  | n < 0     = showChar '-' . f (negate n)
+  | otherwise = f n
+
+-- | Like 'Data.Char.intToDigit', but handles up to base-36
+intToDigit' :: Int -> Char
+intToDigit' i
+  | i >= 0  && i < 10 = chr (ord '0' + i)
+  | i >= 10 && i < 36 = chr (ord 'a' + i - 10)
+  | otherwise = error ("intToDigit': Invalid int " ++ show i)
