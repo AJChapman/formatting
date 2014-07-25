@@ -41,6 +41,11 @@ st = later T.fromText
 s :: Format String
 s = later (T.fromText . T.pack)
 
+-- | Output a showable value (instance of 'Show') by turning it into
+-- 'Text'.
+tt :: Show a => Format a
+tt = later (T.fromText . T.pack . show)
+
 -- | Render a floating point number using scientific/engineering
 -- notation (e.g. 2.3e123), with the given number of decimal places.
 ef :: Real a => Int -> Format a

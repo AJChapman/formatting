@@ -19,6 +19,7 @@ module Formatting.Formatters
   text,
   stext,
   string,
+  toText,
   builder,
   fconst,
   -- * Numbers
@@ -73,6 +74,14 @@ stext = later T.fromText
 -- | Output a string.
 string :: Format String
 string = later (T.fromText . T.pack)
+
+-- | Output a showable value (instance of 'Show') by turning it into
+-- 'Text':
+-- 
+-- >>> format ("Value number " % toText % " is " % toText % ".") 42 False
+-- "Value number 42 is False."
+toText :: Show a => Format a
+toText = later (T.fromText . T.pack . show)
 
 -- | Build a builder.
 builder :: Format Builder
