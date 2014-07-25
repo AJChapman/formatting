@@ -17,6 +17,7 @@ module Formatting.ShortFormatters where
 
 import           Formatting.Holey
 
+import qualified Data.Text.Buildable as B (build)
 import qualified Data.Text as S
 import qualified Data.Text as T
 import           Data.Text.Buildable    (Buildable)
@@ -48,7 +49,7 @@ sh = later (T.fromText . T.pack . show)
 
 -- | Output a character.
 c :: Format Char
-c = later (T.fromText . T.pack . return)
+c = later B.build
 
 -- | Render a floating point number using scientific/engineering
 -- notation (e.g. 2.3e123), with the given number of decimal places.

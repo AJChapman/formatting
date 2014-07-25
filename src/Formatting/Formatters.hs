@@ -87,7 +87,7 @@ shown = later (T.fromText . T.pack . show)
 
 -- | Output a character.
 char :: Format Char
-char = later (T.fromText . T.pack . return)
+char = later B.build
 
 -- | Build a builder.
 builder :: Format Builder
