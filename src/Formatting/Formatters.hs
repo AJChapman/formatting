@@ -19,6 +19,7 @@ module Formatting.Formatters
   text,
   stext,
   string,
+  char,
   builder,
   fconst,
   -- * Numbers
@@ -32,6 +33,7 @@ module Formatting.Formatters
   shortest,
   commas,
   ords,
+  asInt,
   -- * Padding
   left,
   right,
@@ -73,6 +75,10 @@ stext = later T.fromText
 -- | Output a string.
 string :: Format String
 string = later (T.fromText . T.pack)
+
+-- | Output a character.
+char :: Format Char
+char = later (T.fromText . T.pack . return)
 
 -- | Build a builder.
 builder :: Format Builder
@@ -122,6 +128,13 @@ sci = later scientificBuilder
 -- | Render a scientific number with options.
 scifmt :: FPFormat -> Maybe Int -> Format Scientific
 scifmt f i = later (formatScientificBuilder f i)
+
+-- | Shows the Int value of Enum instances using 'fromEnum'.
+-- 
+-- >>> format ("Got: " % char % " (" % asInt % ")") 'a' 'a'
+-- "Got: a (97)"
+asInt :: Enum a => Format a
+asInt = later (T.shortest . fromEnum)
 
 -- | Pad the left hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
