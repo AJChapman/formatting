@@ -18,6 +18,7 @@ module Formatting.ShortFormatters where
 import           Formatting.Formatters (bin, int, oct)
 import           Formatting.Holey
 
+import qualified Data.Text.Buildable as B (build)
 import qualified Data.Text as S
 import qualified Data.Text as T
 import           Data.Text.Buildable    (Buildable)
@@ -55,6 +56,15 @@ st = later T.fromText
 s :: Format String
 s = later (T.fromText . T.pack)
 
+-- | Output a showable value (instance of 'Show') by turning it into
+-- 'Text'.
+sh :: Show a => Format a
+sh = later (T.fromText . T.pack . show)
+
+-- | Output a character.
+c :: Format Char
+c = later B.build
+
 -- | Render a floating point number using scientific/engineering
 -- notation (e.g. 2.3e123), with the given number of decimal places.
 ef :: Real a => Int -> Format a
@@ -76,12 +86,12 @@ pf i = later (T.prec i)
 sf :: Real a => Format a
 sf = later T.shortest
 
--- | Pad the left hand side of a string until it reaches k characters
--- wide, if necessary filling with character c.
+-- | Pad the left hand side of a string until it reaches @k@ characters
+-- wide, if necessary filling with character @ch@.
 l :: Buildable a => Int -> Char -> Format a
-l i c = later (T.left i c)
+l i ch = later (T.left i ch)
 
--- | Pad the right hand side of a string until it reaches k characters
--- wide, if necessary filling with character c.
+-- | Pad the right hand side of a string until it reaches @k@ characters
+-- wide, if necessary filling with character @ch@.
 r :: Buildable a => Int -> Char -> Format a
-r i c = later (T.right i c)
+r i ch = later (T.right i ch)

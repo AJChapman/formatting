@@ -19,6 +19,8 @@ module Formatting.Formatters
   text,
   stext,
   string,
+  shown,
+  char,
   builder,
   fconst,
   -- * Numbers
@@ -32,6 +34,7 @@ module Formatting.Formatters
   shortest,
   commas,
   ords,
+  asInt,
   -- * Padding
   left,
   right,
@@ -76,6 +79,18 @@ stext = later T.fromText
 -- | Output a string.
 string :: Format String
 string = later (T.fromText . T.pack)
+
+-- | Output a showable value (instance of 'Show') by turning it into
+-- 'Text':
+--
+-- >>> format ("Value number " % shown % " is " % shown % ".") 42 False
+-- "Value number 42 is False."
+shown :: Show a => Format a
+shown = later (T.fromText . T.pack . show)
+
+-- | Output a character.
+char :: Format Char
+char = later B.build
 
 -- | Build a builder.
 builder :: Format Builder
@@ -125,6 +140,13 @@ sci = later scientificBuilder
 -- | Render a scientific number with options.
 scifmt :: FPFormat -> Maybe Int -> Format Scientific
 scifmt f i = later (formatScientificBuilder f i)
+
+-- | Shows the Int value of Enum instances using 'fromEnum'.
+--
+-- >>> format ("Got: " % char % " (" % asInt % ")") 'a' 'a'
+-- "Got: a (97)"
+asInt :: Enum a => Format a
+asInt = later (T.shortest . fromEnum)
 
 -- | Pad the left hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
