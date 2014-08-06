@@ -1,4 +1,4 @@
-# formatting
+# formatting [![Hackage](https://img.shields.io/hackage/v/formatting.svg?style=flat)](https://hackage.haskell.org/package/formatting)
 
 A type-safe text formatting library based on combinators.
 
