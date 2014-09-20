@@ -172,7 +172,7 @@ center :: Buildable a => Int -> Char -> Format a
 center i c = later centerT where
   centerT = T.fromLazyText . LT.center (fromIntegral i) c . T.toLazyText . B.build
 
--- | Group integral numbers, eg 123456 -> "12.34.56"
+-- | Group integral numbers, e.g. 123456 -> "12.34.56"
 group :: (Buildable n,Integral n) =>  Int -> Char -> Format n
 group i c = later (commaize) where
   commaize = T.fromLazyText .
@@ -182,7 +182,7 @@ group i c = later (commaize) where
              LT.reverse .
              T.toLazyText .
              B.build
-  zeros = LT.replicate (fromIntegral i) $ LT.singleton '0'
+  zeros = LT.replicate (fromIntegral i) (LT.singleton '0')
   zeros' = LT.singleton c <> LT.tail zeros
   merge (f,c') rest | f == c = LT.singleton c <> LT.singleton c' <> rest
                    | otherwise = LT.singleton c' <> rest
