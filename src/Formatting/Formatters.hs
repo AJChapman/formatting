@@ -38,6 +38,7 @@ module Formatting.Formatters
   -- * Padding
   left,
   right,
+  center,
   -- * Bases
   base,
   bin,
@@ -157,6 +158,12 @@ left i c = later (T.left i c)
 -- wide, if necessary filling with character c.
 right :: Buildable a => Int -> Char -> Format a
 right i c = later (T.right i c)
+
+-- | Pad the left & right hand side of a string until it reaches k characters
+-- wide, if necessary filling with character c.
+center :: Buildable a => Int -> Char -> Format a
+center i c = later centerT where
+  centerT = T.fromLazyText . LT.center (fromIntegral i) c . T.toLazyText . B.build
 
 -- | Add commas to an integral, e.g 12000 -> \ "12,000".
 commas :: (Buildable n,Integral n) => Format n
