@@ -170,8 +170,8 @@ right i c = later (T.right i c)
 -- | Pad the left & right hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
 center :: Buildable a => Int -> Char -> Format a
-center i c = later centerT where
-  centerT = T.fromLazyText . LT.center (fromIntegral i) c . T.toLazyText . B.build
+center i c = later (center' (fromIntegral i) c) where
+  center' i' c' = T.fromLazyText . LT.center i' c' . T.toLazyText . B.build
 
 -- | Fit in the given length, truncating on the left.
 fit :: Buildable a => Int -> Format a
