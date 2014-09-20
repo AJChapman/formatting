@@ -219,7 +219,7 @@ ords = later go
               _ -> "th"
           where tens = n `mod` 100
 
--- Bases
+-- | Render an integral at base n.
 base :: Integral a => Int -> Format a
 base numBase = later (B.build . atBase numBase)
 
