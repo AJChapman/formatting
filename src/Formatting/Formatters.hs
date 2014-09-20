@@ -32,6 +32,7 @@ module Formatting.Formatters
   sci,
   scifmt,
   shortest,
+  group,
   commas,
   ords,
   asInt,
@@ -165,19 +166,26 @@ center :: Buildable a => Int -> Char -> Format a
 center i c = later centerT where
   centerT = T.fromLazyText . LT.center (fromIntegral i) c . T.toLazyText . B.build
 
--- | Add commas to an integral, e.g 12000 -> \ "12,000".
-commas :: (Buildable n,Integral n) => Format n
-commas = later (commaize) where
+-- | Group integral numbers, eg 123456 -> "12.34.56"
+group :: (Buildable n,Integral n) =>  Int -> Char -> Format n
+group i c = later (commaize) where
   commaize = T.fromLazyText .
              LT.reverse .
              foldr merge "" .
-             LT.zip ("000" <> cycle' ",00") .
+             LT.zip (zeros <> cycle' zeros') .
              LT.reverse .
              T.toLazyText .
              B.build
-  merge (f,c) rest | f == ',' = "," <> LT.singleton c <> rest
-                   | otherwise = LT.singleton c <> rest
+  zeros = LT.replicate (fromIntegral i) $ LT.singleton '0'
+  zeros' = LT.singleton c <> LT.tail zeros
+  merge (f,c') rest | f == c = LT.singleton c <> LT.singleton c' <> rest
+                   | otherwise = LT.singleton c' <> rest
   cycle' xs = xs <> cycle' xs
+
+-- | Add commas to an integral, e.g 12000 -> \ "12,000".
+-- Should really uses locale's LC_NUMERIC information.
+commas :: (Buildable n,Integral n) => Format n
+commas = group 3 ','
 
 -- | Add a suffix to an integral, e.g. 1st, 2nd, 3rd, 21st.
 ords :: Integral n => Format n
