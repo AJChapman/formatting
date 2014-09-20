@@ -32,6 +32,7 @@ module Formatting.Formatters
   sci,
   scifmt,
   shortest,
+  groupInt,
   commas,
   ords,
   asInt,
@@ -165,19 +166,29 @@ center :: Buildable a => Int -> Char -> Format a
 center i c = later centerT where
   centerT = T.fromLazyText . LT.center (fromIntegral i) c . T.toLazyText . B.build
 
+-- | Group integral numbers, e.g. groupInt 2 '.' on 123456 -> \"12.34.56\".
+groupInt :: (Buildable n,Integral n) => Int -> Char -> Format n
+groupInt 0 _ = later B.build
+groupInt i c = later (commaize)
+  where commaize =
+          T.fromLazyText . LT.reverse .
+          foldr merge "" .
+          LT.zip (zeros <> cycle' zeros') .
+          LT.reverse .
+          T.toLazyText .
+          B.build
+        zeros =
+          LT.replicate (fromIntegral i)
+                       (LT.singleton '0')
+        zeros' = LT.singleton c <> LT.tail zeros
+        merge (f,c') rest
+          | f == c = LT.singleton c <> LT.singleton c' <> rest
+          | otherwise = LT.singleton c' <> rest
+        cycle' xs = xs <> cycle' xs
+
 -- | Add commas to an integral, e.g 12000 -> \ "12,000".
 commas :: (Buildable n,Integral n) => Format n
-commas = later (commaize) where
-  commaize = T.fromLazyText .
-             LT.reverse .
-             foldr merge "" .
-             LT.zip ("000" <> cycle' ",00") .
-             LT.reverse .
-             T.toLazyText .
-             B.build
-  merge (f,c) rest | f == ',' = "," <> LT.singleton c <> rest
-                   | otherwise = LT.singleton c <> rest
-  cycle' xs = xs <> cycle' xs
+commas = groupInt 3 ','
 
 -- | Add a suffix to an integral, e.g. 1st, 2nd, 3rd, 21st.
 ords :: Integral n => Format n
@@ -196,7 +207,7 @@ ords = later go
 -- Bases
 base :: Integral a => Int -> Format a
 base numBase = later (B.build . atBase numBase)
-                
+
 -- | Render an integer using binary notation. (No leading 0b is
 -- added.) Defined as @bin = 'base' 2@.
 bin :: Integral a => Format a
@@ -210,7 +221,7 @@ oct = base 8
 {-# INLINE oct #-}
 
 -- | Render an integer using hexadecimal notation. (No leading 0x is
--- added.) Has a specialized implementation. 
+-- added.) Has a specialized implementation.
 hex :: Integral a => Format a
 hex = later T.hex
 {-# INLINE hex #-}
