@@ -1,12 +1,14 @@
 name:                formatting
-version:             5.1
+version:             5.2
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 license:             BSD3
 license-file:        LICENSE
-author:              Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen
+author:              Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen,
+                     Mike Meyer
 maintainer:          chrisdone@gmail.com
-copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen
+copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen,
+                     Mike Meyer
 category:            Text
 build-type:          Simple
 cabal-version:       >=1.8

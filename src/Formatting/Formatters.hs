@@ -25,6 +25,7 @@ module Formatting.Formatters
   fconst,
   -- * Numbers
   int,
+  plural,
   float,
   expt,
   fixed,
@@ -32,12 +33,16 @@ module Formatting.Formatters
   sci,
   scifmt,
   shortest,
+  group,
   commas,
   ords,
   asInt,
   -- * Padding
   left,
   right,
+  center,
+  fitLeft,
+  fitRight,
   -- * Bases
   base,
   bin,
@@ -108,6 +113,11 @@ build = later B.build
 int :: Integral a => Format a
 int = later T.shortest
 
+-- | English plural suffix for an integral.
+plural :: (Num a, Eq a) => Bool -> Format a
+plural x = if x then plural' "y" "ies"  else plural' "" "s"
+  where plural' s p  = later (\i -> if i == 1 then s else p)
+
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format a
 float = later (T.shortest)
@@ -158,19 +168,45 @@ left i c = later (T.left i c)
 right :: Buildable a => Int -> Char -> Format a
 right i c = later (T.right i c)
 
--- | Add commas to an integral, e.g 12000 -> \ "12,000".
-commas :: (Buildable n,Integral n) => Format n
-commas = later (commaize) where
+-- | Pad the left & right hand side of a string until it reaches k characters
+-- wide, if necessary filling with character c.
+center :: Buildable a => Int -> Char -> Format a
+center i c = later (center' (fromIntegral i) c) where
+  center' i' c' = T.fromLazyText . LT.center i' c' . T.toLazyText . B.build
+
+-- | Fit in the given length, truncating on the left.
+fitLeft :: Buildable a => Int -> Format a
+fitLeft size = later (fit (fromIntegral size)) where
+  fit i = T.fromLazyText . LT.take i . T.toLazyText . B.build
+
+-- | Fit in the given length, truncating on the right.
+fitRight :: Buildable a => Int -> Format a
+fitRight size = later (fit (fromIntegral size)) where
+  fit i = T.fromLazyText .
+          (\t -> LT.drop (LT.length t - i) t)
+          . T.toLazyText
+          . B.build
+
+-- | Group integral numbers, e.g. 123456 -> "12.34.56"
+group :: (Buildable n,Integral n) =>  Int -> Char -> Format n
+group i c = later (commaize) where
   commaize = T.fromLazyText .
              LT.reverse .
              foldr merge "" .
-             LT.zip ("000" <> cycle' ",00") .
+             LT.zip (zeros <> cycle' zeros') .
              LT.reverse .
              T.toLazyText .
              B.build
-  merge (f,c) rest | f == ',' = "," <> LT.singleton c <> rest
-                   | otherwise = LT.singleton c <> rest
+  zeros = LT.replicate (fromIntegral i) (LT.singleton '0')
+  zeros' = LT.singleton c <> LT.tail zeros
+  merge (f,c') rest | f == c = LT.singleton c <> LT.singleton c' <> rest
+                   | otherwise = LT.singleton c' <> rest
   cycle' xs = xs <> cycle' xs
+
+-- | Add commas to an integral, e.g 12000 -> \ "12,000".
+-- Should really uses locale's LC_NUMERIC information.
+commas :: (Buildable n,Integral n) => Format n
+commas = group 3 ','
 
 -- | Add a suffix to an integral, e.g. 1st, 2nd, 3rd, 21st.
 ords :: Integral n => Format n
