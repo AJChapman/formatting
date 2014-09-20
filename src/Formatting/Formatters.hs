@@ -41,6 +41,7 @@ module Formatting.Formatters
   left,
   right,
   center,
+  fit,
   -- * Bases
   base,
   bin,
@@ -171,6 +172,11 @@ right i c = later (T.right i c)
 center :: Buildable a => Int -> Char -> Format a
 center i c = later centerT where
   centerT = T.fromLazyText . LT.center (fromIntegral i) c . T.toLazyText . B.build
+
+-- | Fit in the given length, truncating on the left.
+fit :: Buildable a => Int -> Format a
+fit i = later (fit' (fromIntegral i)) where
+  fit' i' = T.fromLazyText . LT.take i' . T.toLazyText . B.build
 
 -- | Group integral numbers, e.g. 123456 -> "12.34.56"
 group :: (Buildable n,Integral n) =>  Int -> Char -> Format n
