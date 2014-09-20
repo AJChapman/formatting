@@ -40,6 +40,8 @@ module Formatting.Formatters
   left,
   right,
   center,
+  fitLeft,
+  fitRight,
   -- * Bases
   base,
   bin,
@@ -185,6 +187,19 @@ groupInt i c = later (commaize)
           | f == c = LT.singleton c <> LT.singleton c' <> rest
           | otherwise = LT.singleton c' <> rest
         cycle' xs = xs <> cycle' xs
+
+-- | Fit in the given length, truncating on the left.
+fitLeft :: Buildable a => Int -> Format a
+fitLeft size = later (fit (fromIntegral size)) where
+  fit i = T.fromLazyText . LT.take i . T.toLazyText . B.build
+
+-- | Fit in the given length, truncating on the right.
+fitRight :: Buildable a => Int -> Format a
+fitRight size = later (fit (fromIntegral size)) where
+  fit i = T.fromLazyText .
+          (\t -> LT.drop (LT.length t - i) t)
+          . T.toLazyText
+          . B.build
 
 -- | Add commas to an integral, e.g 12000 -> \ "12,000".
 commas :: (Buildable n,Integral n) => Format n
