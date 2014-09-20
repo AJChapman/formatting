@@ -35,6 +35,7 @@ module Formatting.Formatters
   groupInt,
   commas,
   ords,
+  plural,
   asInt,
   -- * Padding
   left,
@@ -218,6 +219,10 @@ ords = later go
               3 -> "rd"
               _ -> "th"
           where tens = n `mod` 100
+
+-- | English plural suffix for an integral.
+plural :: (Num a, Eq a) => Text -> Text -> Format a
+plural s p = later (\i -> if i == 1 then B.build s else B.build p)
 
 -- | Render an integral at base n.
 base :: Integral a => Int -> Format a
