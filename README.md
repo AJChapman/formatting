@@ -1,6 +1,8 @@
-# formatting [![Hackage](https://img.shields.io/hackage/v/formatting.svg?style=flat)](https://hackage.haskell.org/package/formatting)
+# formatting
 
 A type-safe text formatting library based on combinators.
+
+[Haddock API documentation](http://chrisdone.github.io/formatting/).
 
 ## Introduction
 
