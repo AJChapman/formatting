@@ -25,6 +25,7 @@ module Formatting.Formatters
   fconst,
   -- * Numbers
   int,
+  plural,
   float,
   expt,
   fixed,
@@ -109,6 +110,11 @@ build = later B.build
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
 int :: Integral a => Format a
 int = later T.shortest
+
+-- | English plural suffix for an integral.
+plural :: (Num a, Eq a) => Bool -> Format a
+plural x = if x then plural' "y" "ies"  else plural' "" "s"
+  where plural' s p  = later (\i -> if i == 1 then s else p)
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format a

@@ -59,3 +59,8 @@ padding :: Text
 padding =
   format ("A left-padded number: " % left 3 '0')
          (9 :: Int)
+
+-- | Plurals.
+plurals :: Text
+plurals = format ("We have " % int % " director" % plural True % " and "
+                  % int % " file" % plural False) 1 1 3 3
