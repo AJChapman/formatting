@@ -29,7 +29,9 @@ module Formatting
   hprint,
   -- * Formatting library
   module Formatting.Holey,
-  module Formatting.Formatters
+  module Formatting.Formatters,
+  -- * Other functions
+  formatToString
  ) where
 
 import Formatting.Formatters
