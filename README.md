@@ -192,7 +192,7 @@ The type of the function passed to `later` should return an instance
 of `Monoid`.
 
 ``` haskell
-later :: (a -> m) -> Holey m r (a -> r)
+later :: (a -> Builder) -> Format r (a -> r)
 ```
 
 The function you format with (`format`, `bprint`, etc.)
@@ -200,7 +200,7 @@ will determine the monoid of choice. In the case of this library, the
 top-level formating functions expect you to build a text `Builder`:
 
 ``` haskell
-format :: Holey Builder Text a -> a
+format :: Format Text a -> a
 ```
 
 Because builders are efficient generators.
@@ -215,8 +215,8 @@ To do that for common types you can just re-use the formatting library
 and use bprint:
 
 ``` haskell
- > :t bprint
-bprint :: Holey Builder Builder a -> a
+λ> :t bprint
+bprint :: Format Builder a -> a
 > :t bprint int 23
 bprint int 23 :: Builder
 ```
@@ -227,7 +227,7 @@ combinators:
 ``` haskell
 > let mint = later (maybe "" (bprint int))
 > :t mint
-mint :: Holey Builder r (Maybe Integer -> r)
+mint :: Integral a => Format r (Maybe a -> r)
 ```
 
 Now `mint` is a formatter to show `Maybe Integer`:
