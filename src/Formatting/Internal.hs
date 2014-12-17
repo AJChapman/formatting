@@ -4,6 +4,8 @@ module Formatting.Internal where
 
 import           Formatting.Holey
 
+import qualified Data.Text.Lazy as TL
+import qualified Data.Text.Lazy.Builder as TLB
 import qualified Data.Text as S (Text)
 import           Data.Text.Lazy (Text)
 import qualified Data.Text.Lazy as T
@@ -31,3 +33,7 @@ fprint m = runHM m (T.putStr . T.toLazyText)
 -- | Run the formatter and put the output onto the given 'Handle'.
 hprint :: Handle -> Format (IO ()) a -> a
 hprint h m = runHM m (T.hPutStr h . T.toLazyText)
+
+-- | Run the formatter and return a list of characters.
+formatToString :: Format [Char] a -> a
+formatToString m = runHM m (TL.unpack . TLB.toLazyText)
