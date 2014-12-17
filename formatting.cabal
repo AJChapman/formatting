@@ -10,6 +10,7 @@ copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen,
 category:            Text
 build-type:          Simple
 cabal-version:       >=1.8
+extra-source-dirs:   CHANGELOG.md
 
 library
   exposed-modules:   Formatting,
