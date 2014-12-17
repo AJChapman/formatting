@@ -64,7 +64,7 @@ f % g = f `bind` \a -> g `bind` \b -> now (a `mappend` b)
 (%.) (Holey a) (Holey b) = Holey (b . a)
 
 -- | Insert a constant monoidal value.
-now :: Builder -> Holey Builder r r
+now :: Builder -> Format r r
 now a = Holey ($ a)
 
 -- | Monadic indexed bind for holey monoids.
