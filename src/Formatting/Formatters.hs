@@ -74,15 +74,15 @@ import           Data.Text.Lazy.Builder.Scientific
 import           Data.Scientific
 
 -- | Output a lazy text.
-text :: Format Text
+text :: Format r (Text -> r)
 text = later T.fromLazyText
 
 -- | Output a strict text.
-stext :: Format S.Text
+stext :: Format r (S.Text -> r)
 stext = later T.fromText
 
 -- | Output a string.
-string :: Format String
+string :: Format r (String -> r)
 string = later (T.fromText . T.pack)
 
 -- | Output a showable value (instance of 'Show') by turning it into
@@ -90,87 +90,87 @@ string = later (T.fromText . T.pack)
 --
 -- >>> format ("Value number " % shown % " is " % shown % ".") 42 False
 -- "Value number 42 is False."
-shown :: Show a => Format a
+shown :: Show a => Format r (a -> r)
 shown = later (T.fromText . T.pack . show)
 
 -- | Output a character.
-char :: Format Char
+char :: Format r (Char -> r)
 char = later B.build
 
 -- | Build a builder.
-builder :: Format Builder
+builder :: Format r (Builder -> r)
 builder = later id
 
 -- | Like `const` but for formatters.
-fconst :: Builder -> Format a
+fconst :: Builder -> Format r (a -> r)
 fconst m = later (const m)
 
 -- | Build anything that implements the "Buildable" class.
-build :: Buildable a => Format a
+build :: Buildable a => Format r (a -> r)
 build = later B.build
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
-int :: Integral a => Format a
+int :: Integral a => Format r (a -> r)
 int = later T.shortest
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
-float :: Real a => Format a
+float :: Real a => Format r (a -> r)
 float = later (T.shortest)
 
 -- | Render a floating point number using scientific/engineering
 -- notation (e.g. 2.3e123), with the given number of decimal places.
-expt :: Real a => Int -> Format a
+expt :: Real a => Int -> Format r (a -> r)
 expt i = later (T.expt i)
 
 -- | Render a floating point number using normal notation, with the
 -- given number of decimal places.
-fixed :: Real a => Int -> Format a
+fixed :: Real a => Int -> Format r (a -> r)
 fixed i = later (T.fixed i)
 
 -- | Render a floating point number, with the given number of digits
 -- of precision. Uses decimal notation for values between 0.1 and
 -- 9,999,999, and scientific notation otherwise.
-prec :: Real a => Int -> Format a
+prec :: Real a => Int -> Format r (a -> r)
 prec i = later (T.prec i)
 
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it.
-shortest :: Real a => Format a
+shortest :: Real a => Format r (a -> r)
 shortest = later T.shortest
 
 -- | Render a scientific number.
-sci :: Format Scientific
+sci :: Format r (Scientific -> r)
 sci = later scientificBuilder
 
 -- | Render a scientific number with options.
-scifmt :: FPFormat -> Maybe Int -> Format Scientific
+scifmt :: FPFormat -> Maybe Int -> Format r (Scientific -> r)
 scifmt f i = later (formatScientificBuilder f i)
 
 -- | Shows the Int value of Enum instances using 'fromEnum'.
 --
 -- >>> format ("Got: " % char % " (" % asInt % ")") 'a' 'a'
 -- "Got: a (97)"
-asInt :: Enum a => Format a
+asInt :: Enum a => Format r (a -> r)
 asInt = later (T.shortest . fromEnum)
 
 -- | Pad the left hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
-left :: Buildable a => Int -> Char -> Format a
+left :: Buildable a => Int -> Char -> Format r (a -> r)
 left i c = later (T.left i c)
 
 -- | Pad the right hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
-right :: Buildable a => Int -> Char -> Format a
+right :: Buildable a => Int -> Char -> Format r (a -> r)
 right i c = later (T.right i c)
 
 -- | Pad the left & right hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
-center :: Buildable a => Int -> Char -> Format a
+center :: Buildable a => Int -> Char -> Format r (a -> r)
 center i c = later centerT where
   centerT = T.fromLazyText . LT.center (fromIntegral i) c . T.toLazyText . B.build
 
 -- | Group integral numbers, e.g. groupInt 2 '.' on 123456 -> \"12.34.56\".
-groupInt :: (Buildable n,Integral n) => Int -> Char -> Format n
+groupInt :: (Buildable n,Integral n) => Int -> Char -> Format r (n -> r)
 groupInt 0 _ = later B.build
 groupInt i c = later (commaize)
   where commaize =
@@ -190,12 +190,12 @@ groupInt i c = later (commaize)
         cycle' xs = xs <> cycle' xs
 
 -- | Fit in the given length, truncating on the left.
-fitLeft :: Buildable a => Int -> Format a
+fitLeft :: Buildable a => Int -> Format r (a -> r)
 fitLeft size = later (fit (fromIntegral size)) where
   fit i = T.fromLazyText . LT.take i . T.toLazyText . B.build
 
 -- | Fit in the given length, truncating on the right.
-fitRight :: Buildable a => Int -> Format a
+fitRight :: Buildable a => Int -> Format r (a -> r)
 fitRight size = later (fit (fromIntegral size)) where
   fit i = T.fromLazyText .
           (\t -> LT.drop (LT.length t - i) t)
@@ -203,11 +203,11 @@ fitRight size = later (fit (fromIntegral size)) where
           . B.build
 
 -- | Add commas to an integral, e.g 12000 -> \ "12,000".
-commas :: (Buildable n,Integral n) => Format n
+commas :: (Buildable n,Integral n) => Format r (n -> r)
 commas = groupInt 3 ','
 
 -- | Add a suffix to an integral, e.g. 1st, 2nd, 3rd, 21st.
-ords :: Integral n => Format n
+ords :: Integral n => Format r (n -> r)
 ords = later go
   where go n
           | tens > 3 && tens < 21 = T.shortest n <> "th"
@@ -221,43 +221,43 @@ ords = later go
           where tens = n `mod` 100
 
 -- | English plural suffix for an integral.
-plural :: (Num a, Eq a) => Text -> Text -> Format a
+plural :: (Num a, Eq a) => Text -> Text -> Format r (a -> r)
 plural s p = later (\i -> if i == 1 then B.build s else B.build p)
 
 -- | Render an integral at base n.
-base :: Integral a => Int -> Format a
+base :: Integral a => Int -> Format r (a -> r)
 base numBase = later (B.build . atBase numBase)
 
 -- | Render an integer using binary notation. (No leading 0b is
 -- added.) Defined as @bin = 'base' 2@.
-bin :: Integral a => Format a
+bin :: Integral a => Format r (a -> r)
 bin = base 2
 {-# INLINE bin #-}
 
 -- | Render an integer using octal notation. (No leading 0o is
 -- added.) Defined as @oct = 'base' 8@.
-oct :: Integral a => Format a
+oct :: Integral a => Format r (a -> r)
 oct = base 8
 {-# INLINE oct #-}
 
 -- | Render an integer using hexadecimal notation. (No leading 0x is
 -- added.) Has a specialized implementation.
-hex :: Integral a => Format a
+hex :: Integral a => Format r (a -> r)
 hex = later T.hex
 {-# INLINE hex #-}
 
 -- | Render an integer using binary notation with a leading 0b.
-prefixBin :: Integral a => Format a
+prefixBin :: Integral a => Format r (a -> r)
 prefixBin = "0b" % bin
 {-# INLINE prefixBin #-}
 
 -- | Render an integer using octal notation with a leading 0o.
-prefixOct :: Integral a => Format a
+prefixOct :: Integral a => Format r (a -> r)
 prefixOct = "0o" % oct
 {-# INLINE prefixOct #-}
 
 -- | Render an integer using hexadecimal notation with a leading 0x.
-prefixHex :: Integral a => Format a
+prefixHex :: Integral a => Format r (a -> r)
 prefixHex = "0x" % hex
 {-# INLINE prefixHex #-}
 

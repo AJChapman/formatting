@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE GADTs #-}
@@ -32,7 +33,7 @@ import Data.String
 import Data.Text.Lazy.Builder (Builder)
 
 -- | A formatter.
-type Format a = forall r. Holey Builder r (a -> r)
+type Format r x = Holey Builder r x
 
 -- | The type of a monoid with holes. The underlying monoid is
 -- represented by type parameter @m@. The @r@ is the result type and
@@ -50,28 +51,28 @@ instance Functor (HoleyT r a) where
   fmap g m = Holey (\k -> runHM m (k . g))
 
 -- | Very useful instance for writing format string.
-instance (IsString m, a ~ r) => IsString (Holey m r a) where
+instance (a ~ r) => IsString (Format r a) where
   fromString = now . fromString
 
 -- | Composition operator. The same as category composition.
-(%) :: Monoid n => Holey n b c -> Holey n b1 b -> Holey n b1 c
+(%) :: Format b c -> Format r b -> Format r c
 f % g = f `bind` \a -> g `bind` \b -> now (a `mappend` b)
 
 -- | Function compose two holeys. Will feed the result of one holey
 -- into another.
-(%.) :: Holey m r (a -> b) -> Holey a b c -> Holey m r c
+(%.) :: Format r (Builder -> b) -> Format b c -> Format r c
 (%.) (Holey a) (Holey b) = Holey (b . a)
 
 -- | Insert a constant monoidal value.
-now :: m -> Holey m r r
+now :: Builder -> Holey Builder r r
 now a = Holey ($ a)
 
 -- | Monadic indexed bind for holey monoids.
-bind :: Holey m b c -> (m -> Holey n a b) -> Holey n a c
+bind :: Format b c -> (Builder -> Format a b) -> Format a c
 m `bind` f = Holey $ \k -> runHM m (\a -> runHM (f a) k)
 
 -- | Insert a monoidal value that is not specified until the
 -- computation is 'run'. The argument that is expected later is
 -- converted to the monoid type using the given conversion function.
-later :: (a -> m) -> Holey m r (a -> r)
+later :: (a -> Builder) -> Format r (a -> r)
 later f = Holey (. f)
