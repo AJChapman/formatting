@@ -1,3 +1,7 @@
+6.1.0
+
+* Add formatter for TimeSpec.
+
 6.0.0
 
 * Changed the type of `Format`. Now you write `Format r (a -> r)` instead
