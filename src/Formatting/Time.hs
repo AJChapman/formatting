@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -15,7 +16,11 @@ import           Data.Text              (Text)
 import qualified Data.Text              as T
 import           Data.Text.Buildable
 import           Data.Time
+#if __GLASGOW_HASKELL__ >= 710
+import           System.Locale hiding (defaultTimeLocale)
+#else
 import           System.Locale
+#endif
 
 -- * For 'TimeZone' (and 'ZonedTime' and 'UTCTime'):
 
