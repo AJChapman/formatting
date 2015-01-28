@@ -47,6 +47,10 @@ newtype HoleyT r a m = Holey { runHM :: (m -> r) -> a }
 
 type Holey m r a = HoleyT r a m
 
+instance Monoid (Format r (a -> r)) where
+  mappend m n = Holey (\k a -> runHM m (\b1 -> runHM n (\b2 -> k (b1 <> b2)) a) a)
+  mempty = Holey (\k a -> k mempty)
+
 instance Functor (HoleyT r a) where
   fmap g m = Holey (\k -> runHM m (k . g))
 
@@ -57,11 +61,13 @@ instance (a ~ r) => IsString (Format r a) where
 -- | Composition operator. The same as category composition.
 (%) :: Format b c -> Format r b -> Format r c
 f % g = f `bind` \a -> g `bind` \b -> now (a `mappend` b)
+infixr 9 %
 
 -- | Function compose two holeys. Will feed the result of one holey
 -- into another.
 (%.) :: Format r (Builder -> b) -> Format b c -> Format r c
 (%.) (Holey a) (Holey b) = Holey (b . a)
+infixr 8 %.
 
 -- | Insert a constant monoidal value.
 now :: Builder -> Format r r

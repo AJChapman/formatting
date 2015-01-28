@@ -165,6 +165,14 @@ and Common Lisp's `FORMAT`:
 "0a"
 ```
 
+## Using more than one formatter on the same argument
+
+``` haskell
+λ> now <- getCurrentTime
+λ> format (year % "/" <> month <> "/" % dayOfMonth) now
+"2015/01/27"
+```
+
 ## Extension
 
 You can include things verbatim in the formatter:
