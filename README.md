@@ -2,7 +2,7 @@
 
 A type-safe text formatting library based on combinators.
 
-[Documentation](http://chrisdone.github.io/formatting/).
+[Documentation](http://chrisdone.github.io/formatting/)
 
 ## Introduction
 
