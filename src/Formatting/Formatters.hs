@@ -56,7 +56,7 @@ module Formatting.Formatters
   Buildable
   ) where
 
-import           Formatting.Holey
+import           Formatting.Internal
 
 import           Data.Char (chr, ord)
 import           Numeric (showIntAtBase)

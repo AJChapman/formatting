@@ -9,7 +9,6 @@ module Formatting.Time where
 import           Data.List
 import           Data.Text.Lazy.Builder
 import           Formatting.Formatters  hiding (build)
-import           Formatting.Holey
 import           Formatting.Internal
 
 import           Data.Text              (Text)

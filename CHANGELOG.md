@@ -1,3 +1,10 @@
+6.2.0
+
+* Dropped Holey/HoleyT in favour of simpler Format type.
+* Added Monoid instance.
+* Added back Category instance.
+* Dropped Functor instance.
+
 6.1.1
 
 * Add support for GHC 7.10 (time update).

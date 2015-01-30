@@ -21,6 +21,11 @@
 
 module Formatting
   (
+  Format,
+  (%),
+  (%.),
+  now,
+  later,
   -- * Top-level functions
   format,
   sformat,
@@ -28,12 +33,10 @@ module Formatting
   fprint,
   hprint,
   -- * Formatting library
-  module Formatting.Holey,
   module Formatting.Formatters,
   -- * Other functions
   formatToString
  ) where
 
 import Formatting.Formatters
-import Formatting.Holey
 import Formatting.Internal

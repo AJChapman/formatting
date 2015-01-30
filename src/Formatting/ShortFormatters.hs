@@ -16,7 +16,7 @@
 module Formatting.ShortFormatters where
 
 import           Formatting.Formatters (bin, int, oct)
-import           Formatting.Holey
+import           Formatting.Internal
 
 import qualified Data.Text.Buildable as B (build)
 import qualified Data.Text as S

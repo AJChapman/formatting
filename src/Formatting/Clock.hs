@@ -7,6 +7,7 @@
 module Formatting.Clock where
 
 import Formatting
+import Formatting.Internal
 import System.Clock
 
 -- | Format the duration from start to end (args passed in that order).
@@ -20,7 +21,7 @@ import System.Clock
 -- 19.38 µs
 -- @
 timeSpecs :: Format r (TimeSpec -> TimeSpec -> r)
-timeSpecs = Holey (\g x y -> g (fmt x y))
+timeSpecs = Format (\g x y -> g (fmt x y))
   where fmt (TimeSpec s1 n1) (TimeSpec s2 n2)
           | Just i <- scale ((10 ^ 9) * 60 * 60 * 24) = bprint (fixed 2 % " d") i
           | Just i <- scale ((10 ^ 9) * 60 * 60) = bprint (fixed 2 % " h") i
