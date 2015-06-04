@@ -15,7 +15,7 @@ import           Data.Text              (Text)
 import qualified Data.Text              as T
 import           Data.Text.Buildable
 import           Data.Time
-#if __GLASGOW_HASKELL__ >= 710
+#if MIN_VERSION_time(1,5,0)
 import           System.Locale hiding (defaultTimeLocale)
 #else
 import           System.Locale
