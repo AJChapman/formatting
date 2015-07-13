@@ -51,16 +51,17 @@ module Formatting.Formatters
   prefixBin,
   prefixOct,
   prefixHex,
+  bytes,
   -- * Buildables
   build,
-  Buildable
+  Buildable,
   ) where
 
 import           Formatting.Internal
 
 import           Data.Char (chr, ord)
-import           Numeric (showIntAtBase)
 import           Data.Monoid
+import           Data.Scientific
 import qualified Data.Text as S
 import qualified Data.Text as T
 import           Data.Text.Buildable (Buildable)
@@ -71,7 +72,7 @@ import qualified Data.Text.Lazy as LT
 import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as T
 import           Data.Text.Lazy.Builder.Scientific
-import           Data.Scientific
+import           Numeric (showIntAtBase)
 
 -- | Output a lazy text.
 text :: Format r (Text -> r)
@@ -285,3 +286,18 @@ intToDigit' i
   | i >= 0  && i < 10 = chr (ord '0' + i)
   | i >= 10 && i < 36 = chr (ord 'a' + i - 10)
   | otherwise = error ("intToDigit': Invalid int " ++ show i)
+
+-- | Renders a given byte count using an appropiate binary suffix, e.g. MiB
+--
+-- >>> sformat (bytes (fixed 2)) 424242
+-- "414.30 KiB"
+bytes :: (Ord f, Integral a, Fractional f)
+      => Format Builder (f -> Builder) -- ^ formatter for the decimal part
+      -> Format r (a -> r)
+bytes d = later go
+  where
+    go bs = bprint d (fromIntegral (signum bs) * dec) <> " " <> bytesSuffixes !! i
+      where (dec,i) = getSuffix (abs bs)
+    getSuffix n = until p (\(x,y) -> (x / 1024, y+1)) (fromIntegral n,0)
+      where p (n',numDivs) = n' < 1024 || numDivs == (length bytesSuffixes - 1)
+    bytesSuffixes = ["B","KiB","MiB","GiB","TiB","PiB","EiB","ZiB","YiB"]
