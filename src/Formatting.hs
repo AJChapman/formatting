@@ -40,3 +40,4 @@ module Formatting
 
 import Formatting.Formatters
 import Formatting.Internal
+

@@ -51,7 +51,7 @@ module Formatting.Formatters
   prefixBin,
   prefixOct,
   prefixHex,
-  bytesDecimal,
+  bytes,
   -- * Buildables
   build,
   Buildable,
@@ -287,16 +287,20 @@ intToDigit' i
   | i >= 10 && i < 36 = chr (ord 'a' + i - 10)
   | otherwise = error ("intToDigit': Invalid int " ++ show i)
 
--- | Renders a given byte count using an appropiate decimal binary suffix, e.g. MiB
+-- | Renders a given byte count using an appropiate decimal binary suffix:
 --
--- >>> sformat (bytes (fixed 2)) 424242
--- "414.30 KiB"
-bytesDecimal :: (Ord f,Integral a,Fractional f)
-             => Format Builder (f -> Builder) -- ^ formatter for the decimal part
-             -> Format r (a -> r)
-bytesDecimal d = later go
+-- >>> format (bytes shortest) 1024
+-- "1KB"
+--
+-- >>> format (bytes (fixed 2 % " ")) (1024*1024*5)
+-- "5.00 MB"
+--
+bytes :: (Ord f,Integral a,Fractional f)
+      => Format Builder (f -> Builder) -- ^ formatter for the decimal part
+      -> Format r (a -> r)
+bytes d = later go
   where go bs =
-          bprint d (fromIntegral (signum bs) * dec) <> " " <> bytesSuffixes !!
+          bprint d (fromIntegral (signum bs) * dec) <> bytesSuffixes !!
           i
           where (dec,i) = getSuffix (abs bs)
         getSuffix n =
@@ -306,4 +310,5 @@ bytesDecimal d = later go
           where p (n',numDivs) =
                   n' < 1024 || numDivs == (length bytesSuffixes - 1)
         bytesSuffixes =
-          ["B","KiB","MiB","GiB","TiB","PiB","EiB","ZiB","YiB"]
+          ["B","KB","MB","GB","TB","PB","EB","ZB","YB"]
+

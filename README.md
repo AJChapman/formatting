@@ -156,6 +156,15 @@ and Common Lisp's `FORMAT`:
 "12585 days"
 ```
 
+## File sizes
+
+``` haskell
+> format (bytes shortest) 1024
+"1KB"
+> format (bytes (fixed 2 % " ")) (1024*1024*5)
+"5.00 MB"
+```
+
 ## Compose formatters
 
 `%.` is like `%` but feeds one formatter into another:
