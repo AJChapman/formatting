@@ -51,16 +51,18 @@ module Formatting.Formatters
   prefixBin,
   prefixOct,
   prefixHex,
+  bytesBinary,
+  bytesDecimal,
   -- * Buildables
   build,
-  Buildable
+  Buildable,
   ) where
 
 import           Formatting.Internal
 
 import           Data.Char (chr, ord)
-import           Numeric (showIntAtBase)
 import           Data.Monoid
+import           Data.Scientific
 import qualified Data.Text as S
 import qualified Data.Text as T
 import           Data.Text.Buildable (Buildable)
@@ -71,7 +73,7 @@ import qualified Data.Text.Lazy as LT
 import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as T
 import           Data.Text.Lazy.Builder.Scientific
-import           Data.Scientific
+import           Numeric (showIntAtBase)
 
 -- | Output a lazy text.
 text :: Format r (Text -> r)
@@ -285,3 +287,35 @@ intToDigit' i
   | i >= 0  && i < 10 = chr (ord '0' + i)
   | i >= 10 && i < 36 = chr (ord 'a' + i - 10)
   | otherwise = error ("intToDigit': Invalid int " ++ show i)
+
+-- | Renders a given byte count using an appropiate __binary__ suffix, e.g. MiB
+--
+-- >>> format (bytesBinary (fixed 2)) 424242
+-- "414.30 KiB"
+bytesBinary :: (Ord f, Integral a, Fractional f)
+            => Format Builder (f -> Builder) -- ^ formatter for the decimal part
+            -> Format r (a -> r)
+bytesBinary = bytesHelper 1024 ["B","KiB","MiB","GiB","TiB","PiB","EiB","ZiB","YiB"]
+
+-- | Renders a given byte count using an appropiate __decimal__ suffix, e.g. MB
+--
+-- >>> format (bytesDecimal (fixed 2)) 424242
+-- "424.24 KB"
+bytesDecimal :: (Ord f, Integral a, Fractional f)
+             => Format Builder (f -> Builder) -- ^ formatter for the decimal part
+             -> Format r (a -> r)
+bytesDecimal = bytesHelper 1000 ["B","KB","MB","GB","TB","PB","EB","ZB","YB"]
+
+-- internal helper for bytesDecimal and bytesBinary
+bytesHelper :: (Ord f, Fractional f, Integral a)
+             => Integer
+             -> [Builder]
+             -> Format Builder (f -> Builder)
+             -> Format r (a -> r)
+bytesHelper theBase suffixes fmt = later go
+  where
+    go bs = bprint fmt (fromIntegral (signum bs) * dec) <> " " <> suffixes !! i
+      where (dec,i) = getSuffixIndex (abs bs)
+    getSuffixIndex n =
+      until p (\(x,y) -> (x / fromIntegral theBase, y+1)) (fromIntegral n,0)
+    p (n',numDivs) = n' < fromIntegral theBase || numDivs == length suffixes - 1
