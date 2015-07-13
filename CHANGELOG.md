@@ -1,3 +1,7 @@
+6.2.1
+
+* Added bytesDecimal
+
 6.2.0
 
 * Dropped Holey/HoleyT in favour of simpler Format type.
