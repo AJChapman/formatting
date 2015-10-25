@@ -20,7 +20,7 @@ import           Prelude hiding ((.),id)
 import           System.IO
 
 -- | A formatter. The @r@ type means the returned value at the
--- end. The more formatters you compose, the more this wil build up
+-- end. The more formatters you compose, the more this will build up
 -- arguments from @r@ to @Int -> r@ to @Char -> (Int -> r)@, etc.
 newtype Format r a =
   Format {runFormat :: (Builder -> r) -> a}
