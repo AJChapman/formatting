@@ -293,3 +293,7 @@ seconds n = later (bprint (fixed n) . abs . count)
 -- | Formatter call. Probably don't want to use this.
 fmt :: FormatTime a => Text -> a -> Text
 fmt f = T.pack . formatTime defaultTimeLocale (T.unpack f)
+
+-- | Helper for creating custom time formatters
+customTimeFmt :: FormatTime a => Text -> Format r (a -> r)
+customTimeFmt f = later (build . fmt f)
