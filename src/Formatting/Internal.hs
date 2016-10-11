@@ -19,9 +19,27 @@ import qualified Data.Text.Lazy.IO as T
 import           Prelude hiding ((.),id)
 import           System.IO
 
--- | A formatter. The @r@ type means the returned value at the
--- end. The more formatters you compose, the more this will build up
--- arguments from @r@ to @Int -> r@ to @Char -> (Int -> r)@, etc.
+-- | A formatter. When you construct formatters the first type
+-- parameter, @r@, will remain polymorphic.  The second type
+-- parameter, @a@, will change to reflect the types of the data that
+-- will be formatted.  For example, in
+--
+-- @
+-- myFormat :: Formatter r (Text -> Int -> r)
+-- myFormat = \"Person's name is \" % text % \", age is \" % hex
+-- @
+--
+-- the first type parameter remains polymorphic, and the second type
+-- parameter is @Text -> Int -> r@, which indicates that it formats a
+-- 'Text' and an 'Int'.
+--
+-- When you run the 'Format', for example with 'format', you provide
+-- the arguments and they will be formatted into a string.
+--
+-- @
+-- \> format (\"Person's name is \" % text % \", age is \" % hex) \"Dave\" 54
+-- \"Person's name is Dave, age is 36\"
+-- @
 newtype Format r a =
   Format {runFormat :: (Builder -> r) -> a}
 
@@ -49,9 +67,38 @@ instance Category Format where
       g `bind`
       \b -> now (a `mappend` b)
 
--- | Composition operator. 'Format' is an instance of 'Category', but
--- that is (at present) inconvenient to use with regular "Prelude". So
--- this function is provided as a convenience.
+-- | Concatenate two formatters.
+--
+-- @formatter1 % formatter2@ is a formatter that accepts arguments for
+-- @formatter1@ and @formatter2@ and concatenates their results.  For example
+--
+-- @
+-- format1 :: Format r (Text -> r)
+-- format1 = \"Person's name is \" % text
+-- @
+--
+-- @
+-- format2 :: Format r r
+-- format2 = \", \"
+-- @
+--
+-- @
+-- format3 :: Format r (Int -> r)
+-- format3 = \"age is \" % hex
+-- @
+--
+-- @
+-- myFormat :: Formatter r (Text -> Int -> r)
+-- myFormat = format1 % format2 % format3
+-- @
+--
+-- Notice how the argument types of @format1@ and @format3@ are
+-- gathered into the type of @myFormat@.
+--
+-- (This is actually the composition operator for 'Format''s
+-- 'Category' instance, but that is (at present) inconvenient to use
+-- with regular "Prelude". So this function is provided as a
+-- convenience.)
 (%) :: Format r a -> Format r' r -> Format r' a
 (%) = (.)
 infixr 9 %
@@ -62,7 +109,7 @@ infixr 9 %
 (%.) (Format a) (Format b) = Format (b . a)
 infixr 8 %.
 
--- | Insert a constant monoidal value.
+-- | Don't format any data, just output a constant 'Builder'.
 now :: Builder -> Format r r
 now a = Format ($ a)
 
@@ -70,10 +117,9 @@ now a = Format ($ a)
 bind :: Format r a -> (Builder -> Format r' r) -> Format r' a
 m `bind` f = Format $ \k -> runFormat m (\a -> runFormat (f a) k)
 
--- | Insert a function which accepts some argument and produces a
--- 'Builder' which is appended to the output at the end.
---
--- @later (f :: Int -> Builder)@ produces @Format r (Int -> r)@.
+-- | Format a value of type @a@ using a function of type @a ->
+-- 'Builder'@. For example, @later (f :: Int -> Builder)@ produces
+-- @Format r (Int -> r)@.
 later :: (a -> Builder) -> Format r (a -> r)
 later f = Format (. f)
 
