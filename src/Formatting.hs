@@ -25,6 +25,7 @@ module Formatting
   (%.),
   now,
   later,
+  mapf,
   -- * Top-level functions
   format,
   sformat,
@@ -39,4 +40,3 @@ module Formatting
 
 import Formatting.Formatters
 import Formatting.Internal
-

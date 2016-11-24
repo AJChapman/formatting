@@ -43,6 +43,10 @@ import           System.IO
 newtype Format r a =
   Format {runFormat :: (Builder -> r) -> a}
 
+-- | Not particularly useful, but could be.
+instance Functor (Format r) where
+  fmap f (Format k) = Format (\br -> f (k br))
+
 -- | Useful instance for applying two formatters to the same input
 -- argument. For example: @format (year <> "/" % month) now@ will
 -- yield @"2015/01"@.
@@ -116,6 +120,10 @@ now a = Format ($ a)
 -- | Monadic indexed bind for holey monoids.
 bind :: Format r a -> (Builder -> Format r' r) -> Format r' a
 m `bind` f = Format $ \k -> runFormat m (\a -> runFormat (f a) k)
+
+-- | Functorial map over a formatter's input. Example: @format (mapf (drop 1) string) \"hello\"@
+mapf :: (a -> b) -> Format r (b -> t) -> Format r (a -> t)
+mapf f m = Format (\k -> runFormat m k . f)
 
 -- | Format a value of type @a@ using a function of type @a ->
 -- 'Builder'@. For example, @later (f :: Int -> Builder)@ produces
