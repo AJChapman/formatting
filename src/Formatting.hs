@@ -27,6 +27,7 @@ module Formatting
   later,
   mapf,
   -- * Top-level functions
+  runFormat,
   format,
   sformat,
   bprint,
