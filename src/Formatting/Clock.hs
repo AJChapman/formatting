@@ -28,7 +28,7 @@ timeSpecs = Format (\g x y -> g (fmt x y))
           | Just i <- scale ((10 ^ 9) * 60) = bprint (fixed 2 % " m") i
           | Just i <- scale (10 ^ 9) = bprint (fixed 2 % " s") i
           | Just i <- scale (10 ^ 6) = bprint (fixed 2 % " ms") i
-          | Just i <- scale (10 ^ 3) = bprint (fixed 2 % " µs") i
+          | Just i <- scale (10 ^ 3) = bprint (fixed 2 % " us") i
           | otherwise = bprint (int % " ns") diff
           where scale :: Integer -> Maybe Double
                 scale i = if diff >= i
