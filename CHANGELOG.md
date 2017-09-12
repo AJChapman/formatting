@@ -1,3 +1,7 @@
+6.2.5
+
+* Changed microseconds to display as "us" to avoid unicode issues.
+
 6.2.1
 
 * Added bytesDecimal
