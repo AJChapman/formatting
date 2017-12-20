@@ -1,3 +1,15 @@
+6.3.0
+
+* Folded the `text-format` package into this package, removed the
+  `double-conversion` dependency. Lost the following functions in
+  this:
+  * `prec`
+  * `expt`
+* Added a test suite with regression tests:
+  * Fixed: https://github.com/chrisdone/formatting/issues/31
+  * Fixed: https://github.com/chrisdone/formatting/issues/28
+  * Fixed: https://github.com/bos/text-format/issues/18
+
 6.2.5
 
 * Changed microseconds to display as "us" to avoid unicode issues.
