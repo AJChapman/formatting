@@ -37,5 +37,12 @@ spec = do
           "https://github.com/bos/text-format/issues/18"
           (do it
                 "build (minBound :: Int)"
-                (shouldBe (format build (minBound :: Int64))
-                          "-9223372036854775808")))
+                (shouldBe
+                   (format build (minBound :: Int64))
+                   "-9223372036854775808")))
+  describe
+    "Floating point"
+    (do it "Fixed" (shouldBe (format (fixed 4) (12.123456 :: Double)) "12.1235")
+        it
+          "Variable"
+          (shouldBe (format float (12.123456 :: Double)) "12.123456"))
