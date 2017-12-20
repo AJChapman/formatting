@@ -26,7 +26,7 @@ import           Data.Int (Int8, Int16, Int32, Int64)
 import           Data.Fixed (Fixed, HasResolution, showFixed)
 import           Data.Ratio (Ratio, denominator, numerator)
 import           Data.Text.Format.Functions ((<>))
-import           Data.Text.Format.Int (decimal, hexadecimal)
+import           Data.Text.Format.Int (decimal, hexadecimal, integer)
 import           Data.Text.Format.Types (Hex(..), Shown(..))
 import           Data.Text.Lazy.Builder
 import           Data.Time.Calendar (Day, showGregorian)
@@ -93,7 +93,7 @@ instance Buildable Int64 where
     {-# INLINE build #-}
 
 instance Buildable Integer where
-    build = decimal
+    build = integer 10
     {-# INLINE build #-}
 
 instance (HasResolution a) => Buildable (Fixed a) where

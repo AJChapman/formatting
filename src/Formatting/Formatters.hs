@@ -108,8 +108,8 @@ build :: Buildable a => Format r (a -> r)
 build = later B.build
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
-int :: (Integral a, Show a) => Format r (a -> r)
-int = later (T.fromText . T.pack . show)
+int :: (Integral a, Buildable a) => Format r (a -> r)
+int = later B.build
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format r (a -> r)

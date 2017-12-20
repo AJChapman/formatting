@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+import Data.Int
 import Formatting as F
 import Test.Hspec
 
@@ -10,7 +11,8 @@ spec :: Spec
 spec = do
   describe
     "Regression tests"
-    (do describe "https://github.com/chrisdone/formatting/issues/31"
+    (do describe
+          "https://github.com/chrisdone/formatting/issues/31"
           (do it
                 "10^6-1"
                 (shouldBe
@@ -30,4 +32,10 @@ spec = do
                 "100,000,000"
                 (shouldBe
                    (sformat (groupInt 3 ',') (-100000000 :: Int))
-                   "-100,000,000")))
+                   "-100,000,000"))
+        describe
+          "https://github.com/bos/text-format/issues/18"
+          (do it
+                "build (minBound :: Int)"
+                (shouldBe (format build (minBound :: Int64))
+                          "-9223372036854775808")))

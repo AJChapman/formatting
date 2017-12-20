@@ -12,6 +12,7 @@
 module Data.Text.Format.Int
     (
       decimal
+    , integer
     , hexadecimal
     , minus
     ) where
@@ -39,7 +40,7 @@ import GHC.Integer.GMP.Internals
 # define PAIR(a,b) (a,b)
 #endif
 
-decimal :: Integral a => a -> Builder
+decimal :: (Integral a, Bounded a) => a -> Builder
 {-# SPECIALIZE decimal :: Int -> Builder #-}
 {-# SPECIALIZE decimal :: Int8 -> Builder #-}
 {-# SPECIALIZE decimal :: Int16 -> Builder #-}
@@ -52,6 +53,10 @@ decimal :: Integral a => a -> Builder
 {-# SPECIALIZE decimal :: Word64 -> Builder #-}
 {-# RULES "decimal/Integer" decimal = integer 10 :: Integer -> Builder #-}
 decimal i
+    | i == minBound =
+        -- special case, since (-i) would not be representable assuming two's
+        -- compliment:
+        minus <> integer 10 (negate $ fromIntegral i)
     | i < 0     = minus <> go (-i)
     | otherwise = go i
   where
