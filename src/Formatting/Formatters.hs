@@ -110,8 +110,8 @@ build :: Buildable a => Format r (a -> r)
 build = later B.build
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
-int :: Integral a => Format r (a -> r)
-int = later (T.pack . show)
+int :: (Integral a, Show a) => Format r (a -> r)
+int = later (T.fromText . T.pack . show)
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format r (a -> r)
@@ -172,24 +172,24 @@ center i c = later centerT where
 -- | Group integral numbers, e.g. groupInt 2 '.' on 123456 -> \"12.34.56\".
 groupInt :: (Buildable n,Integral n) => Int -> Char -> Format r (n -> r)
 groupInt 0 _ = later B.build
-groupInt i c
-  | i < 0 = now "-" % groupInt (negate i) c
-  | otherwise = later commaize
-  where commaize =
-          T.fromLazyText . LT.reverse .
-          foldr merge "" .
-          LT.zip (zeros <> cycle' zeros') .
-          LT.reverse .
-          T.toLazyText .
-          B.build
-        zeros =
-          LT.replicate (fromIntegral i)
-                       (LT.singleton '0')
-        zeros' = LT.singleton c <> LT.tail zeros
-        merge (f,c') rest
-          | f == c = LT.singleton c <> LT.singleton c' <> rest
-          | otherwise = LT.singleton c' <> rest
-        cycle' xs = xs <> cycle' xs
+groupInt i c =
+  later
+    (\n ->
+       if n < 0
+         then "-" <> commaize (negate n)
+         else commaize n)
+  where
+    commaize =
+      T.fromLazyText .
+      LT.reverse .
+      foldr merge "" .
+      LT.zip (zeros <> cycle' zeros') . LT.reverse . T.toLazyText . B.build
+    zeros = LT.replicate (fromIntegral i) (LT.singleton '0')
+    zeros' = LT.singleton c <> LT.tail zeros
+    merge (f, c') rest
+      | f == c = LT.singleton c <> LT.singleton c' <> rest
+      | otherwise = LT.singleton c' <> rest
+    cycle' xs = xs <> cycle' xs
 
 -- | Fit in the given length, truncating on the left.
 fitLeft :: Buildable a => Int -> Format r (a -> r)
@@ -312,4 +312,3 @@ bytes d = later go
                   n' < 1024 || numDivs == (length bytesSuffixes - 1)
         bytesSuffixes =
           ["B","KB","MB","GB","TB","PB","EB","ZB","YB"]
-
