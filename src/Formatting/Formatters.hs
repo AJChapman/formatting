@@ -111,7 +111,7 @@ build = later B.build
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
 int :: Integral a => Format r (a -> r)
-int = later T.shortest
+int = later (T.pack . show)
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format r (a -> r)
