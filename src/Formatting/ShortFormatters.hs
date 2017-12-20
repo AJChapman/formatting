@@ -17,13 +17,13 @@ module Formatting.ShortFormatters where
 import           Formatting.Formatters (bin, int, oct)
 import           Formatting.Internal
 
-import qualified Data.Text.Buildable as B (build)
 import qualified Data.Text as S
 import qualified Data.Text as T
-import           Data.Text.Buildable    (Buildable)
-import qualified Data.Text.Format       as T
+import qualified Data.Text.Format as T
 import           Data.Text.Lazy (Text)
 import qualified Data.Text.Lazy.Builder as T
+import           Formatting.Buildable (Buildable)
+import qualified Formatting.Buildable as B (build)
 
 -- | Output a lazy text.
 t :: Format r (Text -> r)
@@ -64,21 +64,10 @@ sh = later (T.fromText . T.pack . show)
 c :: Format r (Char -> r)
 c = later B.build
 
--- | Render a floating point number using scientific/engineering
--- notation (e.g. 2.3e123), with the given number of decimal places.
-ef :: Real a => Int -> Format r (a -> r)
-ef i = later (T.expt i)
-
 -- | Render a floating point number using normal notation, with the
 -- given number of decimal places.
 f :: Real a => Int -> Format r (a -> r)
 f i = later (T.fixed i)
-
--- | Render a floating point number, with the given number of digits
--- of precision. Uses decimal notation for values between 0.1 and
--- 9,999,999, and scientific notation otherwise.
-pf :: Real a => Int -> Format r (a -> r)
-pf i = later (T.prec i)
 
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it.
