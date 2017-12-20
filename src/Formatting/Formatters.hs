@@ -172,7 +172,9 @@ center i c = later centerT where
 -- | Group integral numbers, e.g. groupInt 2 '.' on 123456 -> \"12.34.56\".
 groupInt :: (Buildable n,Integral n) => Int -> Char -> Format r (n -> r)
 groupInt 0 _ = later B.build
-groupInt i c = later (commaize)
+groupInt i c
+  | i < 0 = now "-" % groupInt (negate i) c
+  | otherwise = later commaize
   where commaize =
           T.fromLazyText . LT.reverse .
           foldr merge "" .
