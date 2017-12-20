@@ -44,9 +44,8 @@ integers =
 -- | Printing floating points.
 floats :: Text
 floats =
-  format ("Here comes a float: " % float % " and a double with sci notation: " % prec 6)
+  format ("Here comes a float: " % float)
          (123.2342 :: Float)
-         (13434242423.23420000 :: Double)
 
 -- | Printing integrals in hex (base-16).
 hexes :: Text

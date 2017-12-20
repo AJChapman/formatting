@@ -13,7 +13,7 @@ import           Formatting.Internal
 
 import           Data.Text              (Text)
 import qualified Data.Text              as T
-import           Data.Text.Buildable
+import           Formatting.Buildable
 import           Data.Time
 #if MIN_VERSION_time(1,5,0)
 import           System.Locale hiding (defaultTimeLocale)
@@ -226,7 +226,7 @@ diff fix =
         Just (_,f,base) -> bprint (prefix % f % suffix) (toInt ts base)
       where prefix = now (if fix && ts > 0 then "in " else "")
             suffix = now (if fix && ts < 0 then " ago" else "")
-    toInt ts base = abs (round (ts / base))
+    toInt ts base = abs (round (ts / base)) :: Int
     ranges =
       [(0,int % " milliseconds",0.001)
       ,(1,int % " seconds",1)
