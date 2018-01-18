@@ -21,6 +21,7 @@ module Data.Text.Format.Functions
 import Data.Monoid (mappend)
 import Data.Text.Lazy.Builder (Builder)
 #if MIN_VERSION_base(4,11,0)
+import Prelude hiding ((<>))
 import GHC.Base hiding ((<>))
 #else
 import GHC.Base
