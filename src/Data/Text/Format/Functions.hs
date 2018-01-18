@@ -1,4 +1,5 @@
 {-# LANGUAGE MagicHash #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Data.Text.Format.Functions
@@ -19,7 +20,11 @@ module Data.Text.Format.Functions
 
 import Data.Monoid (mappend)
 import Data.Text.Lazy.Builder (Builder)
+#if MIN_VERSION_base(4,11,0)
+import GHC.Base hiding ((<>))
+#else
 import GHC.Base
+#endif
 
 -- | Unsafe conversion for decimal digits.
 {-# INLINE i2d #-}
