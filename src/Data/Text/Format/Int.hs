@@ -17,6 +17,9 @@ module Data.Text.Format.Int
     , minus
     ) where
 
+#if MIN_VERSION_base(4,11,0)
+import Prelude hiding ((<>))
+#endif
 import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Monoid (mempty)
 import Data.Text.Format.Functions ((<>), i2d)

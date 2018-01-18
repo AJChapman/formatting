@@ -42,7 +42,9 @@ library
     transformers,
     bytestring,
     integer-gmp >= 0.2
-
+  if !impl(ghc >= 8.0)
+    build-depends:
+      semigroups >= 0.11 && < 0.19
   hs-source-dirs:    src
   ghc-options:       -O2
   cpp-options: -DINTEGER_GMP

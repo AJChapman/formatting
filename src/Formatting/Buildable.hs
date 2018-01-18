@@ -20,6 +20,9 @@ module Formatting.Buildable
 import qualified Data.ByteString.Lazy as L
 import           Data.Void (Void, absurd)
 #endif
+#if MIN_VERSION_base(4,11,0)
+import Prelude hiding ((<>))
+#endif
 
 import           Data.Monoid (mempty)
 import           Data.Int (Int8, Int16, Int32, Int64)
