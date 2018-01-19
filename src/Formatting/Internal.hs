@@ -1,12 +1,16 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE CPP #-}
 
 -- | Internal format starters.
 
 module Formatting.Internal where
 
 import           Control.Category (Category(..))
+import qualified Data.Semigroup as Sem
+#if !MIN_VERSION_base(4,11,0)
 import           Data.Monoid
+#endif
 import           Data.String
 import qualified Data.Text as S (Text)
 import           Data.Text.Lazy (Text)
@@ -50,10 +54,13 @@ instance Functor (Format r) where
 -- | Useful instance for applying two formatters to the same input
 -- argument. For example: @format (year <> "/" % month) now@ will
 -- yield @"2015/01"@.
-instance Monoid (Format r (a -> r)) where
-  mappend m n =
+instance Sem.Semigroup (Format r (a -> r)) where
+  (<>) m n =
     Format (\k a ->
               runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> b2)) a) a)
+
+instance Monoid (Format r (a -> r)) where
+  mappend = (<>)
   mempty = Format (\k _ -> k mempty)
 
 -- | Useful instance for writing format string. With this you can
