@@ -39,7 +39,12 @@ spec = do
                 "build (minBound :: Int)"
                 (shouldBe
                    (format build (minBound :: Int64))
-                   "-9223372036854775808")))
+                   "-9223372036854775808"))
+        it
+          "build (maxBound :: Int)"
+          (shouldBe
+             (format build (maxBound :: Int))
+             "9223372036854775807"))
   describe
     "Floating point"
     (do it "Fixed" (shouldBe (format (fixed 4) (12.123456 :: Double)) "12.1235")
