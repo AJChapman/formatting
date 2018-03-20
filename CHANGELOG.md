@@ -1,3 +1,7 @@
+6.3.1
+
+* Proper GHC 7.10 -> GHC 8.4 support
+
 6.3.0
 
 * Folded the `text-format` package into this package, removed the
