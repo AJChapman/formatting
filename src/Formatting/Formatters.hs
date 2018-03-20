@@ -57,7 +57,7 @@ module Formatting.Formatters
 import           Formatting.Internal
 
 import           Data.Char (chr, ord)
-import           Data.Monoid
+import           Data.Monoid ((<>))
 import           Data.Scientific
 import qualified Data.Text as S
 import qualified Data.Text as T
@@ -108,7 +108,7 @@ build :: Buildable a => Format r (a -> r)
 build = later B.build
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
-int :: (Integral a, Buildable a) => Format r (a -> r)
+int :: (Buildable a) => Format r (a -> r)
 int = later B.build
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"

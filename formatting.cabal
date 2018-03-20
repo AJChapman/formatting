@@ -30,7 +30,7 @@ library
     Data.Text.Format.Int
 
   build-depends:
-    base >= 4.5 && < 5,
+    base >= 4.10.0.0 && < 5,
     text >= 0.11.0.8,
     time,
     old-locale,
@@ -41,7 +41,8 @@ library
     text >= 0.11.0.8,
     transformers,
     bytestring,
-    integer-gmp >= 0.2
+    integer-gmp >= 0.2,
+    semigroups
 
   hs-source-dirs:    src
   ghc-options:       -O2
@@ -51,7 +52,7 @@ test-suite formatting-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  build-depends:       base, formatting, hspec
+  build-depends:       base, formatting, hspec, semigroups
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
 source-repository head

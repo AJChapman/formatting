@@ -7,6 +7,7 @@ module Formatting.Internal where
 
 import           Control.Category (Category(..))
 import           Data.Monoid
+import qualified Data.Semigroup
 import           Data.String
 import qualified Data.Text as S (Text)
 import           Data.Text.Lazy (Text)
@@ -55,6 +56,9 @@ instance Monoid (Format r (a -> r)) where
     Format (\k a ->
               runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> b2)) a) a)
   mempty = Format (\k _ -> k mempty)
+
+instance Data.Semigroup.Semigroup (Format r (a -> r)) where
+  (<>) = mappend
 
 -- | Useful instance for writing format string. With this you can
 -- write @"Foo"@ instead of @now "Foo!"@.

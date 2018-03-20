@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Data.Int
+import qualified Data.Monoid
+import qualified Data.Semigroup
 import Formatting as F
 import Test.Hspec
 
@@ -11,7 +13,14 @@ spec :: Spec
 spec = do
   describe
     "Regression tests"
-    (do describe
+    (do describe "https://github.com/chrisdone/formatting/issues/36"
+                 (do it "format (later id <> later id) \"x\""
+                        (shouldBe (format (later id Data.Monoid.<> later id) "x")
+                                  "xx")
+                     it "format (later id <> later id) \"x\""
+                        (shouldBe (format (later id Data.Semigroup.<> later id) "x")
+                                  "xx"))
+        describe
           "https://github.com/chrisdone/formatting/issues/31"
           (do it
                 "10^6-1"
