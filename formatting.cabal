@@ -1,5 +1,5 @@
 name:                formatting
-version:             6.3.2
+version:             6.3.3
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 license:             BSD3
@@ -21,6 +21,7 @@ library
     Formatting.Time
     Formatting.Clock
     Formatting.Internal
+    Formatting.Internal.Raw
     Formatting.Buildable
 
   other-modules:

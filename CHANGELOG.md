@@ -1,3 +1,8 @@
+6.3.3
+
+* The `Data.Text.Format` hierarchy was reexported as
+  `Formatting.Internal.Raw`.
+
 6.3.1
 
 * Proper GHC 7.10 -> GHC 8.4 support
