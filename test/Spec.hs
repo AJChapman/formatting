@@ -60,3 +60,15 @@ spec = do
         it
           "Variable"
           (shouldBe (format float (12.123456 :: Double)) "12.123456"))
+
+  describe
+    "Buildable a => Buildable [a]"
+    (do it "\"\" :: [Char] (backwards compatibility)"
+           (shouldBe (format build ("" :: String)) "")
+        it "\"hi\" :: [Char] (backwards compatibility)"
+           (shouldBe (format build ("hi" :: String)) "hi")
+        it "[1,2,3] :: [Int]"
+           (shouldBe (format build ([1,2,3] :: [Int])) "[1,2,3]")
+        it "[] :: [Int]"
+           (shouldBe (format build ([] :: [Int])) "[]"))
+

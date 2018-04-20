@@ -21,9 +21,10 @@ import qualified Data.ByteString.Lazy as L
 import           Data.Void (Void, absurd)
 #endif
 
-import           Data.Monoid (mempty)
+import           Data.Monoid (mempty, mconcat)
 import           Data.Int (Int8, Int16, Int32, Int64)
 import           Data.Fixed (Fixed, HasResolution, showFixed)
+import           Data.List (intersperse)
 import           Data.Ratio (Ratio, denominator, numerator)
 import qualified Data.Text.Format.Functions as F ((<>))
 import           Data.Text.Format.Int (decimal, hexadecimal, integer)
@@ -189,3 +190,10 @@ instance Buildable (Ptr a) where
 instance Buildable Bool where
     build True = fromText "True"
     build False = fromText "False"
+
+#if MIN_VERSION_base(4,8,0)
+instance {-# OVERLAPPABLE #-} Buildable a => Buildable [a] where
+    build = \xs -> "[" F.<> mconcat (intersperse "," (map build xs)) F.<> "]"
+    {-# INLINE build #-}
+#endif
+

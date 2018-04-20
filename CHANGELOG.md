@@ -1,3 +1,7 @@
+HEAD
+
+* Introduced instance `Buildable a => Buildable [a]`.
+
 6.3.3
 
 * The `Data.Text.Format` hierarchy was reexported as
