@@ -1,3 +1,7 @@
+6.3.5
+
+* Avoid pointless conversions on Float/Double.
+
 6.3.3
 
 * The `Data.Text.Format` hierarchy was reexported as
