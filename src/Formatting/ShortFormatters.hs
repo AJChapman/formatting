@@ -30,7 +30,7 @@ t :: Format r (Text -> r)
 t = later T.fromLazyText
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
-d :: (Buildable a) => Format r (a -> r)
+d :: Integral a => Format r (a -> r)
 d = int
 
 -- | Render an integer using binary notation. (No leading 0b is
