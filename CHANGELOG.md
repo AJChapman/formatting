@@ -1,3 +1,7 @@
+6.3.6
+
+* Bring back `int :: Integral a => Format r (a -> r)`
+
 6.3.5
 
 * Avoid pointless conversions on Float/Double.
