@@ -55,7 +55,9 @@ test-suite formatting-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  build-depends:       base, formatting, hspec, semigroups, text
+  build-depends:       base, formatting, hspec, text
+  if !impl(ghc >= 8.0)
+    build-depends: semigroups
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
 source-repository head
