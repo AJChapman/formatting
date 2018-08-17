@@ -199,9 +199,9 @@ commas = groupInt 3 ','
 ords :: Integral n => Format r (n -> r)
 ords = later go
   where go n
-          | tens > 3 && tens < 21 = T.shortest n <> "th"
+          | tens > 3 && tens < 21 = T.fixed 0 n <> "th"
           | otherwise =
-            T.shortest n <>
+            T.fixed 0 n <>
             case n `mod` 10 of
               1 -> "st"
               2 -> "nd"
