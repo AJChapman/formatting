@@ -33,10 +33,9 @@ module Formatting
   bprint,
   fprint,
   hprint,
+  formatToString,
   -- * Formatting library
-  module Formatting.Formatters,
-  -- * Other functions
-  formatToString
+  module Formatting.Formatters
  ) where
 
 import Formatting.Formatters

@@ -64,6 +64,17 @@ spec = do
           "Variable"
           (shouldBe (format float (12.123456 :: Double)) "12.123456"))
 
+  describe
+    "Buildable a => Buildable [a]"
+    (do it "\"\" :: [Char] (backwards compatibility)"
+           (shouldBe (format build ("" :: String)) "")
+        it "\"hi\" :: [Char] (backwards compatibility)"
+           (shouldBe (format build ("hi" :: String)) "hi")
+        it "[1,2,3] :: [Int]"
+           (shouldBe (format build ([1,2,3] :: [Int])) "[1,2,3]")
+        it "[] :: [Int]"
+           (shouldBe (format build ([] :: [Int])) "[]"))
+
   describe "ords" $ do 
       let tests :: [(Int, String)]
           tests = [ ( 1, "1st")
@@ -111,3 +122,4 @@ spec = do
     it "90s" $ flip shouldBe "00:00:01:30" $ format diffComponents 90
     it "hour" $ flip shouldBe "00:01:00:00" $ format diffComponents 3600
     it "day" $ flip shouldBe "01:00:00:00" $ format diffComponents 86400
+
