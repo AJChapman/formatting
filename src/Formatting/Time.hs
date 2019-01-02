@@ -8,6 +8,7 @@ module Formatting.Time where
 
 import           Data.List
 import           Data.Text.Lazy.Builder
+import           Data.Tuple
 import           Formatting.Formatters  hiding (build)
 import           Formatting.Internal
 
@@ -20,6 +21,7 @@ import           System.Locale hiding (defaultTimeLocale)
 #else
 import           System.Locale
 #endif
+import           Control.Monad.Trans.State.Strict
 
 -- * For 'TimeZone' (and 'ZonedTime' and 'UTCTime'):
 
@@ -287,6 +289,22 @@ seconds :: (RealFrac n)
       -> Format r (n -> r)
 seconds n = later (bprint (fixed n) . abs . count)
   where count n = n
+
+-- | Display seconds in the following pattern:
+-- @00:00:00:00@, which ranges from days to seconds.
+diffComponents :: (RealFrac n) => Format r (n -> r)
+diffComponents = customDiffComponents (left 2 '0' % ":" % left 2 '0' % ":" % left 2 '0' % ":" % left 2 '0')
+
+-- | Variation of 'diffComponents',
+-- which lets you explicitly specify how to render each component.
+customDiffComponents :: (RealFrac n) => (forall r. Format r (Integer -> Integer -> Integer -> Integer -> r)) -> Format r (n -> r)
+customDiffComponents subFormat = later builder where
+  builder diffTime = flip evalState (round diffTime) $ do
+    seconds <- state (swap . flip divMod 60)
+    minutes <- state (swap . flip divMod 60)
+    hours <- state (swap . flip divMod 24)
+    days <- get
+    return (bprint subFormat days hours minutes seconds)
 
 -- * Internal.
 

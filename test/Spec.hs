@@ -6,6 +6,7 @@ import qualified Data.Monoid
 import qualified Data.Semigroup
 import qualified Data.Text.Lazy as LT
 import Formatting as F
+import Formatting.Time
 import Test.Hspec
 
 main :: IO ()
@@ -114,4 +115,11 @@ spec = do
                   ]
 
       forM_ tests $ \(input, output) -> it output $ format ords input `shouldBe` (LT.pack output)
-    
+
+  describe "diffComponents" $ do
+    it "59s" $ flip shouldBe "00:00:00:59" $ format diffComponents 59
+    it "minute" $ flip shouldBe "00:00:01:00" $ format diffComponents 60
+    it "90s" $ flip shouldBe "00:00:01:30" $ format diffComponents 90
+    it "hour" $ flip shouldBe "00:01:00:00" $ format diffComponents 3600
+    it "day" $ flip shouldBe "01:00:00:00" $ format diffComponents 86400
+
