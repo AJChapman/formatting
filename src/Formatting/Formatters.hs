@@ -108,8 +108,8 @@ build :: Buildable a => Format r (a -> r)
 build = later B.build
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
-int :: (Buildable a) => Format r (a -> r)
-int = later B.build
+int :: Integral a => Format r (a -> r)
+int = base 10
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format r (a -> r)
@@ -199,9 +199,9 @@ commas = groupInt 3 ','
 ords :: Integral n => Format r (n -> r)
 ords = later go
   where go n
-          | tens > 3 && tens < 21 = T.shortest n <> "th"
+          | tens > 3 && tens < 21 = T.fixed 0 n <> "th"
           | otherwise =
-            T.shortest n <>
+            T.fixed 0 n <>
             case n `mod` 10 of
               1 -> "st"
               2 -> "nd"

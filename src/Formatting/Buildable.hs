@@ -126,11 +126,11 @@ instance (Integral a, Buildable a) => Buildable (Ratio a) where
     build a = build (numerator a) F.<> singleton '/' F.<> build (denominator a)
 
 instance Buildable Float where
-    build = fromText . T.decodeUtf8 . L.toStrict . L.toLazyByteString . L.floatDec
-    {-# INLINE build #-};
+    build = build . show
+    {-# INLINE build #-}
 
 instance Buildable Double where
-    build = fromText . T.decodeUtf8 . L.toStrict . L.toLazyByteString . L.doubleDec
+    build = build . show
     {-# INLINE build #-}
 
 instance Buildable DiffTime where

@@ -1,5 +1,5 @@
 name:                formatting
-version:             6.3.4
+version:             6.3.6
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 license:             BSD3
@@ -41,7 +41,7 @@ library
     ghc-prim,
     text >= 0.11.0.8,
     transformers,
-    bytestring,
+    bytestring >=0.10.4,
     integer-gmp >= 0.2,
     semigroups
 
@@ -53,7 +53,7 @@ test-suite formatting-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  build-depends:       base, formatting, hspec, semigroups
+  build-depends:       base, formatting, hspec, semigroups, text
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
 source-repository head
