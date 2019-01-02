@@ -1,3 +1,5 @@
+* Introduced instance `Buildable a => Buildable [a]`.
+
 6.3.6
 
 * Bring back `int :: Integral a => Format r (a -> r)`

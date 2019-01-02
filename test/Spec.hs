@@ -63,6 +63,17 @@ spec = do
           "Variable"
           (shouldBe (format float (12.123456 :: Double)) "12.123456"))
 
+  describe
+    "Buildable a => Buildable [a]"
+    (do it "\"\" :: [Char] (backwards compatibility)"
+           (shouldBe (format build ("" :: String)) "")
+        it "\"hi\" :: [Char] (backwards compatibility)"
+           (shouldBe (format build ("hi" :: String)) "hi")
+        it "[1,2,3] :: [Int]"
+           (shouldBe (format build ([1,2,3] :: [Int])) "[1,2,3]")
+        it "[] :: [Int]"
+           (shouldBe (format build ([] :: [Int])) "[]"))
+
   describe "ords" $ do 
       let tests :: [(Int, String)]
           tests = [ ( 1, "1st")
@@ -103,3 +114,4 @@ spec = do
                   ]
 
       forM_ tests $ \(input, output) -> it output $ format ords input `shouldBe` (LT.pack output)
+    
