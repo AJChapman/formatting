@@ -1,3 +1,5 @@
+6.3.7
+
 * Introduced instance `Buildable a => Buildable [a]`.
 
 6.3.6
