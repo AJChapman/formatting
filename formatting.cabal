@@ -31,8 +31,14 @@ common deps
     clock >= 0.4,
     ghc-prim,
     transformers,
-    integer-gmp >= 0.2,
     double-conversion ^>= 2.0.2.0
+
+  if flag(integer-simple)
+    cpp-options: -DINTEGER_SIMPLE
+    build-depends: integer-simple >= 0.1 && < 0.5
+  else
+    cpp-options: -DINTEGER_GMP
+    build-depends: integer-gmp >= 0.2 && < 1.1
 
 -- Warnings list list taken from
 -- https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3
@@ -55,6 +61,13 @@ common deps
     ghc-options:       -Wno-prepositive-qualified-module
                        -Wno-missing-safe-haskell-mode
   cpp-options: -DINTEGER_GMP
+
+flag integer-simple
+  description:
+    Use the [simple integer library](http://hackage.haskell.org/package/integer-simple)
+    instead of [integer-gmp](http://hackage.haskell.org/package/integer-gmp)
+  default: False
+  manual: False
 
 library
   import: deps

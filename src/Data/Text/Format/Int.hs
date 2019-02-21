@@ -23,10 +23,20 @@ import qualified Data.Text.Format.Functions as F ((<>))
 import Data.Text.Lazy.Builder
 import Data.Word (Word8, Word16, Word32, Word64)
 import GHC.Base (quotInt, remInt)
-import GHC.Integer.GMP.Internals
+import GHC.Num (quotRemInteger)
 import GHC.Types (Int(..))
 
-#ifdef INTEGER_GMP
+#ifdef  __GLASGOW_HASKELL__
+# if defined(INTEGER_GMP)
+import GHC.Integer.GMP.Internals
+# elif defined(INTEGER_SIMPLE)
+import GHC.Integer
+# else
+# error "You need to use either GMP or integer-simple."
+# endif
+#endif
+
+#if defined(INTEGER_GMP) || defined(INTEGER_SIMPLE)
 # define PAIR(a,b) (# a,b #)
 #else
 # define PAIR(a,b) (a,b)
@@ -96,8 +106,10 @@ int = decimal
 data T = T !Integer !Int
 
 integer :: Int -> Integer -> Builder
+#ifdef INTEGER_GMP
 integer 10 (S# i#) = decimal (I# i#)
 integer 16 (S# i#) = hexadecimal (I# i#)
+#endif
 integer base i
     | i < 0     = minus F.<> go (-i)
     | otherwise = go i
