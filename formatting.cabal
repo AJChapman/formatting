@@ -17,7 +17,7 @@ flag integer-simple
     Use the [simple integer library](http://hackage.haskell.org/package/integer-simple)
     instead of [integer-gmp](http://hackage.haskell.org/package/integer-gmp)
   default: False
-  manual: False
+  manual: True
 
 library
   exposed-modules:
