@@ -1,4 +1,6 @@
-{-# LANGUAGE CPP, FlexibleInstances, OverloadedStrings #-}
+{-# LANGUAGE CPP               #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 -- |
 -- Module      : Data.Text.Buildable
@@ -21,25 +23,27 @@ import qualified Data.ByteString.Lazy as L
 import           Data.Void (Void, absurd)
 #endif
 
-import           Data.Monoid (mempty, mconcat)
-import           Data.Int (Int8, Int16, Int32, Int64)
+import qualified Data.ByteString.Lazy.Builder as L
 import           Data.Fixed (Fixed, HasResolution, showFixed)
+import           Data.Int (Int16, Int32, Int64, Int8)
 import           Data.List (intersperse)
+import           Data.Monoid (mconcat, mempty)
 import           Data.Ratio (Ratio, denominator, numerator)
+import qualified Data.Text as ST
+import qualified Data.Text.Encoding as T
 import qualified Data.Text.Format.Functions as F ((<>))
 import           Data.Text.Format.Int (decimal, hexadecimal, integer)
 import           Data.Text.Format.Types (Hex(..), Shown(..))
+import qualified Data.Text.Lazy as LT
 import           Data.Text.Lazy.Builder
 import           Data.Time.Calendar (Day, showGregorian)
-import           Data.Time.Clock (DiffTime, NominalDiffTime, UTCTime, UniversalTime)
+import           Data.Time.Clock (DiffTime, NominalDiffTime, UTCTime,
+                                  UniversalTime)
 import           Data.Time.Clock (getModJulianDate)
 import           Data.Time.LocalTime (LocalTime, TimeOfDay, TimeZone, ZonedTime)
-import           Data.Word (Word, Word8, Word16, Word32, Word64)
-import           Foreign.Ptr (IntPtr, WordPtr, Ptr, ptrToWordPtr)
-import qualified Data.Text as ST
-import qualified Data.Text.Lazy as LT
-import qualified Data.Text.Encoding as T
-import qualified Data.ByteString.Lazy.Builder as L
+import           Data.Word (Word, Word16, Word32, Word64, Word8)
+import           Foreign.Ptr (IntPtr, Ptr, WordPtr, ptrToWordPtr)
+import           Numeric.Natural (Natural)
 
 -- | The class of types that can be rendered to a 'Builder'.
 class Buildable p where
@@ -95,6 +99,10 @@ instance Buildable Int64 where
 
 instance Buildable Integer where
     build = integer 10
+    {-# INLINE build #-}
+
+instance Buildable Natural where
+    build = integer 10 . fromIntegral
     {-# INLINE build #-}
 
 instance (HasResolution a) => Buildable (Fixed a) where
@@ -158,7 +166,7 @@ instance (Show a) => Buildable (Shown a) where
     {-# INLINE build #-}
 
 instance (Buildable a) => Buildable (Maybe a) where
-    build Nothing = mempty
+    build Nothing  = mempty
     build (Just v) = build v
     {-# INLINE build #-}
 
@@ -188,7 +196,7 @@ instance Buildable (Ptr a) where
     build = build . ptrToWordPtr
 
 instance Buildable Bool where
-    build True = fromText "True"
+    build True  = fromText "True"
     build False = fromText "False"
 
 #if MIN_VERSION_base(4,8,0)
@@ -196,4 +204,3 @@ instance {-# OVERLAPPABLE #-} Buildable a => Buildable [a] where
     build = \xs -> "[" F.<> mconcat (intersperse "," (map build xs)) F.<> "]"
     {-# INLINE build #-}
 #endif
-
