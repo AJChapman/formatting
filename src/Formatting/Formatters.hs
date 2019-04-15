@@ -210,6 +210,16 @@ ords = later go
           where tens = n `mod` 100
 
 -- | English plural suffix for an integral.
+--
+-- For example:
+--
+-- >>> set -XOverloadedStrings
+-- >>> formatPeople = (\n -> format (int % " " % plural "person" "people" % ".") n n) :: Int -> Data.Text.Lazy.Text
+-- >>> formatPeople 1
+-- "1 person."
+-- >>> formatPeople 3
+-- "3 people."
+--
 plural :: (Num a, Eq a) => Text -> Text -> Format r (a -> r)
 plural s p = later (\i -> if i == 1 then B.build s else B.build p)
 
