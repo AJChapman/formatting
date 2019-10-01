@@ -26,7 +26,7 @@ import           System.IO
 -- will be formatted.  For example, in
 --
 -- @
--- myFormat :: Formatter r (Text -> Int -> r)
+-- myFormat :: Format r (Text -> Int -> r)
 -- myFormat = \"Person's name is \" % text % \", age is \" % hex
 -- @
 --
@@ -107,7 +107,7 @@ instance Category Format where
 -- @
 --
 -- @
--- myFormat :: Formatter r (Text -> Int -> r)
+-- myFormat :: Format r (Text -> Int -> r)
 -- myFormat = format1 % format2 % format3
 -- @
 --
