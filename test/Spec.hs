@@ -16,14 +16,14 @@ main = hspec spec
 spec :: Spec
 spec = do
   describe "Regression tests" $ do
-    describe "https://github.com/chrisdone/formatting/issues/36" $ do
+    describe "https://github.com/AJChapman/formatting/issues/36" $ do
       it "format (later id <> later id) \"x\"" $ format (later id Data.Monoid.<> later id)    "x" `shouldBe` "xx"
       it "format (later id <> later id) \"x\"" $ format (later id Data.Semigroup.<> later id) "x" `shouldBe` "xx"
 
-    describe "https://github.com/chrisdone/formatting/issues/31" $ do
+    describe "https://github.com/AJChapman/formatting/issues/31" $ do
       it "10^6-1" $ F.format F.int (10 ^ (16 :: Int) - 1 :: Int) `shouldBe` "9999999999999999"
 
-    describe "https://github.com/chrisdone/formatting/issues/28" $ do
+    describe "https://github.com/AJChapman/formatting/issues/28" $ do
       it "-100"         $ sformat (groupInt 3 ',') (-100 :: Int)       `shouldBe` "-100"
       it "-100,000,000" $ sformat (groupInt 3 ',') (-100000000 :: Int) `shouldBe` "-100,000,000"
       it "100,000,000"  $ sformat (groupInt 3 ',') (-100000000 :: Int) `shouldBe` "-100,000,000"
@@ -35,6 +35,9 @@ spec = do
     describe "https://github.com/AJChapman/formatting/issues/62" $ do
       it "left 3 '0' (0 :: Int)"  $ format (left 3 '0') (0 ::Int)  `shouldBe` "000"
       it "left 3 '0' (0 :: Word)" $ format (left 3 '0') (0 ::Word) `shouldBe` "000"
+
+    describe "https://github.com/AJChapman/formatting/issues/60" $ do
+      it "build (minBound :: Word)" $ format build (minBound :: Word) `shouldBe` "0"
 
   describe "Floating point" $ do
     it "Fixed"    $ format (fixed 4) (12.123456 :: Double) `shouldBe` "12.1235"
