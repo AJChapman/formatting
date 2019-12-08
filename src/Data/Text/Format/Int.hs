@@ -54,6 +54,7 @@ decimal :: (Integral a, Bounded a) => a -> Builder
 {-# SPECIALIZE decimal :: Word64 -> Builder #-}
 {-# RULES "decimal/Integer" decimal = integer 10 :: Integer -> Builder #-}
 decimal i
+    | i == 0 = singleton '0'
     | i == minBound =
         -- special case, since (-i) would not be representable assuming two's
         -- compliment:

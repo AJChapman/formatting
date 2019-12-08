@@ -56,7 +56,15 @@ spec = do
           "build (maxBound :: Int)"
           (shouldBe
              (format build (maxBound :: Int))
-             "9223372036854775807"))
+             "9223372036854775807")
+
+        describe
+          "https://github.com/chrisdone/formatting/issues/60"
+          (do it
+                "build (minBound :: Word)"
+                (shouldBe
+                   (format build (minBound :: Word))
+                   "0")))
   describe
     "Floating point"
     (do it "Fixed" (shouldBe (format (fixed 4) (12.123456 :: Double)) "12.1235")
@@ -75,7 +83,7 @@ spec = do
         it "[] :: [Int]"
            (shouldBe (format build ([] :: [Int])) "[]"))
 
-  describe "ords" $ do 
+  describe "ords" $ do
       let tests :: [(Int, String)]
           tests = [ ( 1, "1st")
                   , ( 2, "2nd")
@@ -122,4 +130,3 @@ spec = do
     it "90s" $ flip shouldBe "00:00:01:30" $ format diffComponents 90
     it "hour" $ flip shouldBe "00:01:00:00" $ format diffComponents 3600
     it "day" $ flip shouldBe "01:00:00:00" $ format diffComponents 86400
-
