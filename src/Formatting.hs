@@ -1,5 +1,4 @@
 {-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS -Wall #-}
 
 -- |
@@ -31,8 +30,11 @@ module Formatting
   format,
   sformat,
   bprint,
+  bformat,
   fprint,
+  fprintLn,
   hprint,
+  hprintLn,
   formatToString,
   -- * Formatting library
   module Formatting.Formatters
