@@ -147,13 +147,27 @@ sformat m = runFormat m (T.toStrict . T.toLazyText)
 bprint :: Format Builder a -> a
 bprint m = runFormat m id
 
+-- | Run the formatter and return a 'Builder' value.
+-- 
+-- This is a newer synonym for 'bprint', following the naming convention set by 'format' and 'sformat'.
+bformat :: Format Builder a -> a
+bformat m = runFormat m id
+
 -- | Run the formatter and print out the text to stdout.
 fprint :: Format (IO ()) a -> a
 fprint m = runFormat m (T.putStr . T.toLazyText)
 
+-- | Run the formatter and print out the text to stdout, followed by a newline.
+fprintLn :: Format (IO ()) a -> a
+fprintLn m = runFormat m (T.putStrLn . T.toLazyText)
+
 -- | Run the formatter and put the output onto the given 'Handle'.
 hprint :: Handle -> Format (IO ()) a -> a
 hprint h m = runFormat m (T.hPutStr h . T.toLazyText)
+
+-- | Run the formatter and put the output and a newline onto the given 'Handle'.
+hprintLn :: Handle -> Format (IO ()) a -> a
+hprintLn h m = runFormat m (T.hPutStrLn h . T.toLazyText)
 
 -- | Run the formatter and return a list of characters.
 formatToString :: Format [Char] a -> a
