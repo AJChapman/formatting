@@ -15,7 +15,8 @@
 --
 -- >>> format ("Person's name is " % text % ", age is " % hex) "Dave" 54
 --
--- See "Formatting.Formatters" for a complete list of formatting combinators.
+-- See "Formatting.Formatters" for a list of formatters.
+-- See "Formatting.Combinators" for a list of formatting combinators, for combining and altering formatters.
 
 module Formatting
   (
@@ -37,8 +38,10 @@ module Formatting
   hprintLn,
   formatToString,
   -- * Formatting library
-  module Formatting.Formatters
+  module Formatting.Formatters,
+  module Formatting.Combinators
  ) where
 
 import Formatting.Formatters
+import Formatting.Combinators
 import Formatting.Internal
