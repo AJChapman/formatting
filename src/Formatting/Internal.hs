@@ -44,7 +44,18 @@ import           System.IO
 newtype Format r a =
   Format {runFormat :: (Builder -> r) -> a}
 
--- | Not particularly useful, but could be.
+-- | This can be used almost like contramap, e.g:
+--
+-- @
+-- formatter :: Format r (b -> r)
+-- formatter = _
+-- 
+-- adapter :: a -> b
+-- adapter = _
+-- 
+-- adapted :: Format r (a -> r)
+-- adapted = fmap (. adapter) formatter
+-- @
 instance Functor (Format r) where
   fmap f (Format k) = Format (\br -> f (k br))
 
