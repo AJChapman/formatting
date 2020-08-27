@@ -18,13 +18,11 @@ module Data.Text.Format.Int
     ) where
 
 import Data.Int (Int8, Int16, Int32, Int64)
-import Data.Monoid (mempty)
 import Data.Text.Format.Functions (i2d)
 import qualified Data.Text.Format.Functions as F ((<>))
 import Data.Text.Lazy.Builder
-import Data.Word (Word, Word8, Word16, Word32, Word64)
+import Data.Word (Word8, Word16, Word32, Word64)
 import GHC.Base (quotInt, remInt)
-import GHC.Num (quotRemInteger)
 import GHC.Types (Int(..))
 
 #ifdef  __GLASGOW_HASKELL__

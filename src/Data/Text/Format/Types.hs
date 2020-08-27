@@ -19,11 +19,6 @@ module Data.Text.Format.Types
     , Hex(..)
     ) where
 
-import Data.Monoid (Monoid(..))
-import Data.String (IsString(..))
-import Data.Text (Text)
-import Data.Typeable (Typeable)
-
 -- | Render an integral type in hexadecimal.
 newtype Hex a = Hex a
     deriving (Eq, Ord, Read, Show, Num, Real, Enum, Integral)
