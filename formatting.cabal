@@ -17,6 +17,7 @@ library
     Formatting
     Formatting.Formatters
     Formatting.ShortFormatters
+    Formatting.Combinators
     Formatting.Examples
     Formatting.Time
     Formatting.Clock
