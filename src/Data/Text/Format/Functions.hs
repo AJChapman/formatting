@@ -18,7 +18,6 @@ module Data.Text.Format.Functions
     , i2d
     ) where
 
-import Data.Monoid (mappend)
 import Data.Text.Lazy.Builder (Builder)
 #if MIN_VERSION_base(4,11,0)
 import Prelude hiding ((<>))
