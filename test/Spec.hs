@@ -199,3 +199,8 @@ spec = do
     it "accessed" $ format (accessed fst int) (1, "hello") `shouldBe` "1"
   -- describe "lens formatters" $ do
   --   it "viewed" $ flip shouldBe "(viewed _1 int) (1, "hello")" $ format 
+
+  describe "fixed-width numbers" $ do
+    it "binPrefix" $ format (binPrefix 16) 4097 `shouldBe` "0b0001000000000001"
+    it "octPrefix" $ format (octPrefix 16) 4097 `shouldBe` "0o0000000000010001"
+    it "hexPrefix" $ format (hexPrefix 16) 4097 `shouldBe` "0x0000000000001001"
