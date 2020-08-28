@@ -236,16 +236,22 @@ hex = later T.hex
 {-# INLINE hex #-}
 
 -- | Render an integer using binary notation with a leading 0b.
+--
+-- See also 'Formatting.Combinators.binPrefix' for fixed-width formatting.
 prefixBin :: Integral a => Format r (a -> r)
 prefixBin = "0b" % bin
 {-# INLINE prefixBin #-}
 
 -- | Render an integer using octal notation with a leading 0o.
+--
+-- See also 'Formatting.Combinators.octPrefix' for fixed-width formatting.
 prefixOct :: Integral a => Format r (a -> r)
 prefixOct = "0o" % oct
 {-# INLINE prefixOct #-}
 
 -- | Render an integer using hexadecimal notation with a leading 0x.
+--
+-- See also 'Formatting.Combinators.hexPrefix' for fixed-width formatting.
 prefixHex :: Integral a => Format r (a -> r)
 prefixHex = "0x" % hex
 {-# INLINE prefixHex #-}

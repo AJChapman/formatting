@@ -81,6 +81,11 @@ module Formatting.Combinators
   -- * Structure formatting
   , viewed
   , accessed
+
+  -- * Fixed-width number formatting
+  , binPrefix
+  , octPrefix
+  , hexPrefix
   ) where
 
 import Control.Category ((>>>))
@@ -612,3 +617,24 @@ viewed l = fmap (. (getConst . l Const))
 -- "The person's name is 'Alex', and their age is 38"
 accessed :: (s -> a) -> Format r (a -> r) -> Format r (s -> r)
 accessed accessor = fmap (. accessor)
+
+-- | Render an integer using binary notation with a leading 0b, padding with zeroes to the given width:
+--
+-- >>> format (binPrefix 16) 4097
+-- "0b0001000000000001"
+binPrefix :: Integral a => Int64 -> Format r (a -> r)
+binPrefix n = "0b" % lpadded n '0' bin
+
+-- | Render an integer using octal notation with a leading 0o, padding with zeroes to the given width:
+--
+-- >>> format (octPrefix 16) 4097
+-- "0o0000000000010001"
+octPrefix :: Integral a => Int64 -> Format r (a -> r)
+octPrefix n = "0o" % lpadded n '0' oct
+
+-- | Render an integer using octal notation with a leading 0x, padding with zeroes to the given width:
+--
+-- >>> format (hexPrefix 16) 4097
+-- "0x0000000000001001"
+hexPrefix :: Integral a => Int64 -> Format r (a -> r)
+hexPrefix n = "0x" % lpadded n '0' hex
