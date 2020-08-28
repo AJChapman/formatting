@@ -44,8 +44,15 @@ module Formatting.Combinators
   , uppercased
   , lowercased
   , titlecased
-  , truncated
-  , midTruncated
+  , ltruncated
+  , ctruncated
+  , rtruncated
+  , lpadded
+  , rpadded
+  , cpadded
+  , lfixed
+  , rfixed
+  , cfixed
 
   -- * Wrapping formatted strings
   , prefixed
@@ -292,25 +299,29 @@ titlecased = alteredWith TL.toTitle
 --
 -- >>> format (truncated 5 text) "hellos"
 -- "he..."
-truncated :: Int64 -> Format r a -> Format r a
-truncated n = alteredWith shorten
-  where
-    shorten :: Text -> Text
-    shorten txt =
-      if TL.length txt <= n
-        then txt
-        else TL.take (n - 3) txt <> "..."
+ltruncated :: Int64 -> Format r a -> Format r a
+ltruncated n = ctruncated (n - 3) 0
+
+-- | Truncate the formatted string at the start so that it is no more than the given number of characters in length, placing an ellipsis at the start such that it does not exceed this length.
+--
+-- >>> format (rtruncated 5 text) "hello"
+-- "hello"
+--
+-- >>> format (rtruncated 5 text) "hellos"
+-- "...os"
+rtruncated :: Int64 -> Format r a -> Format r a
+rtruncated n = ctruncated 0 (n - 3)
 
 -- | Truncate the formatted string in the center, leaving the given number of characters at the start and end, and placing an ellipsis in between.
 -- The length will be no longer than `start + end + 3` characters long.
 -- 
--- >>> format (midTruncated 15 4 text) "The quick brown fox jumps over the lazy dog."
+-- >>> format (ctruncated 15 4 text) "The quick brown fox jumps over the lazy dog."
 -- "The quick brown...dog."
 --
--- >>> format (midTruncated 15 4 text) "The quick brown fox"
+-- >>> format (ctruncated 15 4 text) "The quick brown fox"
 -- "The quick brown fox"
-midTruncated :: Int64 -> Int64 -> Format r a -> Format r a
-midTruncated start end = alteredWith shorten
+ctruncated :: Int64 -> Int64 -> Format r a -> Format r a
+ctruncated start end = alteredWith shorten
   where
     shorten :: Text -> Text
     shorten txt =
@@ -318,6 +329,71 @@ midTruncated start end = alteredWith shorten
       in if TL.length txt <= n
         then txt
         else TL.take start txt <> "..." <> TL.takeEnd end txt
+
+-- | Pad the formatted string on the left with the given character to give it the given minimum width:
+--
+-- >>> format (lpadded 7 ' ' int) 1
+-- "      1"
+--
+-- >>> format (lpadded 7 ' ' int) 123456789
+-- "123456789"
+lpadded :: Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
+lpadded i c = alteredWith (TL.justifyRight i c)
+
+-- | Pad the formatted string on the right with the given character to give it the given minimum width:
+--
+-- >>> format (rpadded 7 ' ' int) 1
+-- "1      "
+rpadded :: Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
+rpadded i c = alteredWith (TL.justifyLeft i c)
+
+-- | Pad the formatted string on the left and right with the given character to center it, giving it the given minimum width:
+--
+-- >>> format (rpadded 7 ' ' int) 1
+-- "   1   "
+cpadded :: Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
+cpadded i c = alteredWith (TL.center i c)
+
+-- | Format the item with a fixed width, padding with the given character on the left to extend, adding an ellipsis on the right to shorten:
+--
+-- >>> format (lfixed 10 ' ' int) 123
+-- "123       "
+--
+-- >>> format (lfixed 10 ' ' int) 1234567890
+-- "1234567890"
+--
+-- >>> format (lfixed 10 ' ' int) 123456789012345
+-- "1234567..."
+lfixed :: Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
+lfixed n c = ltruncated n . rpadded n c
+
+-- | Format the item with a fixed width, padding with the given character on the right to extend, adding an ellipsis on the right to shorten:
+--
+-- >>> format (rfixed 10 ' ' int) 123
+-- "       123"
+--
+-- >>> format (rfixed 10 ' ' int) 1234567890
+-- "1234567890"
+--
+-- >>> format (rfixed 10 ' ' int) 123456789012345
+-- "...9012345"
+rfixed :: Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
+rfixed n c = rtruncated n . lpadded n c
+
+-- | Format the item with a fixed width, padding with the given character on either side to extend, adding an ellipsis in the center to shorten.
+--
+-- The total length will be `l + r + 3` characters.
+--
+-- >>> format (cfixed 4 3 ' ' int) 123
+-- "    123   "
+--
+-- >>> format (cfixed 4 3 ' ' int) 1234567890
+-- "1234567890"
+--
+-- >>> format (cfixed 4 3 ' ' int) 123456789012345
+-- "1234...345"
+cfixed :: Int64 -> Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
+cfixed l r c = ctruncated l r . cpadded (l + r + 3) c
 
  -- | Add the given prefix to the formatted item:
  --
