@@ -28,6 +28,7 @@ module Formatting.Combinators
   , commaSep
   , commaSpaceSep
   , list
+  , qlist
   , took
 
   -- * Splitting strings to pass to other formatters
@@ -51,12 +52,12 @@ module Formatting.Combinators
   , suffixed
   , surrounded
   , enclosed
-  , quoted
-  , doubleQuoted
+  , squoted
+  , dquoted
   , parenthesised
-  , squareBracketed
-  , curlyBracketed
-  , angleBracketed
+  , squared
+  , braced
+  , angled
   , backticked
 
   -- * Changing indentation
@@ -70,8 +71,9 @@ module Formatting.Combinators
   , ceilingedTo
   , flooredTo
 
-  -- * Lens formatting
+  -- * Structure formatting
   , viewed
+  , accessed
   ) where
 
 import Control.Category ((>>>))
@@ -97,6 +99,9 @@ concatenated :: Foldable t => Format Builder (a -> Builder) -> Format r (t a -> 
 concatenated f = later $ foldMap (bprint f)
 
 -- | Use the given text-joining function to join together the individually rendered items of a list.
+--
+-- >>> format (joinedWith (mconcat . reverse) int) [123, 456, 789]
+-- "789456123"
 joinedWith :: Foldable t => ([Text] -> Text) -> Format Builder (a -> Builder) -> Format r (t a -> r)
 joinedWith joiner f = later $ toList
   >>> fmap (bprint f >>> TLB.toLazyText)
@@ -160,7 +165,14 @@ commaSpaceSep = intercalated ", "
 -- >>> format (list shown) ["one", "two", "three"]
 -- "[\"one\", \"two\", \"three\"]"
 list :: Foldable t => Format Builder (a -> Builder) -> Format r (t a -> r)
-list = commaSpaceSep >>> enclosed "[" "]"
+list = commaSpaceSep >>> squared
+
+-- | Like 'list', but also put double quotes around each rendered item:
+--
+-- >>> fprintLn (qlist stext) ["one", "two", "three"]
+-- ["one", "two", "three"]
+qlist :: Foldable t => Format Builder (a -> Builder) -> Format r (t a -> r)
+qlist = dquoted >>> commaSpaceSep >>> squared
 
 -- | Take only the first n items from the list of items.
 --
@@ -229,8 +241,8 @@ worded = splatWith TL.words
 
 -- | Split the formatted item into lines and use the given list combinator to render the resultant list of strings.
 --
--- >>> format (lined list text) "one two three\n\nfour five six\nseven eight nine\n\n"
--- "[one two three, , four five six, seven eight nine, ]"
+-- >>> fprintLn (lined qlist text) "one two three\n\nfour five six\nseven eight nine\n\n"
+-- ["one two three", "", "four five six", "seven eight nine", ""]
 lined
   :: (Format Builder (Builder -> Builder) -> Format Builder ([Builder] -> Builder)) -- ^ A list-formatting combinator, e.g. 'unworded', 'list', 'concatenated', etc.
   -> Format r a -- ^ The base formatter, whose rendered text will be split
@@ -290,7 +302,8 @@ truncated n = alteredWith shorten
         else TL.take (n - 3) txt <> "..."
 
 -- | Truncate the formatted string in the center, leaving the given number of characters at the start and end, and placing an ellipsis in between.
---
+-- The length will be no longer than `start + end + 3` characters long.
+-- 
 -- >>> format (midTruncated 15 4 text) "The quick brown fox jumps over the lazy dog."
 -- "The quick brown...dog."
 --
@@ -338,17 +351,17 @@ enclosed pre suf f = now pre % f % now suf
 
 -- | Add single quotes around the formatted item:
 --
--- >>> let obj = Just Nothing in format ("The object is: " % quoted shown % ".") obj
+-- >>> let obj = Just Nothing in format ("The object is: " % squoted shown % ".") obj
 -- "The object is: 'Just Nothing'."
-quoted :: Format r a -> Format r a
-quoted = surrounded "'"
+squoted :: Format r a -> Format r a
+squoted = surrounded "'"
 
 -- | Add double quotes around the formatted item:
 --
--- >>> fprintLn ("He said it was based on " % doubleQuoted stext % ".") "science"
+-- >>> fprintLn ("He said it was based on " % dquoted stext % ".") "science"
 -- He said it was based on "science".
-doubleQuoted :: Format r a -> Format r a
-doubleQuoted = surrounded "\""
+dquoted :: Format r a -> Format r a
+dquoted = surrounded "\""
 
 -- | Add parentheses around the formatted item:
 --
@@ -362,27 +375,27 @@ parenthesised = enclosed "(" ")"
 
 -- | Add square brackets around the formatted item:
 --
--- >>> format (squareBracketed int) 7
+-- >>> format (squared int) 7
 -- "[7]"
-squareBracketed :: Format r a -> Format r a
-squareBracketed = enclosed "[" "]"
+squared :: Format r a -> Format r a
+squared = enclosed "[" "]"
 
 -- | Add curly brackets around the formatted item:
 --
--- >>> format ("\\begin" % curlyBracketed text) "section"
+-- >>> format ("\\begin" % braced text) "section"
 -- "\\begin{section}"
-curlyBracketed :: Format r a -> Format r a
-curlyBracketed = enclosed "{" "}"
+braced :: Format r a -> Format r a
+braced = enclosed "{" "}"
 
 -- | Add angle brackets around the formatted item:
 --
--- >>> format (angleBracketed int) 7
+-- >>> format (angled int) 7
 -- "<7>"
 --
--- >>> format (list (angleBracketed text)) ["html", "head", "title", "body", "div", "span"]
+-- >>> format (list (angled text)) ["html", "head", "title", "body", "div", "span"]
 -- "[<html>, <head>, <title>, <body>, <div>, <span>]"
-angleBracketed :: Format r a -> Format r a
-angleBracketed = enclosed "<" ">"
+angled :: Format r a -> Format r a
+angled = enclosed "<" ">"
 
 -- | Add backticks around the formatted item:
 --
@@ -506,8 +519,20 @@ flooredTo = fmap (. floor)
 -- me :: Person
 -- me = Person "Alex" 38
 --
--- format ("The person's name is " % quoted (viewed personName text) % ", and their age is " <> viewed personAge int) me
+-- format ("The person's name is " % squoted (viewed personName text) % ", and their age is " <> viewed personAge int) me
 -- "The person's name is 'Alex', and their age is 38"
 -- @
 viewed :: ((a -> Const a b) -> s -> Const a t) -> Format r (a -> r) -> Format r (s -> r)
 viewed l = fmap (. (getConst . l Const))
+
+-- | Access an element of the structure and format it with the given formatter.
+--
+-- >>> format (accessed fst int) (1, "hello")
+-- "1"
+--
+-- Repeating the example from 'viewed':
+--
+-- format ("The person's name is " % squoted (accessed _personName text) % ", and their age is " <> accessed _personAge int) me
+-- "The person's name is 'Alex', and their age is 38"
+accessed :: (s -> a) -> Format r (a -> r) -> Format r (s -> r)
+accessed accessor = fmap (. accessor)

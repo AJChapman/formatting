@@ -125,58 +125,62 @@ spec = do
     it "day" $ flip shouldBe "01:00:00:00" $ format diffComponents 86400
 
   describe "list formatters" $ do
-    it "concatenated" $ flip shouldBe "onetwothree" $ format (concatenated text) ["one", "two", "three"]
-    it "intercalated" $ flip shouldBe "1||2||3" $ format (intercalated "||" int) [1, 2, 3] 
-    it "unworded" $ flip shouldBe "1 2 3" $ format (unworded int) [1, 2, 3] 
-    it "unlined" $ flip shouldBe "a\nb\nc\n" $ format (unlined char) ['a'..'c'] 
-    it "spaced" $ flip shouldBe "1 2 3" $ format (spaced int) [1, 2, 3] 
-    it "commaSep" $ flip shouldBe "1,2,3,4,5" $ format (took 5 (commaSep int)) [1..] 
-    it "commaSpaceSep" $ flip shouldBe "1st, 2nd, 3rd" $ format (took 3 (commaSpaceSep ords)) [1..] 
-    it "list" $ flip shouldBe "[one, two, three]" $ format (list stext) ["one", "two", "three"] 
-    it "took" $ flip shouldBe "[1, 10, 11, 100, 101, 110, 111]" $ format (took 7 (list bin)) [1..] 
+    it "concatenated" $ format (concatenated text) ["one", "two", "three"] `shouldBe` "onetwothree"
+    it "joinedWith" $ format (joinedWith (mconcat . reverse) int) [123, 456, 789] `shouldBe` "789456123"
+    it "intercalated" $ format (intercalated "||" int) [1, 2, 3]  `shouldBe` "1||2||3"
+    it "unworded" $ format (unworded int) [1, 2, 3] `shouldBe` "1 2 3"
+    it "unlined" $ format (unlined char) ['a'..'c'] `shouldBe` "a\nb\nc\n"
+    it "spaced" $ format (spaced int) [1, 2, 3] `shouldBe` "1 2 3"
+    it "commaSep" $ format (took 5 (commaSep int)) [1..] `shouldBe` "1,2,3,4,5"
+    it "commaSpaceSep" $ format (took 3 (commaSpaceSep ords)) [1..] `shouldBe` "1st, 2nd, 3rd"
+    it "list" $ format (list stext) ["one", "two", "three"] `shouldBe` "[one, two, three]"
+    it "qlist" $ format (qlist stext) ["one", "two", "three"] `shouldBe` "[\"one\", \"two\", \"three\"]"
+    it "took" $ format (took 7 (list bin)) [1..] `shouldBe` "[1, 10, 11, 100, 101, 110, 111]"
 
   describe "splitting formatters" $ do
-    it "splat" $ flip shouldBe "This, , , is, , , , , poorly, formatted, , , " $ format (splat isSpace commaSpaceSep stext) "This\t  is\n\t\t  poorly formatted   "
-    it "splatWith" $ flip shouldBe "[123, 456, 789, 0]" $ format (splatWith (LT.chunksOf 3) list int) 1234567890
-    it "splatOn" $ flip shouldBe "one\ntwo\nthree\n" $ format (splatOn "," unlined text) "one,two,three"
-    it "worded" $ flip shouldBe "[one, two, three]" $ format (worded list text) "one  two three  "
-    it "lined" $ flip shouldBe "[one two three, , four five six, seven eight nine, ]" $ format (lined list text) "one two three\n\nfour five six\nseven eight nine\n\n"
+    it "splat" $ format (splat isSpace commaSpaceSep stext) "This\t  is\n\t\t  poorly formatted   " `shouldBe` "This, , , is, , , , , poorly, formatted, , , "
+    it "splatWith" $ format (splatWith (LT.chunksOf 3) list int) 1234567890 `shouldBe` "[123, 456, 789, 0]"
+    it "splatOn" $ format (splatOn "," unlined text) "one,two,three" `shouldBe` "one\ntwo\nthree\n"
+    it "worded" $ format (worded list text) "one  two three  " `shouldBe` "[one, two, three]"
+    it "lined" $ format (lined qlist text) "one two three\n\nfour five six\nseven eight nine\n\n" `shouldBe` "[\"one two three\", \"\", \"four five six\", \"seven eight nine\", \"\"]"
 
   describe "altering combinators" $ do
-    it "alteredWith" $ flip shouldBe "654321" $ format (alteredWith LT.reverse int) 123456
-    it "replaced" $ flip shouldBe "<redacted> replied that <redacted>'s name was, in fact, '<redacted>'." $ format (replaced "Bruce" "<redacted>" stext) "Bruce replied that Bruce's name was, in fact, '<redacted>'."
-    it "uppercased" $ flip shouldBe "I'M NOT SHOUTING, YOU'RE SHOUTING." $ format (uppercased text) "I'm not shouting, you're shouting."
-    it "lowercased" $ flip shouldBe "cd src/; rm -rf *" $ format (lowercased text) "Cd SrC/; Rm -Rf *"
-    it "titlecased" $ flip shouldBe "The Life Of Brian" $ format (titlecased string) "the life of brian"
-    it "truncated" $ flip shouldBe "he..." $ format (truncated 5 text) "hellos"
-    it "truncated, non-truncated" $ flip shouldBe "hello" $ format (truncated 5 text) "hello"
-    it "midTruncated" $ flip shouldBe "The quick brown...dog." $ format (midTruncated 15 4 text) "The quick brown fox jumps over the lazy dog."
-    it "midTruncated, non-truncated" $ flip shouldBe "The quick brown fox" $ format (midTruncated 15 4 text) "The quick brown fox"
+    it "alteredWith" $ format (alteredWith LT.reverse int) 123456 `shouldBe` "654321"
+    it "replaced" $ format (replaced "Bruce" "<redacted>" stext) "Bruce replied that Bruce's name was, in fact, '<redacted>'." `shouldBe` "<redacted> replied that <redacted>'s name was, in fact, '<redacted>'."
+    it "uppercased" $ format (uppercased text) "I'm not shouting, you're shouting." `shouldBe` "I'M NOT SHOUTING, YOU'RE SHOUTING."
+    it "lowercased" $ format (lowercased text) "Cd SrC/; Rm -Rf *" `shouldBe` "cd src/; rm -rf *"
+    it "titlecased" $ format (titlecased string) "the life of brian" `shouldBe` "The Life Of Brian"
+    it "truncated" $ format (truncated 5 text) "hellos" `shouldBe` "he..."
+    it "truncated, non-truncated" $ format (truncated 5 text) "hello" `shouldBe` "hello"
+    it "midTruncated" $ format (midTruncated 15 4 text) "The quick brown fox jumps over the lazy dog." `shouldBe` "The quick brown...dog."
+    it "midTruncated, non-truncated" $ format (midTruncated 15 4 text) "The quick brown fox" `shouldBe` "The quick brown fox"
 
   describe "wrapping combinators" $ do
-    it "prefixed" $ flip shouldBe "The answer is: wait for it... 42" $ format ("The answer is: " % prefixed "wait for it... " int) 42
-    it "prefixed, combining" $ flip shouldBe "    - 1\n    - 2\n    - 3\n" $ format (unlined (indented 4 (prefixed "- " int))) [1, 2, 3]
-    it "suffixed" $ flip shouldBe "7!!!" $ format (suffixed "!!!" int) 7
-    it "surrounded" $ flip shouldBe "***glue***" $ format (surrounded "***" string) "glue"
-    it "enclosed" $ flip shouldBe "<!--an html comment-->" $ format (enclosed "<!--" "-->" text) "an html comment"
-    it "quoted" $ flip shouldBe "The object is: 'Just Nothing'." $ let obj :: Maybe (Maybe Int); obj = Just Nothing in format ("The object is: " % quoted shown % ".") obj 
-    it "doubleQuoted" $ flip shouldBe "He said it was based on \"science\"." $ format ("He said it was based on " % doubleQuoted stext % ".") "science" 
-    it "parenthesised" $ flip shouldBe "[(1), (2), (3), (4), (5)]" $ format (took 5 (list (parenthesised int))) [1..]
-    it "squareBracketed" $ flip shouldBe "[7]" $ format (squareBracketed int) 7
-    it "curlyBracketed" $ flip shouldBe "\\begin{section}" $ format ("\\begin" % curlyBracketed text) "section"
-    it "angleBracketed" $ flip shouldBe "[<html>, <head>, <title>, <body>, <div>, <span>]" $ format (list (angleBracketed text)) ["html", "head", "title", "body", "div", "span"]
-    it "backticked" $ flip shouldBe "Be sure to run `:(){:|:&};:` as root." $ format ("Be sure to run " % backticked builder % " as root.") ":(){:|:&};:"
+    it "prefixed" $ format ("The answer is: " % prefixed "wait for it... " int) 42 `shouldBe` "The answer is: wait for it... 42"
+    it "prefixed, combining" $ format (unlined (indented 4 (prefixed "- " int))) [1, 2, 3] `shouldBe` "    - 1\n    - 2\n    - 3\n"
+    it "suffixed" $ format (suffixed "!!!" int) 7 `shouldBe` "7!!!"
+    it "surrounded" $ format (surrounded "***" string) "glue" `shouldBe` "***glue***"
+    it "enclosed" $ format (enclosed "<!--" "-->" text) "an html comment" `shouldBe` "<!--an html comment-->"
+    it "squoted" $ let obj :: Maybe (Maybe Int); obj = Just Nothing in format ("The object is: " % squoted shown % ".") obj  `shouldBe` "The object is: 'Just Nothing'."
+    it "dquoted" $ format ("He said it was based on " % dquoted stext % ".") "science" `shouldBe` "He said it was based on \"science\"."
+    it "parenthesised" $ format (took 5 (list (parenthesised int))) [1..] `shouldBe` "[(1), (2), (3), (4), (5)]"
+    it "squared" $ format (squared int) 7 `shouldBe` "[7]"
+    it "braced" $ format ("\\begin" % braced text) "section" `shouldBe` "\\begin{section}"
+    it "angled" $ format (list (angled text)) ["html", "head", "title", "body", "div", "span"] `shouldBe` "[<html>, <head>, <title>, <body>, <div>, <span>]"
+    it "backticked" $ format ("Be sure to run " % backticked builder % " as root.") ":(){:|:&};:" `shouldBe` "Be sure to run `:(){:|:&};:` as root."
 
   describe "indenters" $ do
-    it "indented" $ flip shouldBe "    7" $ format (indented 4 int) 7
-    it "indentedLines" $ flip shouldBe "The lucky numbers are:\n    7\n    13\n    1\n    42\n" $ format ("The lucky numbers are:\n" % indentedLines 4 int) [7, 13, 1, 42]
-    it "reindented" $ flip shouldBe "  one\n  two\n  three\n" $ format (reindented 2 text) "one\ntwo\nthree"
+    it "indented" $ format (indented 4 int) 7 `shouldBe` "    7"
+    it "indentedLines" $ format ("The lucky numbers are:\n" % indentedLines 4 int) [7, 13, 1, 42] `shouldBe` "The lucky numbers are:\n    7\n    13\n    1\n    42\n"
+    it "reindented" $ format (reindented 2 text) "one\ntwo\nthree" `shouldBe` "  one\n  two\n  three\n"
 
   describe "numerical adapters" $ do
-    it "roundedTo" $ flip shouldBe "[11, 7, 1, 3]" $ format (list (roundedTo int)) [10.66, 6.66, 1.0, 3.4]
-    it "truncatedTo" $ flip shouldBe "[10, 6, 1, 3]" $ format (list (truncatedTo int)) [10.66, 6.66, 1.0, 3.4]
-    it "ceilingedTo" $ flip shouldBe "[11, 7, 1, 4]" $ format (list (ceilingedTo int)) [10.66, 6.66, 1.0, 3.4]
-    it "flooredTo" $ flip shouldBe "[10, 6, 1, 3]" $ format (list (flooredTo int)) [10.66, 6.66, 1.0, 3.4]
+    it "roundedTo" $ format (list (roundedTo int)) [10.66, 6.66, 1.0, 3.4] `shouldBe` "[11, 7, 1, 3]"
+    it "truncatedTo" $ format (list (truncatedTo int)) [10.66, 6.66, 1.0, 3.4] `shouldBe` "[10, 6, 1, 3]"
+    it "ceilingedTo" $ format (list (ceilingedTo int)) [10.66, 6.66, 1.0, 3.4] `shouldBe` "[11, 7, 1, 4]"
+    it "flooredTo" $ format (list (flooredTo int)) [10.66, 6.66, 1.0, 3.4] `shouldBe` "[10, 6, 1, 3]"
 
+  describe "structure formatting" $
+    it "accessed" $ format (accessed fst int) (1, "hello") `shouldBe` "1"
   -- describe "lens formatters" $ do
   --   it "viewed" $ flip shouldBe "(viewed _1 int) (1, "hello")" $ format 
