@@ -94,9 +94,7 @@ import Formatting.Formatters
 -- >>> format (took 15 (concatenated bin)) [1..]
 -- "1101110010111011110001001101010111100110111101111"
 concatenated :: Foldable t => Format Builder (a -> Builder) -> Format r (t a -> r)
-concatenated f = later $ toList
-  >>> fmap (bprint f)
-  >>> mconcat
+concatenated f = later $ foldMap (bprint f)
 
 -- | Use the given text-joining function to join together the individually rendered items of a list.
 joinedWith :: Foldable t => ([Text] -> Text) -> Format Builder (a -> Builder) -> Format r (t a -> r)
