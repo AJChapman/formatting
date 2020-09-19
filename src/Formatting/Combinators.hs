@@ -30,6 +30,7 @@ module Formatting.Combinators
   , list
   , qlist
   , took
+  , dropped
 
   -- * Splitting strings to pass to other formatters
   , splat
@@ -195,6 +196,13 @@ qlist = dquoted >>> commaSpaceSep >>> squared
 -- "[1, 10, 11, 100, 101, 110, 111]"
 took :: Int -> Format r ([a] -> r) -> Format r ([a] -> r)
 took n = fmap (. take n)
+
+-- | Drop the first n items from the list of items.
+--
+-- >>> format (dropped 3 (list int) [1..6]
+-- "[4, 5, 6]"
+dropped :: Int -> Format r ([a] -> r) -> Format r ([a] -> r)
+dropped n = fmap (. drop n)
 
 -- | Utility for taking a text-splitting function and turning it into a formatting combinator.
 --

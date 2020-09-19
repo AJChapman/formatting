@@ -136,6 +136,7 @@ spec = do
     it "list" $ format (list stext) ["one", "two", "three"] `shouldBe` "[one, two, three]"
     it "qlist" $ format (qlist stext) ["one", "two", "three"] `shouldBe` "[\"one\", \"two\", \"three\"]"
     it "took" $ format (took 7 (list bin)) [1..] `shouldBe` "[1, 10, 11, 100, 101, 110, 111]"
+    it "dropped" $ format (dropped 3 (list int)) [1..6] `shouldBe` "[4, 5, 6]"
 
   describe "splitting formatters" $ do
     it "splat" $ format (splat isSpace commaSpaceSep stext) "This\t  is\n\t\t  poorly formatted   " `shouldBe` "This, , , is, , , , , poorly, formatted, , , "
