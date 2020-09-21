@@ -1,4 +1,4 @@
-{-# LANGUAGE BangPatterns, CPP, MagicHash, UnboxedTuples #-}
+{-# LANGUAGE BangPatterns, CPP, MagicHash, UnboxedTuples, ScopedTypeVariables #-}
 
 -- Module:      Data.Text.Format.Int
 -- Copyright:   (c) 2011 MailRank, Inc.
@@ -52,7 +52,7 @@ decimal :: (Integral a, Bounded a) => a -> Builder
 {-# SPECIALIZE decimal :: Word64 -> Builder #-}
 {-# RULES "decimal/Integer" decimal = integer 10 :: Integer -> Builder #-}
 decimal i
-    | i == minBound =
+    | (minBound :: a) < 0 && i == minBound =
         -- special case, since (-i) would not be representable assuming two's
         -- compliment:
         minus F.<> integer 10 (negate $ fromIntegral i)
