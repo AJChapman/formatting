@@ -15,55 +15,30 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-  describe
-    "Regression tests"
-    (do describe "https://github.com/chrisdone/formatting/issues/36"
-                 (do it "format (later id <> later id) \"x\""
-                        (shouldBe (format (later id Data.Monoid.<> later id) "x")
-                                  "xx")
-                     it "format (later id <> later id) \"x\""
-                        (shouldBe (format (later id Data.Semigroup.<> later id) "x")
-                                  "xx"))
-        describe
-          "https://github.com/chrisdone/formatting/issues/31"
-          (do it
-                "10^6-1"
-                (shouldBe
-                   (F.format F.int (10 ^ (16 :: Int) - 1 :: Int))
-                   "9999999999999999"))
-        describe
-          "https://github.com/chrisdone/formatting/issues/28"
-          (do it
-                "-100"
-                (shouldBe (sformat (groupInt 3 ',') (-100 :: Int)) "-100")
-              it
-                "-100,000,000"
-                (shouldBe
-                   (sformat (groupInt 3 ',') (-100000000 :: Int))
-                   "-100,000,000")
-              it
-                "100,000,000"
-                (shouldBe
-                   (sformat (groupInt 3 ',') (-100000000 :: Int))
-                   "-100,000,000"))
-        describe
-          "https://github.com/bos/text-format/issues/18"
-          (do it
-                "build (minBound :: Int)"
-                (shouldBe
-                   (format build (minBound :: Int64))
-                   "-9223372036854775808"))
-        it
-          "build (maxBound :: Int)"
-          (shouldBe
-             (format build (maxBound :: Int))
-             "9223372036854775807"))
-  describe
-    "Floating point"
-    (do it "Fixed" (shouldBe (format (fixed 4) (12.123456 :: Double)) "12.1235")
-        it
-          "Variable"
-          (shouldBe (format float (12.123456 :: Double)) "12.123456"))
+  describe "Regression tests" $ do
+    describe "https://github.com/chrisdone/formatting/issues/36" $ do
+      it "format (later id <> later id) \"x\"" $ format (later id Data.Monoid.<> later id)    "x" `shouldBe` "xx"
+      it "format (later id <> later id) \"x\"" $ format (later id Data.Semigroup.<> later id) "x" `shouldBe` "xx"
+
+    describe "https://github.com/chrisdone/formatting/issues/31" $ do
+      it "10^6-1" $ F.format F.int (10 ^ (16 :: Int) - 1 :: Int) `shouldBe` "9999999999999999"
+
+    describe "https://github.com/chrisdone/formatting/issues/28" $ do
+      it "-100"         $ sformat (groupInt 3 ',') (-100 :: Int)       `shouldBe` "-100"
+      it "-100,000,000" $ sformat (groupInt 3 ',') (-100000000 :: Int) `shouldBe` "-100,000,000"
+      it "100,000,000"  $ sformat (groupInt 3 ',') (-100000000 :: Int) `shouldBe` "-100,000,000"
+
+    describe "https://github.com/bos/text-format/issues/18" $ do
+      it "build (minBound :: Int)" $ format build (minBound :: Int64) `shouldBe` "-9223372036854775808"
+      it "build (maxBound :: Int)" $ format build (maxBound :: Int)   `shouldBe` "9223372036854775807"
+
+    describe "https://github.com/AJChapman/formatting/issues/62" $ do
+      it "left 3 '0' (0 :: Int)"  $ format (left 3 '0') (0 ::Int)  `shouldBe` "000"
+      it "left 3 '0' (0 :: Word)" $ format (left 3 '0') (0 ::Word) `shouldBe` "000"
+
+  describe "Floating point" $ do
+    it "Fixed"    $ format (fixed 4) (12.123456 :: Double) `shouldBe` "12.1235"
+    it "Variable" $ format float     (12.123456 :: Double) `shouldBe` "12.123456"
 
   describe
     "Buildable a => Buildable [a]"
@@ -76,7 +51,7 @@ spec = do
         it "[] :: [Int]"
            (shouldBe (format build ([] :: [Int])) "[]"))
 
-  describe "ords" $ do 
+  describe "ords" $ do
       let tests :: [(Int, String)]
           tests = [ ( 1, "1st")
                   , ( 2, "2nd")
@@ -199,7 +174,7 @@ spec = do
   describe "structure formatting" $
     it "accessed" $ format (accessed fst int) (1, "hello") `shouldBe` "1"
   -- describe "lens formatters" $ do
-  --   it "viewed" $ flip shouldBe "(viewed _1 int) (1, "hello")" $ format 
+  --   it "viewed" $ flip shouldBe "(viewed _1 int) (1, "hello")" $ format
 
   describe "fixed-width numbers" $ do
     it "binPrefix" $ format (binPrefix 16) 4097 `shouldBe` "0b0001000000000001"
