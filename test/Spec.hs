@@ -95,6 +95,11 @@ spec = do
 
       forM_ tests $ \(input, output) -> it output $ format ords input `shouldBe` (LT.pack output)
 
+  describe "plural" $ do
+    let formatPeople = format (int % " " <> plural "person" "people" % ".")
+    it "formats a person" $ formatPeople 1 `shouldBe` "1 person."
+    it "formats a person" $ formatPeople 3 `shouldBe` "3 people."
+
   describe "diffComponents" $ do
     it "59s" $ flip shouldBe "00:00:00:59" $ format diffComponents 59
     it "minute" $ flip shouldBe "00:00:01:00" $ format diffComponents 60
