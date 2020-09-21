@@ -39,7 +39,7 @@ import GHC.Integer.GMP.Internals
 # define PAIR(a,b) (a,b)
 #endif
 
-decimal :: (Integral a, Bounded a) => a -> Builder
+decimal :: forall a. (Integral a, Bounded a) => a -> Builder
 {-# SPECIALIZE decimal :: Int -> Builder #-}
 {-# SPECIALIZE decimal :: Int8 -> Builder #-}
 {-# SPECIALIZE decimal :: Int16 -> Builder #-}
