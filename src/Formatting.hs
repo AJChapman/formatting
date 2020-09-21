@@ -5,7 +5,7 @@
 -- Module      : Text.Format
 -- Copyright   : (c) 2013 Chris Done, 2013 Shachaf Ben-Kiki
 -- License     : BSD3
--- Maintainer  : chrisdone@gmail.com
+-- Maintainer  : alex@farfromthere.net
 -- Stability   : experimental
 -- Portability : GHC
 --

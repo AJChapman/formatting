@@ -1,12 +1,12 @@
 name:                formatting
-version:             6.3.7
+version:             7.0.0.0
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 license:             BSD3
 license-file:        LICENSE
-author:              Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, Bryan O'Sullivan
-maintainer:          chrisdone@gmail.com
-copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, 2011 MailRank, Inc.
+author:              Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, Bryan O'Sullivan, Alex Chapman
+maintainer:          alex@farfromthere.net
+copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, 2011 MailRank, Inc., 2020 Alex Chapman
 category:            Text
 build-type:          Simple
 cabal-version:       >=1.8
@@ -63,4 +63,4 @@ test-suite formatting-test
 
 source-repository head
   type:     git
-  location: http://github.com/chrisdone/formatting
+  location: http://github.com/AJChapman/formatting

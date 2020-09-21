@@ -1,3 +1,9 @@
+7.0.0
+
+* Introduced `Formatting.Combinators`.
+* Fixed: https://github.com/AJChapman/formatting/issues/62
+* Fixed: https://github.com/AJChapman/formatting/issues/60
+
 6.3.7
 
 * Introduced instance `Buildable a => Buildable [a]`.
