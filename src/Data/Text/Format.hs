@@ -25,7 +25,7 @@ module Data.Text.Format
 
 import           Control.Monad.IO.Class (MonadIO(liftIO))
 import qualified Data.ByteString.Lazy as L
-import qualified Data.ByteString.Lazy.Builder as L
+import qualified Data.ByteString.Builder as L
 import           Data.Text (Text)
 import qualified Data.Text as ST
 import qualified Data.Text as T
