@@ -39,7 +39,7 @@ import           Foreign.Ptr (IntPtr, WordPtr, Ptr, ptrToWordPtr)
 import qualified Data.Text as ST
 import qualified Data.Text.Lazy as LT
 import qualified Data.Text.Encoding as T
-import qualified Data.ByteString.Lazy.Builder as L
+import qualified Data.ByteString.Builder as L
 
 -- | The class of types that can be rendered to a 'Builder'.
 class Buildable p where
