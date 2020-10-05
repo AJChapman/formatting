@@ -3,6 +3,7 @@
 * Introduced `Formatting.Combinators`.
 * Fixed: https://github.com/AJChapman/formatting/issues/62
 * Fixed: https://github.com/AJChapman/formatting/issues/60
+* Make compatible with bytestring-0.11.0.0
 
 6.3.7
 
