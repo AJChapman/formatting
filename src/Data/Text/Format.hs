@@ -64,8 +64,8 @@ fixed decs = B.build . T.pack . (printf ("%." ++ show decs ++ "f") :: Double->St
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it.
 shortest :: (Real a) => a -> Builder
-shortest = B.build . T.decodeUtf8 . L.toStrict . L.toLazyByteString . L.doubleDec . realToFrac
-{-# NOINLINE[0] shortest #-}
+shortest = B.build . show . realToFrac
+{-# INLINE shortest #-}
 
 -- | Render an integer using hexadecimal notation.  (No leading "0x"
 -- is added.)
