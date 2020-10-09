@@ -113,7 +113,7 @@ int = base 10
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format r (a -> r)
-float = shortest
+float = later T.shortest
 
 -- | Render a floating point number using normal notation, with the
 -- given number of decimal places.
@@ -294,7 +294,7 @@ intToDigit' i
 -- | Renders a given byte count using an appropiate decimal binary suffix:
 --
 -- >>> format (bytes shortest) 1024
--- "1.0KB"
+-- "1KB"
 --
 -- >>> format (bytes (fixed 2 % " ")) (1024*1024*5)
 -- "5.00 MB"

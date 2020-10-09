@@ -41,10 +41,13 @@ spec = do
     describe "https://github.com/AJChapman/formatting/issues/60" $ do
       it "build (minBound :: Word)" $ format build (minBound :: Word) `shouldBe` "0"
 
+    describe "https://github.com/AJChapman/formatting/issues/59" $
+      it "shortest not scientific" $ format shortest (0.01 :: Double) `shouldBe` "0.01"
+
   describe "Floating point" $ do
     it "Fixed"    $ format (fixed 4) (12.123456 :: Double) `shouldBe` "12.1235"
     it "Variable" $ format float     (12.123456 :: Double) `shouldBe` "12.123456"
-    it "Shortest" $ format shortest  12.0000 `shouldBe` "12.0"
+    it "Shortest" $ format shortest  (12.0000 :: Double) `shouldBe` "12"
 
   describe "Scientific" $ do
     it "sci" $ format sci (scientific 60221409 16) `shouldBe` "6.0221409e23"
@@ -54,8 +57,8 @@ spec = do
     it "scifmt" $ format (scifmt Generic (Just 5)) (scientific 60221409 16) `shouldBe` "6.02214e23"
 
   describe "Bytes" $ do
-    it "1.0KB" $ format (bytes shortest) 1024 `shouldBe` "1.0KB"
-    it "1.15GB" $ format (bytes (fixed 2)) 1234567890 `shouldBe` "1.15GB"
+    it "1KB" $ format (bytes shortest) (1024 :: Int) `shouldBe` "1KB"
+    it "1.15GB" $ format (bytes (fixed 2)) (1234567890 :: Int) `shouldBe` "1.15GB"
 
   describe
     "Buildable a => Buildable [a]"

@@ -156,7 +156,7 @@ Built-in formatter combinators:
 | `Integral a => a`                        | `4097`                    | `"0b0001000000000001"`              | `binPrefix 16`                       |
 | `Integral a => a`                        | `4097`                    | `"0o0000000000010001"`              | `octPrefix 16`                       |
 | `Integral a => a`                        | `4097`                    | `"0x0000000000001001"`              | `hexPrefix 16`                       |
-| `Ord f, Integral a, Fractional f => a`   | `1024`                    | `"1.0KB"`                           | `bytes shortest`                     |
+| `Ord f, Integral a, Fractional f => a`   | `1024`                    | `"1KB"`                             | `bytes shortest`                     |
 | `Ord f, Integral a, Fractional f => a`   | `1234567890`              | `"1.15GB"`                          | `bytes (fixed 2)`                    |
 
 ## Composing formatters
@@ -388,7 +388,7 @@ and Common Lisp's `FORMAT`:
 
 ``` haskell
 > format (bytes shortest) 1024
-"1.0KB"
+"1KB"
 > format (bytes (fixed 2 % " ")) (1024*1024*5)
 "5.00 MB"
 ```

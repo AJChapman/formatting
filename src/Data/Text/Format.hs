@@ -26,6 +26,7 @@ module Data.Text.Format
 import           Control.Monad.IO.Class (MonadIO(liftIO))
 import qualified Data.ByteString.Lazy as L
 import qualified Data.ByteString.Builder as L
+import           Data.Double.Conversion.Text
 import           Data.Text (Text)
 import qualified Data.Text as ST
 import qualified Data.Text as T
@@ -38,7 +39,6 @@ import           Data.Text.Lazy.Builder
 import qualified Data.Text.Lazy.IO as LT
 import           Prelude hiding (exp, print)
 import           System.IO (Handle)
-import           Text.Printf
 
 -- | Pad the left hand side of a string until it reaches @k@
 -- characters wide, if necessary filling with character @c@.
@@ -58,13 +58,13 @@ fixed :: (Real a) =>
          Int
       -- ^ Number of digits of precision after the decimal.
       -> a -> Builder
-fixed decs = B.build . T.pack . (printf ("%." ++ show decs ++ "f") :: Double->String) . realToFrac
+fixed decs = fromText . toFixed decs . realToFrac
 {-# NOINLINE[0] fixed #-}
 
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it.
-shortest :: (Real a) => a -> Builder
-shortest = B.build . show . realToFrac
+shortest :: Real a => a -> Builder
+shortest = fromText . toShortest . realToFrac
 {-# INLINE shortest #-}
 
 -- | Render an integer using hexadecimal notation.  (No leading "0x"
