@@ -50,7 +50,6 @@ library
 
   hs-source-dirs:    src
   default-language: Haskell98
-  ghc-options:       -O2
   cpp-options: -DINTEGER_GMP
 
 test-suite formatting-test
