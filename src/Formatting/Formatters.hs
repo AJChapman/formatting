@@ -121,7 +121,8 @@ fixed :: Real a => Int -> Format r (a -> r)
 fixed i = later (T.fixed i)
 
 -- | Render a floating point number using the smallest number of
--- digits that correctly represent it.
+-- digits that correctly represent it. Note that in the case of whole
+-- numbers it will still add one decimal place, e.g. "1.0".
 shortest :: Real a => Format r (a -> r)
 shortest = later T.shortest
 
@@ -293,7 +294,7 @@ intToDigit' i
 -- | Renders a given byte count using an appropiate decimal binary suffix:
 --
 -- >>> format (bytes shortest) 1024
--- "1KB"
+-- "1.0KB"
 --
 -- >>> format (bytes (fixed 2 % " ")) (1024*1024*5)
 -- "5.00 MB"
