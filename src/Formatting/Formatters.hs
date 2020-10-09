@@ -113,7 +113,7 @@ int = base 10
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format r (a -> r)
-float = later (T.shortest)
+float = shortest
 
 -- | Render a floating point number using normal notation, with the
 -- given number of decimal places.
