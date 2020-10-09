@@ -4,6 +4,10 @@
 * Fixed: https://github.com/AJChapman/formatting/issues/62
 * Fixed: https://github.com/AJChapman/formatting/issues/60
 * Make compatible with bytestring-0.11.0.0
+* Removed -O2 ghc flag
+* Updated .cabal file version from 1.8 to 1.12
+* Corrected documentation of `shortest`, which actually renders 1.0 as "1.0", not "1"
+* Simplified the implementation of `shortest`. Behaviour should remain the same, performance may improve but this is untested.
 
 6.3.7
 
