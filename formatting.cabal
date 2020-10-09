@@ -1,18 +1,59 @@
+cabal-version:       2.4
 name:                formatting
 version:             7.0.0
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
-license:             BSD3
+bug-reports:         https://github.com/AJChapman/formatting/issues
+license:             BSD-3-Clause
 license-file:        LICENSE
 author:              Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, Bryan O'Sullivan, Alex Chapman
 maintainer:          alex@farfromthere.net
 copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, 2011 MailRank, Inc., 2020 Alex Chapman
 category:            Text
 build-type:          Simple
-cabal-version:       1.12
 extra-source-files:  CHANGELOG.md
 
+common deps
+  build-depends:
+    base >= 4.5 && < 5,
+    text >= 0.11.0.8,
+    time,
+    old-locale,
+    scientific >= 0.3.0.0,
+    clock >= 0.4,
+    array,
+    ghc-prim,
+    text >= 0.11.0.8,
+    transformers,
+    bytestring >=0.10.4,
+    integer-gmp >= 0.2,
+    double-conversion ^>= 2.0.2.0
+
+  if !impl(ghc >= 8.0)
+    build-depends: semigroups
+
+-- Warnings list list taken from
+-- https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3
+-- Enable all warnings with -Weverything, then disable the ones we
+-- don’t care about
+  default-language:    Haskell98
+  ghc-options:         -Weverything
+                       -Wno-all-missed-specialisations
+                       -Wno-implicit-prelude
+                       -Wno-missed-specialisations
+                       -Wno-missing-exported-signatures
+                       -Wno-missing-import-lists
+                       -Wno-missing-local-signatures
+                       -Wno-monomorphism-restriction
+                       -Wno-missing-deriving-strategies
+                       -Wno-safe
+                       -Wno-unsafe
+                       -fprint-potential-instances
+  cpp-options: -DINTEGER_GMP
+
 library
+  import: deps
+
   exposed-modules:
     Formatting
     Formatting.Formatters
@@ -31,36 +72,15 @@ library
     Data.Text.Format
     Data.Text.Format.Int
 
-  build-depends:
-    base >= 4.5 && < 5,
-    text >= 0.11.0.8,
-    time,
-    old-locale,
-    scientific >= 0.3.0.0,
-    clock >= 0.4,
-    array,
-    ghc-prim,
-    text >= 0.11.0.8,
-    transformers,
-    bytestring >=0.10.4,
-    integer-gmp >= 0.2
-
-  if !impl(ghc >= 8.0)
-    build-depends: semigroups
-
   hs-source-dirs:    src
-  default-language: Haskell98
-  cpp-options: -DINTEGER_GMP
 
 test-suite formatting-test
+  import:              deps
+  build-depends:       formatting, hspec
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  build-depends:       base, formatting, hspec, scientific, text
-  if !impl(ghc >= 8.0)
-    build-depends: semigroups
-  default-language: Haskell98
-  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
 
 source-repository head
   type:     git
