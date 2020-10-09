@@ -112,11 +112,11 @@ Built-in formatter combinators:
 | `[a]`                                    | `[1..]`                   | `"[1, 10, 11, 100]"`                | `took 4 (list bin)`                  |
 | `[a]`                                    | `[1..6]`                  | `"[4, 5, 6]"`                       | `dropped 3 (list int)`               |
 | `a`                                      | `"one two\tthree\nfour`   | `"one, two, three, four"`           | `splat isSpace commaSpaceSep stext`  |
-| `a`                                      | `1234567890`              | `"[123, 456, 789, 0]"`              | `splatWith`                          |
-| `a`                                      | `"one,two,three"`         | `"one\ntwo\nthree\n"`               | `splatOn`                            |
-| `a`                                      | `"one  two three  "`      | `"[one, two, three]"`               | `worded`                             |
-| `a`                                      | `"one\n\ntwo\nthree\n\n`  | `"["one", "", "two", "three", ""]"` | `lined`                              |
-| `a`                                      | `123456`                  | `"654321"`                          | `alteredWith`                        |
+| `a`                                      | `1234567890`              | `"[123, 456, 789, 0]"`              | `splatWith (chunksOf 3) list int`    |
+| `a`                                      | `"one,two,three"`         | `"one\ntwo\nthree\n"`               | `splatOn "," unlined t`              |
+| `a`                                      | `"one  two three  "`      | `"[one, two, three]"`               | `worded list text`                   |
+| `a`                                      | `"one\n\ntwo\nthree\n\n`  | `"["one", "", "two", "three", ""]"` | `lined qlist text`                   |
+| `a`                                      | `123456`                  | `"654321"`                          | `alteredWith TL.reverse int`         |
 | `a`                                      | `"look and boot"`         | `"leek and beet"`                   | `replaced "oo" "ee" text`            |
 | `a`                                      | `"look and boot"`         | `"LOOK AND BOOT"`                   | `uppercased`                         |
 | `a`                                      | `"Look and Boot"`         | `"look and boot"`                   | `lowercased`                         |
@@ -143,7 +143,7 @@ Built-in formatter combinators:
 | `a`                                      | `"Goo"`                   | `"[Goo]"`                           | `squared t`                          |
 | `a`                                      | `"Goo"`                   | `"{Goo}"`                           | `braced t`                           |
 | `a`                                      | `"Goo"`                   | `"<Goo>"`                           | `angled t`                           |
-| `a`                                      | `"Goo"`                   | `"`Goo`"`                           | `backticked t`                       |
+| `a`                                      | `"Goo"`                   | ``"`Goo`"``                         | `backticked t`                       |
 | `a`                                      | `"Goo"`                   | `"   Goo"`                          | `indented 3 t`                       |
 | `Foldable t => t a`                      | `[1, 2, 3]`               | `"  1\n  2\n  3"`                   | `indentedLines 2 d`                  |
 | `a`                                      | `"1\n2\n3"`               | `"  1\n  2\n  3"`                   | `reindented 2 t`                     |
