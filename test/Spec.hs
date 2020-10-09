@@ -4,10 +4,12 @@ import Control.Monad
 import Data.Char (isSpace)
 import Data.Int
 import qualified Data.Monoid
+import Data.Scientific
 import qualified Data.Semigroup
 import qualified Data.Text.Lazy as LT
 import Formatting as F
 import Formatting.Time
+import Formatting.ShortFormatters
 import Test.Hspec
 
 main :: IO ()
@@ -42,6 +44,18 @@ spec = do
   describe "Floating point" $ do
     it "Fixed"    $ format (fixed 4) (12.123456 :: Double) `shouldBe` "12.1235"
     it "Variable" $ format float     (12.123456 :: Double) `shouldBe` "12.123456"
+    it "Shortest" $ format shortest  12.0000 `shouldBe` "12.0"
+
+  describe "Scientific" $ do
+    it "sci" $ format sci (scientific 60221409 16) `shouldBe` "6.0221409e23"
+    it "scifmt" $ format (scifmt Exponent (Just 3)) (scientific 60221409 16) `shouldBe` "6.022e23"
+    it "scifmt" $ format (scifmt Exponent Nothing) (scientific 60221409 16) `shouldBe` "6.0221409e23"
+    it "scifmt" $ format (scifmt Fixed Nothing) (scientific 60221409 16) `shouldBe` "602214090000000000000000.0"
+    it "scifmt" $ format (scifmt Generic (Just 5)) (scientific 60221409 16) `shouldBe` "6.02214e23"
+
+  describe "Bytes" $ do
+    it "1.0KB" $ format (bytes shortest) 1024 `shouldBe` "1.0KB"
+    it "1.15GB" $ format (bytes (fixed 2)) 1234567890 `shouldBe` "1.15GB"
 
   describe
     "Buildable a => Buildable [a]"
