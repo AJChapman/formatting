@@ -362,7 +362,7 @@ rpadded i c = alteredWith (TL.justifyLeft i c)
 
 -- | Pad the formatted string on the left and right with the given character to center it, giving it the given minimum width:
 --
--- >>> format (rpadded 7 ' ' int) 1
+-- >>> format (cpadded 7 ' ' int) 1
 -- "   1   "
 cpadded :: Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
 cpadded i c = alteredWith (TL.center i c)
@@ -408,15 +408,15 @@ rfixed n c = rtruncated n . lpadded n c
 cfixed :: Int64 -> Int64 -> Char -> Format r (a -> r) -> Format r (a -> r)
 cfixed l r c = ctruncated l r . cpadded (l + r + 3) c
 
- -- | Add the given prefix to the formatted item:
- --
- -- >>> format ("The answer is: " % prefixed "wait for it... " int) 42
- -- "The answer is: wait for it... 42"
- --
- -- >>> fprint (unlined (indented 4 (prefixed "- " int))) [1, 2, 3]
- --     - 1
- --     - 2
- --     - 3
+-- | Add the given prefix to the formatted item:
+--
+-- >>> format ("The answer is: " % prefixed "wait for it... " int) 42
+-- "The answer is: wait for it... 42"
+--
+-- >>> fprint (unlined (indented 4 (prefixed "- " int))) [1, 2, 3]
+--     - 1
+--     - 2
+--     - 3
 prefixed :: Builder -> Format r a -> Format r a
 prefixed s f = now s % f
 

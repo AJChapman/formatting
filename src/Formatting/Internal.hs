@@ -114,7 +114,7 @@ instance Category Format where
 -- Notice how the argument types of @format1@ and @format3@ are
 -- gathered into the type of @myFormat@.
 --
--- (This is actually the composition operator for 'Format''s
+-- (This is actually the composition operator for 'Format's
 -- 'Category' instance, but that is (at present) inconvenient to use
 -- with regular "Prelude". So this function is provided as a
 -- convenience.)
