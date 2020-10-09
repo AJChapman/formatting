@@ -9,7 +9,7 @@ maintainer:          alex@farfromthere.net
 copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, 2011 MailRank, Inc., 2020 Alex Chapman
 category:            Text
 build-type:          Simple
-cabal-version:       >=1.8
+cabal-version:       1.12
 extra-source-files:  CHANGELOG.md
 
 library
@@ -49,6 +49,7 @@ library
     build-depends: semigroups
 
   hs-source-dirs:    src
+  default-language: Haskell98
   ghc-options:       -O2
   cpp-options: -DINTEGER_GMP
 
@@ -59,6 +60,7 @@ test-suite formatting-test
   build-depends:       base, formatting, hspec, scientific, text
   if !impl(ghc >= 8.0)
     build-depends: semigroups
+  default-language: Haskell98
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
 
 source-repository head
