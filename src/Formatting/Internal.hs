@@ -57,7 +57,7 @@ newtype Format r a =
 -- adapted = fmap (. adapter) formatter
 -- @
 instance Functor (Format r) where
-  fmap f (Format k) = Format (\br -> f (k br))
+  fmap f (Format k) = Format (f . k)
 
 -- | Useful instance for applying two formatters to the same input
 -- argument. For example: @format (year <> "/" % month) now@ will
@@ -181,5 +181,5 @@ hprintLn :: Handle -> Format (IO ()) a -> a
 hprintLn h m = runFormat m (T.hPutStrLn h . T.toLazyText)
 
 -- | Run the formatter and return a list of characters.
-formatToString :: Format [Char] a -> a
+formatToString :: Format String a -> a
 formatToString m = runFormat m (TL.unpack . TLB.toLazyText)

@@ -1,5 +1,4 @@
 {-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS -Wall #-}
 
 -- |

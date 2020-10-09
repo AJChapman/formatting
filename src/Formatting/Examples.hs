@@ -11,7 +11,7 @@ import Formatting
 
 -- | Simple hello, world!
 hello :: Text
-hello = format ("Hello, World!")
+hello = format "Hello, World!"
 
 -- | Printing strings.
 strings :: Text
