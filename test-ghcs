@@ -1,5 +1,10 @@
 set -e
 
+# Test GHC 8.8.4
+stack clean
+stack setup --resolver lts-16.17
+stack build . --resolver lts-16.17 --test --ghc-options=-Werror --force-dirty --ghc-options=-fforce-recomp
+
 # Test GHC 8.4.1
 
 echo GHC 8.4.1 ...
