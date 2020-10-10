@@ -1,6 +1,10 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE CPP #-}
+#if !(MIN_VERSION_base(4,11,0))
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE UndecidableInstances #-}
+#endif
 
 -- | Internal format starters.
 
