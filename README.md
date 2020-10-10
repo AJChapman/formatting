@@ -1,3 +1,5 @@
+# formatting [![Build Status](https://travis-ci.org/AJChapman/formatting.png)](https://travis-ci.org/AJChapman/formatting) [![Hackage](https://img.shields.io/hackage/v/formatting.svg?style=flat)](https://hackage.haskell.org/package/formatting)
+
 Formatting is a type-safe and flexible library for formatting text from built-in or custom data types.
 
 - [Hackage Documentation](https://hackage.haskell.org/package/formatting)
