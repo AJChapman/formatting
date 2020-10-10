@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP #-}
 {-|
 Module      : Formatting.Combinators
 Copyright   : (c) 2020 Alex Chapman
@@ -94,6 +95,9 @@ import Data.Foldable (toList)
 import Data.Function ((&))
 import Data.Functor.Const (Const(..), getConst)
 import Data.Int (Int64)
+#if !(MIN_VERSION_base(4,11,0))
+import Data.Monoid ((<>))
+#endif
 import Data.Text.Lazy (Text)
 import qualified Data.Text.Lazy as TL
 import Data.Text.Lazy.Builder (Builder)
