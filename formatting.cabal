@@ -12,6 +12,7 @@ copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen,
 category:            Text
 build-type:          Simple
 extra-source-files:  CHANGELOG.md
+                     README.md
 
 common deps
   build-depends:
