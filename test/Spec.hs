@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS -Wno-type-defaults #-}
 
 import Control.Monad
 import Data.Char (isSpace)
@@ -9,7 +10,6 @@ import qualified Data.Semigroup
 import qualified Data.Text.Lazy as LT
 import Formatting as F
 import Formatting.Time
-import Formatting.ShortFormatters
 import Test.Hspec
 
 main :: IO ()
@@ -22,7 +22,7 @@ spec = do
       it "format (later id <> later id) \"x\"" $ format (later id Data.Monoid.<> later id)    "x" `shouldBe` "xx"
       it "format (later id <> later id) \"x\"" $ format (later id Data.Semigroup.<> later id) "x" `shouldBe` "xx"
 
-    describe "https://github.com/AJChapman/formatting/issues/31" $ do
+    describe "https://github.com/AJChapman/formatting/issues/31" $
       it "10^6-1" $ F.format F.int (10 ^ (16 :: Int) - 1 :: Int) `shouldBe` "9999999999999999"
 
     describe "https://github.com/AJChapman/formatting/issues/28" $ do
@@ -38,7 +38,7 @@ spec = do
       it "left 3 '0' (0 :: Int)"  $ format (left 3 '0') (0 ::Int)  `shouldBe` "000"
       it "left 3 '0' (0 :: Word)" $ format (left 3 '0') (0 ::Word) `shouldBe` "000"
 
-    describe "https://github.com/AJChapman/formatting/issues/60" $ do
+    describe "https://github.com/AJChapman/formatting/issues/60" $
       it "build (minBound :: Word)" $ format build (minBound :: Word) `shouldBe` "0"
 
     describe "https://github.com/AJChapman/formatting/issues/59" $
@@ -110,19 +110,19 @@ spec = do
                   , (34, "34th")
                   ]
 
-      forM_ tests $ \(input, output) -> it output $ format ords input `shouldBe` (LT.pack output)
+      forM_ tests $ \(input, output) -> it output $ format ords input `shouldBe` LT.pack output
 
   describe "plural" $ do
     let formatPeople = format (int % " " <> plural "person" "people" % ".")
-    it "formats a person" $ formatPeople 1 `shouldBe` "1 person."
-    it "formats a person" $ formatPeople 3 `shouldBe` "3 people."
+    it "formats a person" $ formatPeople (1 :: Int) `shouldBe` "1 person."
+    it "formats a person" $ formatPeople (3 :: Int) `shouldBe` "3 people."
 
   describe "diffComponents" $ do
-    it "59s" $ flip shouldBe "00:00:00:59" $ format diffComponents 59
-    it "minute" $ flip shouldBe "00:00:01:00" $ format diffComponents 60
-    it "90s" $ flip shouldBe "00:00:01:30" $ format diffComponents 90
-    it "hour" $ flip shouldBe "00:01:00:00" $ format diffComponents 3600
-    it "day" $ flip shouldBe "01:00:00:00" $ format diffComponents 86400
+    it "59s" $ flip shouldBe "00:00:00:59" $ format diffComponents (59 :: Double)
+    it "minute" $ flip shouldBe "00:00:01:00" $ format diffComponents (60 :: Double)
+    it "90s" $ flip shouldBe "00:00:01:30" $ format diffComponents (90 :: Double)
+    it "hour" $ flip shouldBe "00:01:00:00" $ format diffComponents (3600 :: Double)
+    it "day" $ flip shouldBe "01:00:00:00" $ format diffComponents (86400 :: Double)
 
   describe "list formatters" $ do
     it "concatenated" $ format (concatenated text) ["one", "two", "three"] `shouldBe` "onetwothree"
