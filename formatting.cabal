@@ -3,12 +3,15 @@ name:                formatting
 version:             7.0.0.1
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
+                     .
+                     See the README at <https://github.com/AJChapman/formatting/blob/master/README.md> for more info.
+homepage:            https://github.com/AJChapman/formatting/blob/master/README.md
 bug-reports:         https://github.com/AJChapman/formatting/issues
 license:             BSD-3-Clause
 license-file:        LICENSE
 author:              Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, Bryan O'Sullivan, Alex Chapman
 maintainer:          alex@farfromthere.net
-copyright:           2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, 2011 MailRank, Inc., 2020 Alex Chapman
+copyright:           2020 Alex Chapman, 2013 Chris Done, Shachaf Ben-Kiki, Martijn van Steenbergen, Mike Meyer, 2011 MailRank, Inc.
 category:            Text
 build-type:          Simple
 extra-source-files:  CHANGELOG.md
