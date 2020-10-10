@@ -7,7 +7,7 @@ before_test:
 - curl -sS -ostack.zip -L --insecure https://get.haskellstack.org/stable/windows-x86_64.zip
 - 7z x stack.zip stack.exe
 
-clone_folder: c:\projects\formatting
+# clone_folder: c:\projects\formatting
 environment:
   global:
     STACK_ROOT: c:\sr
