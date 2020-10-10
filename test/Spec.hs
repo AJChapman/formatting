@@ -1,9 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP #-}
 {-# OPTIONS -Wno-type-defaults #-}
 
 import Control.Monad
 import Data.Char (isSpace)
 import Data.Int
+#if !(MIN_VERSION_base(4,11,0))
+import Data.Monoid ((<>))
+#endif
 import qualified Data.Monoid
 import Data.Scientific
 import qualified Data.Semigroup
