@@ -1,9 +1,27 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE CPP #-}
 
 -- | Internal format starters.
 
-module Formatting.Internal where
+module Formatting.Internal
+  ( Format(..)
+  , (%)
+  , (%.)
+  , now
+  , bind
+  , mapf
+  , later
+  , format
+  , sformat
+  , bprint
+  , bformat
+  , fprint
+  , fprintLn
+  , hprint
+  , hprintLn
+  , formatToString
+  ) where
 
 import           Control.Category (Category(..))
 import           Data.Monoid
@@ -59,17 +77,23 @@ newtype Format r a =
 instance Functor (Format r) where
   fmap f (Format k) = Format (f . k)
 
+instance Data.Semigroup.Semigroup (Format r (a -> r)) where
+  m <> n =
+    Format (\k a ->
+              runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> b2)) a) a)
+
 -- | Useful instance for applying two formatters to the same input
 -- argument. For example: @format (year <> "/" % month) now@ will
 -- yield @"2015/01"@.
-instance Monoid (Format r (a -> r)) where
-  mappend m n =
-    Format (\k a ->
-              runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> b2)) a) a)
-  mempty = Format (\k _ -> k mempty)
-
-instance Data.Semigroup.Semigroup (Format r (a -> r)) where
-  (<>) = mappend
+instance
+#if !(MIN_VERSION_base(4,11,0))
+  Semigroup (Format r (a -> r)) =>
+#endif
+  Monoid (Format r (a -> r)) where
+#if !(MIN_VERSION_base(4,11,0))
+    mappend = (<>)
+#endif
+    mempty = Format (\k _ -> k mempty)
 
 -- | Useful instance for writing format string. With this you can
 -- write @"Foo"@ instead of @now "Foo!"@.

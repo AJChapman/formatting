@@ -4,20 +4,71 @@
 
 -- | Formatters for time.
 
-module Formatting.Time where
+module Formatting.Time
+  ( tz
+  , tzName
+  , datetime
+  , hm
+  , hms
+  , hmsL
+  , hmsPL
+  , dayHalf
+  , dayHalfU
+  , hour24
+  , hour12
+  , hour24S
+  , hour12S
+  , minute
+  , second
+  , pico
+  , decimals
+  , epoch
+  , dateSlash
+  , dateDash
+  , dateSlashL
+  , year
+  , yy
+  , century
+  , monthName
+  , monthNameShort
+  , month
+  , dayOfMonth
+  , dayOfMonthOrd
+  , dayOfMonthS
+  , day
+  , weekYear
+  , weekYY
+  , weekCentury
+  , week
+  , dayOfWeek
+  , dayNameShort
+  , dayName
+  , weekFromZero
+  , dayOfWeekFromZero
+  , weekOfYearMon
+  , diff
+  , years
+  , days
+  , hours
+  , minutes
+  , seconds
+  , diffComponents
+  , customDiffComponents
+  , fmt
+  , customTimeFmt
+  ) where
 
 import           Data.List
-import           Data.Text.Lazy.Builder
 import           Data.Tuple
-import           Formatting.Formatters  hiding (build)
+import           Formatting.Formatters  hiding (build, base)
 import           Formatting.Internal
 
 import           Data.Text              (Text)
 import qualified Data.Text              as T
 import           Formatting.Buildable
-import           Data.Time
+import           Data.Time (FormatTime, formatTime, defaultTimeLocale)
 #if MIN_VERSION_time(1,5,0)
-import           System.Locale hiding (defaultTimeLocale)
+import           System.Locale ()
 #else
 import           System.Locale
 #endif
@@ -232,63 +283,63 @@ diff fix =
     ranges =
       [(0,int % " milliseconds",0.001)
       ,(1,int % " seconds",1)
-      ,(minute,fconst "a minute",0)
-      ,(minute*2,int % " minutes",minute)
-      ,(minute*30,fconst "half an hour",0)
-      ,(minute*31,int % " minutes",minute)
-      ,(hour,fconst "an hour",0)
-      ,(hour*2,int % " hours",hour)
-      ,(hour*3,fconst "a few hours",0)
-      ,(hour*4,int % " hours",hour)
-      ,(day,fconst "a day",0)
-      ,(day*2,int % " days",day)
-      ,(week,fconst "a week",0)
-      ,(week*2,int % " weeks",week)
-      ,(month,fconst "a month",0)
-      ,(month*2,int % " months",month)
-      ,(year,fconst "a year",0)
-      ,(year*2,int % " years",year)]
-      where year = month * 12
-            month = day * 30
-            week = day * 7
-            day = hour * 24
-            hour = minute * 60
-            minute = 60
+      ,(minute',fconst "a minute",0)
+      ,(minute'*2,int % " minutes",minute')
+      ,(minute'*30,fconst "half an hour",0)
+      ,(minute'*31,int % " minutes",minute')
+      ,(hour',fconst "an hour",0)
+      ,(hour'*2,int % " hours",hour')
+      ,(hour'*3,fconst "a few hours",0)
+      ,(hour'*4,int % " hours",hour')
+      ,(day',fconst "a day",0)
+      ,(day'*2,int % " days",day')
+      ,(week',fconst "a week",0)
+      ,(week'*2,int % " weeks",week')
+      ,(month',fconst "a month",0)
+      ,(month'*2,int % " months",month')
+      ,(year',fconst "a year",0)
+      ,(year'*2,int % " years",year')]
+      where year' = month' * 12
+            month' = day' * 30
+            week' = day' * 7
+            day' = hour' * 24
+            hour' = minute' * 60
+            minute' = 60
 
 -- | Display the absolute value time span in years.
 years :: (RealFrac n)
       => Int -- ^ Decimal places.
       -> Format r (n -> r)
 years n = later (bprint (fixed n) . abs . count)
-  where count n = n / 365 / 24 / 60 / 60
+  where count n' = n' / 365 / 24 / 60 / 60
 
 -- | Display the absolute value time span in days.
 days :: (RealFrac n)
       => Int -- ^ Decimal places.
       -> Format r (n -> r)
 days n = later (bprint (fixed n) . abs . count)
-  where count n = n / 24 / 60 / 60
+  where count n' = n' / 24 / 60 / 60
 
 -- | Display the absolute value time span in hours.
 hours :: (RealFrac n)
       => Int -- ^ Decimal places.
       -> Format r (n -> r)
 hours n = later (bprint (fixed n) . abs . count)
-  where count n = n / 60 / 60
+  where count n' = n' / 60 / 60
 
 -- | Display the absolute value time span in minutes.
 minutes :: (RealFrac n)
       => Int -- ^ Decimal places.
       -> Format r (n -> r)
 minutes n = later (bprint (fixed n) . abs . count)
-  where count n = n / 60
+  where count n' = n' / 60
 
 -- | Display the absolute value time span in seconds.
 seconds :: (RealFrac n)
       => Int -- ^ Decimal places.
       -> Format r (n -> r)
 seconds n = later (bprint (fixed n) . abs . count)
-  where count n = n
+  where count n' = n'
 
 -- | Display seconds in the following pattern:
 -- @00:00:00:00@, which ranges from days to seconds.
@@ -297,14 +348,14 @@ diffComponents = customDiffComponents (left 2 '0' % ":" % left 2 '0' % ":" % lef
 
 -- | Variation of 'diffComponents',
 -- which lets you explicitly specify how to render each component.
-customDiffComponents :: (RealFrac n) => (forall r. Format r (Integer -> Integer -> Integer -> Integer -> r)) -> Format r (n -> r)
-customDiffComponents subFormat = later builder where
-  builder diffTime = flip evalState (round diffTime) $ do
-    seconds <- state (swap . flip divMod 60)
-    minutes <- state (swap . flip divMod 60)
-    hours <- state (swap . flip divMod 24)
-    days <- get
-    return (bprint subFormat days hours minutes seconds)
+customDiffComponents :: (RealFrac n) => (forall r'. Format r' (Integer -> Integer -> Integer -> Integer -> r')) -> Format r (n -> r)
+customDiffComponents subFormat = later builder' where
+  builder' diffTime = flip evalState (round diffTime) $ do
+    seconds' <- state (swap . flip divMod 60)
+    minutes' <- state (swap . flip divMod 60)
+    hours' <- state (swap . flip divMod 24)
+    days' <- get
+    return (bprint subFormat days' hours' minutes' seconds')
 
 -- * Internal.
 

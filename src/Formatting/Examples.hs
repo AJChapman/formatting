@@ -3,7 +3,16 @@
 -- | Examples that should always compile. If reading on Haddock, you
 -- can view the sources to each of these.
 
-module Formatting.Examples where
+module Formatting.Examples
+  ( hello
+  , strings
+  , texts
+  , builders
+  , integers
+  , floats
+  , hexes
+  , padding
+  ) where
 
 import Data.Text.Lazy (Text)
 import Data.Text.Lazy.Builder (Builder)

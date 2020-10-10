@@ -11,7 +11,21 @@
 --
 -- Single letters for short formatting.
 
-module Formatting.ShortFormatters where
+module Formatting.ShortFormatters
+  ( t
+  , d
+  , b
+  , o
+  , x
+  , st
+  , s
+  , sh
+  , c
+  , f
+  , sf
+  , l
+  , r
+  ) where
 
 import           Formatting.Formatters (bin, int, oct)
 import           Formatting.Internal

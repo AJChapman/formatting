@@ -23,22 +23,12 @@ module Data.Text.Format
     , shortest
     ) where
 
-import           Control.Monad.IO.Class (MonadIO(liftIO))
-import qualified Data.ByteString.Lazy as L
-import qualified Data.ByteString.Builder as L
 import           Data.Double.Conversion.Text
-import           Data.Text (Text)
-import qualified Data.Text as ST
-import qualified Data.Text as T
 import qualified Formatting.Buildable as B
-import qualified Data.Text.Encoding as T
-import           Data.Text.Format.Functions ((<>))
-import           Data.Text.Format.Types (Shown(..), Hex(..))
+import           Data.Text.Format.Types (Hex(..))
 import qualified Data.Text.Lazy as LT
 import           Data.Text.Lazy.Builder
-import qualified Data.Text.Lazy.IO as LT
 import           Prelude hiding (exp, print)
-import           System.IO (Handle)
 
 -- | Pad the left hand side of a string until it reaches @k@
 -- characters wide, if necessary filling with character @c@.
