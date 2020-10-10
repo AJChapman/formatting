@@ -1,10 +1,9 @@
 7.0.0
 
 * Introduced `Formatting.Combinators`.
-* Fixed: https://github.com/AJChapman/formatting/issues/62
-* Fixed: https://github.com/AJChapman/formatting/issues/60
-* Fixed: https://github.com/AJChapman/formatting/issues/59 rendering of floats e.g. 0.01 as "0.01" rather than "1.0e-2"
-* Added dependency of double-conversion to provide fast and correct rendering of floating-point numbers.
+* Fixed: #62 and #60: incorrect formatting of Integral types that do not have negative values (e.g. Word)
+* Fixed: #59 rendering of floats e.g. 0.01 as "0.01" rather than "1.0e-2"
+* Added dependency of double-conversion to provide fast and correct rendering of floating-point numbers (including the fix for #59).
 * Make compatible with bytestring-0.11.0.0
 * Removed -O2 ghc flag
 * Updated .cabal file version from 1.8 to 2.4
@@ -38,8 +37,8 @@
   * `prec`
   * `expt`
 * Added a test suite with regression tests:
-  * Fixed: https://github.com/chrisdone/formatting/issues/31
-  * Fixed: https://github.com/chrisdone/formatting/issues/28
+  * Fixed: #31
+  * Fixed: #28
   * Fixed: https://github.com/bos/text-format/issues/18
 
 6.2.5
