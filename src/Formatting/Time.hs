@@ -58,7 +58,7 @@ module Formatting.Time
   , customTimeFmt
   ) where
 
-import           Data.List
+import           Data.List (find)
 import           Data.Tuple
 import           Formatting.Formatters  hiding (build, base)
 import           Formatting.Internal

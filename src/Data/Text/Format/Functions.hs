@@ -24,6 +24,7 @@ import Prelude hiding ((<>))
 import GHC.Base hiding ((<>))
 #else
 import GHC.Base
+import Data.Monoid (mappend)
 #endif
 
 -- | Unsafe conversion for decimal digits.

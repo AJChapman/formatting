@@ -87,7 +87,7 @@ instance Data.Semigroup.Semigroup (Format r (a -> r)) where
 -- yield @"2015/01"@.
 instance
 #if !(MIN_VERSION_base(4,11,0))
-  Semigroup (Format r (a -> r)) =>
+  Data.Semigroup.Semigroup (Format r (a -> r)) =>
 #endif
   Monoid (Format r (a -> r)) where
 #if !(MIN_VERSION_base(4,11,0))

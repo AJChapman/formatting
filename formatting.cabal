@@ -1,6 +1,6 @@
 cabal-version:       2.4
 name:                formatting
-version:             7.0.0.1
+version:             7.0.1
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
                      .
@@ -36,11 +36,9 @@ common deps
     old-locale,
     scientific >= 0.3.0.0,
     clock >= 0.4,
-    array,
     ghc-prim,
     text >= 0.11.0.8,
     transformers,
-    bytestring >=0.10.4,
     integer-gmp >= 0.2,
     double-conversion ^>= 2.0.2.0
 
@@ -63,6 +61,8 @@ common deps
                        -Wno-missing-deriving-strategies
                        -Wno-safe
                        -Wno-unsafe
+                       -Wno-prepositive-qualified-module
+                       -Wno-missing-safe-haskell-mode
                        -fprint-potential-instances
   cpp-options: -DINTEGER_GMP
 

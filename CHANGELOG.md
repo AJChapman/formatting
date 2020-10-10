@@ -1,3 +1,8 @@
+7.0.1
+
+* Removed unnecessary dependencies on array and bytestring
+* Fixed compile in older GHCs
+
 7.0.0.1
 
 * Added README.md to extra-source-files so it shows up on Hackage
