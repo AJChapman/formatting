@@ -1,6 +1,6 @@
 cabal-version:       2.4
 name:                formatting
-version:             7.0.0
+version:             7.0.0.1
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
 bug-reports:         https://github.com/AJChapman/formatting/issues

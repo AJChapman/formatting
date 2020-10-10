@@ -1,3 +1,7 @@
+7.0.0.1
+
+* Added README.md to extra-source-files so it shows up on Hackage
+
 7.0.0
 
 * Introduced `Formatting.Combinators`.
