@@ -103,7 +103,7 @@ Built-in formatter combinators:
 | ----------------------------------------:| ------------------------  | ----------------------------------- | -------------------------------------|
 | `Foldable t => t a`                      | `[1, 2, 3]`               | `"1st2nd3rd"`                       | `concatenated ords`                  |
 | `Foldable t => t a`                      | `[123, 456, 789]`         | `"789456123"`                       | `joinedWith (mconcat . reverse) int` |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1||2||3"`                         | `intercalated "||" int`              |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1\|\|2\|\|3"`                     | `intercalated "\|\|" int`              |
 | `Foldable t => t a`                      | `[1, 2, 3]`               | `"1 2 3"`                           | `unworded int`                       |
 | `Foldable t => t a`                      | `[1, 2, 3]`               | `"1\n2\n3"`                         | `unlined d`                          |
 | `Foldable t => t a`                      | `[1, 2, 3]`               | `"1 2 3"`                           | `spaced int`                         |
