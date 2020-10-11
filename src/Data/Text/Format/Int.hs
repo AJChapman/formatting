@@ -31,6 +31,12 @@ import GHC.Integer.Internals
 # else
 import GHC.Integer.GMP.Internals
 # endif
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Monoid (mempty)
+import Data.Word (Word)
+import GHC.Num (quotRemInteger)
+#endif
 #endif
 
 #ifdef INTEGER_GMP
