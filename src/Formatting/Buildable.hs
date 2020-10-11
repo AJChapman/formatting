@@ -1,6 +1,8 @@
 {-# LANGUAGE CPP, FlexibleInstances, OverloadedStrings #-}
+#if (MIN_VERSION_base(4,11,0))
 -- The instance Buildable (Ratio a) is redundant in recent GHCs, but required in 7.x GHCs
 {-# OPTIONS -Wno-redundant-constraints #-}
+#endif
 
 -- |
 -- Module      : Data.Text.Buildable
