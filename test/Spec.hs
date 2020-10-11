@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__ >= 800
 {-# OPTIONS -Wno-type-defaults #-}
+#endif
 
 import Control.Monad
 import Data.Char (isSpace)

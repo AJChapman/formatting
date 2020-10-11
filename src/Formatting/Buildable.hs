@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP, FlexibleInstances, OverloadedStrings #-}
-#if (MIN_VERSION_base(4,11,0))
+#if __GLASGOW_HASKELL__ >= 800
 -- The instance Buildable (Ratio a) is redundant in recent GHCs, but required in 7.x GHCs
 {-# OPTIONS -Wno-redundant-constraints #-}
 #endif
