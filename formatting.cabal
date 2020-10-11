@@ -49,7 +49,8 @@ common deps
 -- Enable all warnings with -Weverything, then disable the ones we
 -- don’t care about
   default-language:    Haskell2010
-  ghc-options:         -Weverything
+  if impl(ghc >= 8.0)
+    ghc-options:       -Weverything
                        -Wno-all-missed-specialisations
                        -Wno-implicit-prelude
                        -Wno-missed-specialisations
@@ -60,9 +61,12 @@ common deps
                        -Wno-missing-deriving-strategies
                        -Wno-safe
                        -Wno-unsafe
-                       -Wno-prepositive-qualified-module
-                       -Wno-missing-safe-haskell-mode
                        -fprint-potential-instances
+  else
+    ghc-options:       -Wall
+  if impl(ghc >= 8.10)
+    ghc-options:       -Wno-prepositive-qualified-module
+                       -Wno-missing-safe-haskell-mode
   cpp-options: -DINTEGER_GMP
 
 library
