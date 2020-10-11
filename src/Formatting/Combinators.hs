@@ -93,7 +93,9 @@ module Formatting.Combinators
 import Control.Applicative (Const(..), getConst)
 import Control.Category ((>>>))
 import Data.Foldable (toList)
+#if MIN_VERSION_base(4,8,0)
 import Data.Function ((&))
+#endif
 import Data.Int (Int64)
 #if !(MIN_VERSION_base(4,11,0))
 import Data.Monoid ((<>))
@@ -104,6 +106,11 @@ import Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as TLB
 import Formatting.Internal
 import Formatting.Formatters
+
+#if !MIN_VERSION_base(4,8,0)
+(&) :: a -> (a -> b) -> b
+x & f = f x
+#endif
 
 -- | Format each value in a list and concatenate them all:
 --
