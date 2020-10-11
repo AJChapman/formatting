@@ -21,7 +21,7 @@ clone_folder: "c:\\stack"
 before_test:
   # Override the temp directory to avoid sed escaping issues
   # See https://github.com/haskell/cabal/issues/5386
-  TMP: "c:\\tmp"
+  - set TMP=C:\tmp
 
   # http://help.appveyor.com/discussions/problems/6312-curl-command-not-found
   - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
