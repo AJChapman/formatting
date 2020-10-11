@@ -19,16 +19,16 @@ environment:
 clone_folder: "c:\\stack"
 
 before_test:
-  # Override the temp directory to avoid sed escaping issues
-  # See https://github.com/haskell/cabal/issues/5386
-  - set TMP=C:\tmp
-
   # http://help.appveyor.com/discussions/problems/6312-curl-command-not-found
   - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
   - curl -sS -ostack.zip -L --insecure https://get.haskellstack.org/stable/windows-x86_64.zip
   - 7z x stack.zip stack.exe
 
 test_script:
+  # Override the temp directory to avoid sed escaping issues
+  # See https://github.com/haskell/cabal/issues/5386
+  - set TMP=C:\tmp
+
   # Install toolchain, but do it silently due to lots of output
   - stack %ARGS% setup > nul
   # The ugly echo "" hack is to avoid complaints about 0 being an invalid file
