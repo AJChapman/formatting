@@ -40,6 +40,11 @@ import           Foreign.Ptr (IntPtr, WordPtr, Ptr, ptrToWordPtr)
 import qualified Data.Text as ST
 import qualified Data.Text.Lazy as LT
 
+#if __GLASGOW_HASKELL__ < 710
+import Data.Monoid (mempty)
+import Data.Word (Word)
+#endif
+
 -- | The class of types that can be rendered to a 'Builder'.
 class Buildable p where
     build :: p -> Builder
