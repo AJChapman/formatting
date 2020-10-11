@@ -90,10 +90,10 @@ module Formatting.Combinators
   , hexPrefix
   ) where
 
+import Control.Applicative (Const(..), getConst)
 import Control.Category ((>>>))
 import Data.Foldable (toList)
 import Data.Function ((&))
-import Data.Functor.Const (Const(..), getConst)
 import Data.Int (Int64)
 #if !(MIN_VERSION_base(4,11,0))
 import Data.Monoid ((<>))
