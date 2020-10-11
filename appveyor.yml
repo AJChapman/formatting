@@ -8,12 +8,11 @@ environment:
     STACK_ROOT: "c:\\sr"
 
   matrix:
-    - ARGS: ""
-    - ARGS: "--resolver lts-12"
-    - ARGS: "--resolver lts-13"
-    - ARGS: "--resolver lts-14"
-    - ARGS: "--resolver lts-15"
-    - ARGS: "--resolver lts-16"
+    # - ARGS: "--resolver lts-12" # We support ghc-8.4, but this particular build fails due to cabal compatibility issues
+    - ARGS: "--resolver lts-13" # ghc-8.6.4
+    - ARGS: "--resolver lts-14" # ghc-8.6.5
+    - ARGS: "--resolver lts-15" # ghc-8.8.2
+    - ARGS: "--resolver lts-16" # ghc-8.8.4
     - ARGS: "--resolver nightly"
 
 clone_folder: "c:\\stack"
