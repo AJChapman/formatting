@@ -1,6 +1,4 @@
 {-# LANGUAGE RankNTypes #-}
-{-# OPTIONS -Wall #-}
-
 -- |
 -- Module      : Formatting.ShortFormatters
 -- Copyright   : (c) 2013 Chris Done, 2013 Shachaf Ben-Kiki

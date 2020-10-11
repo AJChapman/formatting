@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -67,11 +66,7 @@ import           Data.Text              (Text)
 import qualified Data.Text              as T
 import           Formatting.Buildable
 import           Data.Time (FormatTime, formatTime, defaultTimeLocale)
-#if MIN_VERSION_time(1,5,0)
 import           System.Locale ()
-#else
-import           System.Locale
-#endif
 import           Control.Monad.Trans.State.Strict
 
 -- * For 'TimeZone' (and 'ZonedTime' and 'UTCTime'):

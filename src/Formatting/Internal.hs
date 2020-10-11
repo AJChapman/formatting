@@ -1,9 +1,5 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE CPP #-}
-#if __GLASGOW_HASKELL__ >= 800
-{-# OPTIONS -Wno-noncanonical-monoid-instances #-} -- See comment on Semigroup instance below
-#endif
 
 -- | Internal format starters.
 
@@ -28,7 +24,6 @@ module Formatting.Internal
 
 import           Control.Category (Category(..))
 import           Data.Monoid
-import qualified Data.Semigroup
 import           Data.String
 import qualified Data.Text as S (Text)
 import           Data.Text.Lazy (Text)
@@ -80,22 +75,16 @@ newtype Format r a =
 instance Functor (Format r) where
   fmap f (Format k) = Format (f . k)
 
+instance Semigroup (Format r (a -> r)) where
+  m <> n =
+    Format (\k a ->
+              runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> b2)) a) a)
+
 -- | Useful instance for applying two formatters to the same input
 -- argument. For example: @format (year <> "/" % month) now@ will
 -- yield @"2015/01"@.
-instance
-  Monoid (Format r (a -> r)) where
-    mappend m n =
-      Format (\k a ->
-                runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> b2)) a) a)
-    mempty = Format (\k _ -> k mempty)
-
--- See https://github.com/AJChapman/formatting/issues/36 for why we define
--- Semigroup in terms of Monoid and not the other way around.
--- This can probably change if/when we drop support for GHC <= 8.2.
--- See also the regression test for the above issue.
-instance Data.Semigroup.Semigroup (Format r (a -> r)) where
-  (<>) = mappend
+instance Monoid (Format r (a -> r)) where
+  mempty = Format (\k _ -> k mempty)
 
 -- | Useful instance for writing format string. With this you can
 -- write @"Foo"@ instead of @now "Foo!"@.

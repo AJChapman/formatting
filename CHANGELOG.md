@@ -1,7 +1,7 @@
-7.0.1
+7.0.0.2
 
 * Removed unnecessary dependencies on array and bytestring
-* Fixed compile in older GHCs
+* Actually removed code to support GHC < 8.4
 
 7.0.0.1
 
@@ -16,6 +16,7 @@
 * Make compatible with bytestring-0.11.0.0
 * Removed -O2 ghc flag
 * Updated .cabal file version from 1.8 to 2.4
+* Drop support for GHC < 8.4
 
 6.3.7
 

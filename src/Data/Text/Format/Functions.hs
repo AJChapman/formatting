@@ -1,5 +1,4 @@
 {-# LANGUAGE MagicHash #-}
-{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Data.Text.Format.Functions
@@ -13,19 +12,13 @@
 -- Useful functions and combinators.
 
 module Data.Text.Format.Functions
-    (
-      (<>)
+    ( (<>)
     , i2d
     ) where
 
 import Data.Text.Lazy.Builder (Builder)
-#if MIN_VERSION_base(4,11,0)
 import Prelude hiding ((<>))
 import GHC.Base hiding ((<>))
-#else
-import GHC.Base
-import Data.Monoid (mappend)
-#endif
 
 -- | Unsafe conversion for decimal digits.
 {-# INLINE i2d #-}

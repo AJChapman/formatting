@@ -1,8 +1,4 @@
 {-# LANGUAGE CPP, FlexibleInstances, OverloadedStrings #-}
-#if __GLASGOW_HASKELL__ >= 800
--- The instance Buildable (Ratio a) is redundant in recent GHCs, but required in 7.x GHCs
-{-# OPTIONS -Wno-redundant-constraints #-}
-#endif
 
 -- |
 -- Module      : Data.Text.Buildable
@@ -20,10 +16,6 @@ module Formatting.Buildable
       Buildable(..)
     ) where
 
-#if MIN_VERSION_base(4,8,0)
-import           Data.Void (Void, absurd)
-#endif
-
 import           Data.Int (Int8, Int16, Int32, Int64)
 import           Data.Fixed (Fixed, HasResolution, showFixed)
 import           Data.List (intersperse)
@@ -35,15 +27,11 @@ import           Data.Text.Lazy.Builder
 import           Data.Time.Calendar (Day, showGregorian)
 import           Data.Time.Clock (getModJulianDate, DiffTime, NominalDiffTime, UTCTime, UniversalTime)
 import           Data.Time.LocalTime (LocalTime, TimeOfDay, TimeZone, ZonedTime)
+import           Data.Void (Void, absurd)
 import           Data.Word (Word8, Word16, Word32, Word64)
 import           Foreign.Ptr (IntPtr, WordPtr, Ptr, ptrToWordPtr)
 import qualified Data.Text as ST
 import qualified Data.Text.Lazy as LT
-
-#if __GLASGOW_HASKELL__ < 710
-import Data.Monoid (mempty)
-import Data.Word (Word)
-#endif
 
 -- | The class of types that can be rendered to a 'Builder'.
 class Buildable p where
@@ -52,10 +40,8 @@ class Buildable p where
 instance Buildable Builder where
     build = id
 
-#if MIN_VERSION_base(4,8,0)
 instance Buildable Void where
     build = absurd
-#endif
 
 instance Buildable LT.Text where
     build = fromLazyText
@@ -125,7 +111,7 @@ instance Buildable Word64 where
     build = decimal
     {-# INLINE build #-}
 
-instance (Integral a, Buildable a) => Buildable (Ratio a) where
+instance Buildable a => Buildable (Ratio a) where
     {-# SPECIALIZE instance Buildable (Ratio Integer) #-}
     build a = build (numerator a) F.<> singleton '/' F.<> build (denominator a)
 
@@ -195,9 +181,6 @@ instance Buildable Bool where
     build True = fromText "True"
     build False = fromText "False"
 
-#if MIN_VERSION_base(4,8,0)
 instance {-# OVERLAPPABLE #-} Buildable a => Buildable [a] where
-    build = \xs -> "[" F.<> mconcat (intersperse "," (map build xs)) F.<> "]"
+    build xs = "[" F.<> mconcat (intersperse "," (map build xs)) F.<> "]"
     {-# INLINE build #-}
-#endif
-

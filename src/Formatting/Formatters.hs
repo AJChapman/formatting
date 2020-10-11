@@ -1,7 +1,5 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE CPP #-}
-
 -- |
 -- Module      : Formatting.Formatters
 -- Copyright   : (c) 2013 Chris Done, 2013 Shachaf Ben-Kiki
@@ -57,9 +55,6 @@ module Formatting.Formatters
 import           Formatting.Internal
 
 import           Data.Char (chr, ord)
-#if !(MIN_VERSION_base(4,11,0))
-import           Data.Monoid ((<>))
-#endif
 import           Data.Scientific
 import qualified Data.Text as S
 import qualified Data.Text as T

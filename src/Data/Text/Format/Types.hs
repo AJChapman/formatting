@@ -12,9 +12,7 @@
 -- Types for text mangling.
 
 module Data.Text.Format.Types
-    (
-
-     Shown(..)
+    ( Shown(..)
     -- * Integer format control
     , Hex(..)
     ) where

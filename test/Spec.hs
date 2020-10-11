@@ -1,15 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE CPP #-}
-#if __GLASGOW_HASKELL__ >= 800
 {-# OPTIONS -Wno-type-defaults #-}
-#endif
 
 import Control.Monad
 import Data.Char (isSpace)
 import Data.Int
-#if !(MIN_VERSION_base(4,11,0))
-import Data.Monoid ((<>))
-#endif
 import qualified Data.Monoid
 import Data.Scientific
 import qualified Data.Semigroup
