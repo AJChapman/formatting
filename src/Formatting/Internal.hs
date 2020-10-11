@@ -1,6 +1,9 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__ >= 800
 {-# OPTIONS -Wno-noncanonical-monoid-instances #-} -- See comment on Semigroup instance below
+#endif
 
 -- | Internal format starters.
 
