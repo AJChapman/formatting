@@ -1,4 +1,6 @@
 {-# LANGUAGE CPP, FlexibleInstances, OverloadedStrings #-}
+-- The instance Buildable (Ratio a) is redundant in recent GHCs, but required in 7.x GHCs
+{-# OPTIONS -Wno-redundant-constraints #-}
 
 -- |
 -- Module      : Data.Text.Buildable
@@ -116,7 +118,7 @@ instance Buildable Word64 where
     build = decimal
     {-# INLINE build #-}
 
-instance Buildable a => Buildable (Ratio a) where
+instance (Integral a, Buildable a) => Buildable (Ratio a) where
     {-# SPECIALIZE instance Buildable (Ratio Integer) #-}
     build a = build (numerator a) F.<> singleton '/' F.<> build (denominator a)
 
