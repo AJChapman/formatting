@@ -30,7 +30,6 @@ common deps
     scientific >= 0.3.0.0,
     clock >= 0.4,
     ghc-prim,
-    text >= 0.11.0.8,
     transformers,
     integer-gmp >= 0.2,
     double-conversion ^>= 2.0.2.0
