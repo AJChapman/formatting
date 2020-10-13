@@ -35,21 +35,21 @@ They are all joined together using the `%` operator, producing a formatter which
 It produces a lazy `Text`, because we used `format`.
 To produce other string types, or print the result instead, refer to this table:
 
-| To produce a  | use                                                                                                              |
-| ------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `TL.Text`     | [`format`](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:format)                 |
-| `T.Text`      | [`sformat`](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:sformat)               |
-| `Builder`     | [`bformat`](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:bformat)               |
-| `String`      | [`formatToString`](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:formatToString) |
+| To produce a  | use              |
+| ------------- | ---------------- |
+| `TL.Text`     | [`format`]       |
+| `T.Text`      | `sformat`        |
+| `Builder`     | `bformat`        |
+| `String`      | `formatToString` |
 
 To print the values instead, refer to this table:
 
-| To print to                   | use                                                                                                  |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `stdout`                      | `[fprint](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:fprint)`     |
-| `stdout`, appending a newline | `[fprintLn](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:fprintLn)` |
-| a handle                      | `[hprint](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:hprint)`     |
-| a handle, appending a newline | `[hprintLn](https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:hprintLn)` |
+| To print to                   | use              |
+| ----------------------------- | ---------------- |
+| `stdout`                      | `fprint`         |
+| `stdout`, appending a newline | `fprintLn`       |
+| a handle                      | `hprint`         |
+| a handle, appending a newline | `hprintLn`       |
 
 Apart from the `%` operator, formatters can also be joined using the monoid append operator (`<>`) to avoid repeating the same argument, they can be chained using `%.`, and there are also formatter combinators for composing more advanced combinators.
 More on this below.
@@ -503,3 +503,5 @@ Now you can use it to maybe format things:
 > format (mfmt "Nope!" int) (readMaybe "foo")
 "Nope!"
 ```
+
+[`format`]: https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:format
