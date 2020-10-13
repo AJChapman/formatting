@@ -124,6 +124,18 @@ spec = do
     it "hour" $ flip shouldBe "00:01:00:00" $ format diffComponents (3600 :: Double)
     it "day" $ flip shouldBe "01:00:00:00" $ format diffComponents (86400 :: Double)
 
+  describe "container formatters" $ do
+    it "maybed Nothing" $ format (maybed "Goodbye" text) Nothing `shouldBe` "Goodbye"
+    it "maybed Just" $ format (maybed "Goodbye" text) (Just "Hello") `shouldBe` "Hello"
+    it "optioned Nothing" $ format (optioned text) Nothing `shouldBe` ""
+    it "optioned Just" $ format (optioned text) (Just "Hello") `shouldBe` "Hello"
+    it "eithered Left" $ format (eithered text int) (Left "Error!") `shouldBe` "Error!"
+    it "eithered Right" $ format (eithered text int) (Right 69) `shouldBe` "69"
+    it "lefted Left" $ format (lefted text) (Left "bingo") `shouldBe` "bingo"
+    it "lefted Right" $ format (lefted text) (Right 16) `shouldBe` ""
+    it "righted Left" $ format (righted text) (Left 16) `shouldBe` ""
+    it "righted Right" $ format (righted text) (Right "bingo") `shouldBe` "bingo"
+
   describe "list formatters" $ do
     it "concatenated" $ format (concatenated text) ["one", "two", "three"] `shouldBe` "onetwothree"
     it "joinedWith" $ format (joinedWith (mconcat . reverse) int) [123, 456, 789] `shouldBe` "789456123"

@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 {-|
 Module      : Formatting.Combinators
 Copyright   : (c) 2020 Alex Chapman
@@ -18,8 +19,15 @@ This does not tie you to using 'Builder's, because the final output string type 
 |-}
 module Formatting.Combinators
   (
+  -- * Formatting common containers
+    maybed
+  , optioned
+  , eithered
+  , lefted
+  , righted
+
   -- * Formatting lists of data
-    concatenated
+  , concatenated
   , joinedWith
   , intercalated
   , unworded
@@ -101,6 +109,66 @@ import qualified Data.Text.Lazy.Builder as TLB
 import Formatting.Internal
 import Formatting.Formatters
 
+-- | Render a Maybe value either as a default (if Nothing) or using the given formatter:
+--
+-- >>> format (maybed "Goodbye" text) Nothing
+-- "Goodbye"
+--
+-- >>> format (maybed "Goodbye" text) (Just "Hello")
+-- "Hello"
+maybed
+  :: Builder -- ^ The value to use when the input is Nothing
+  -> Format Builder (a -> Builder) -- ^ The formatter to use on the value in a Just
+  -> Format r (Maybe a -> r)
+maybed whenNothing f = later $ \case
+  Nothing -> whenNothing
+  Just x -> bformat f x
+
+-- | Render the value in a Maybe using the given formatter, or produce an empty string:
+--
+-- >>> format (optioned text) Nothing
+-- ""
+--
+-- >>> format (optioned text) (Just "Hello")
+-- "Hello"
+optioned :: Format Builder (a -> Builder) -> Format r (Maybe a -> r)
+optioned = maybed ""
+
+-- | Render the value in an Either:
+--
+-- >>> format (eithered text int) (Left "Error!"
+-- "Error!"
+--
+-- >>> format (eithered text int) (Right 69)
+-- "69"
+eithered
+  :: Format Builder (a -> Builder) -- ^ The formatter to use on a value in a Left
+  -> Format Builder (b -> Builder) -- ^ The formatter to use on a value in a Right
+  -> Format r (Either a b -> r)
+eithered l r = later $ \case
+  Left x -> bformat l x
+  Right x -> bformat r x
+
+-- | Render the value in a Left with the given formatter, rendering a Right as an empty string:
+--
+-- >>> format (lefted text) (Left "bingo")
+-- "bingo"
+--
+-- >>> format (lefted text) (Right 16)
+-- ""
+lefted :: Format Builder (a -> Builder) -> Format r (Either a x -> r)
+lefted f = eithered f (fconst "")
+
+-- | Render the value in a Right with the given formatter, rendering a Left as an empty string:
+--
+-- >>> format (righted text) (Left 16)
+-- ""
+--
+-- >>> format (righted text) (Right "bingo")
+-- "bingo"
+righted :: Format Builder (a -> Builder) -> Format r (Either x a -> r)
+righted = eithered (fconst "")
+
 -- | Format each value in a list and concatenate them all:
 --
 -- >>> format (concatenated text) ["one", "two", "three"]
@@ -109,7 +177,7 @@ import Formatting.Formatters
 -- >>> format (took 15 (concatenated bin)) [1..]
 -- "1101110010111011110001001101010111100110111101111"
 concatenated :: Foldable t => Format Builder (a -> Builder) -> Format r (t a -> r)
-concatenated f = later $ foldMap (bprint f)
+concatenated f = later $ foldMap (bformat f)
 
 -- | Use the given text-joining function to join together the individually rendered items of a list.
 --
@@ -117,7 +185,7 @@ concatenated f = later $ foldMap (bprint f)
 -- "789456123"
 joinedWith :: Foldable t => ([Text] -> Text) -> Format Builder (a -> Builder) -> Format r (t a -> r)
 joinedWith joiner f = later $ toList
-  >>> fmap (bprint f >>> TLB.toLazyText)
+  >>> fmap (bformat f >>> TLB.toLazyText)
   >>> joiner
   >>> TLB.fromLazyText
 
@@ -216,7 +284,7 @@ splatWith
 splatWith splitter lf f = later (TLB.toLazyText
   >>> splitter
   >>> fmap TLB.fromLazyText
-  >>> bprint (lf builder))
+  >>> bformat (lf builder))
   %. f
 
 -- | Split the formatted item in places the given predicated matches, and use the given list combinator to render the resultant list of strings

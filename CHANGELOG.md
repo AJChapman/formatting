@@ -1,3 +1,7 @@
+7.1.0
+
+* Added common container formatter combinators: `maybed`, `optioned`, `eithered`, `lefted`, and `righted`.
+
 7.0.0.2
 
 * Removed unnecessary dependencies on array and bytestring
