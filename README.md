@@ -527,8 +527,7 @@ Now you can use it to maybe format things:
 [`groupInt`]:       https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:groupInt
 [`commas`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:commas
 [`ords`]:           https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:ords
-[`int`]:            https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:int
-[`int`]:            https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:int
+[`plural`]:            https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:plural
 [`asInt`]:          https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:asInt
 [`bin`]:            https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:bin
 [`prefixBin`]:      https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Formatters.html#v:prefixBin
@@ -589,10 +588,7 @@ Now you can use it to maybe format things:
 [`rpadded`]:        https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:rpadded
 [`cpadded`]:        https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:cpadded
 [`lfixed`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:lfixed
-[`lfixed`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:lfixed
 [`rfixed`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:rfixed
-[`rfixed`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:rfixed
-[`cfixed`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:cfixed
 [`cfixed`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:cfixed
 [`prefixed`]:       https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:prefixed
 [`suffixed`]:       https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting-Combinators.html#v:suffixed
