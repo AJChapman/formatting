@@ -35,21 +35,21 @@ They are all joined together using the `%` operator, producing a formatter which
 It produces a lazy `Text`, because we used `format`.
 To produce other string types, or print the result instead, refer to this table:
 
-| To produce a  | use              |
-| ------------- | ---------------- |
-| `TL.Text`     | [`format`]       |
-| `T.Text`      | `sformat`        |
-| `Builder`     | `bformat`        |
-| `String`      | `formatToString` |
+| To produce a  | use                |
+| ------------- | ------------------ |
+| `TL.Text`     | [`format`]         |
+| `T.Text`      | [`sformat`]        |
+| `Builder`     | [`bformat`]        |
+| `String`      | [`formatToString`] |
 
 To print the values instead, refer to this table:
 
-| To print to                   | use              |
-| ----------------------------- | ---------------- |
-| `stdout`                      | `fprint`         |
-| `stdout`, appending a newline | `fprintLn`       |
-| a handle                      | `hprint`         |
-| a handle, appending a newline | `hprintLn`       |
+| To print to                   | use           |
+| ----------------------------- | ------------- |
+| `stdout`                      | [`fprint`]    |
+| `stdout`, appending a newline | [`fprintLn`]  |
+| a handle                      | [`hprint`]    |
+| a handle, appending a newline | [`hprintLn`]  |
 
 Apart from the `%` operator, formatters can also be joined using the monoid append operator (`<>`) to avoid repeating the same argument, they can be chained using `%.`, and there are also formatter combinators for composing more advanced combinators.
 More on this below.
@@ -58,39 +58,39 @@ More on this below.
 
 Built-in formatters:
 
-| To format a                            | e.g.                     | as               | use                          | short form  |
-| --------------------------------------:| ------------------------ | ---------------- | ---------------------------- | ----------  |
-|                            lazy `Text` | `"Hello"`                | `"Hello"`        | `text`                       | `t`         |
-|                          strict `Text` | `"World!"`               | `"World!"`       | `stext`                      | `st`        | 
-|                               `String` | `"Goodbye"`              | `"Goodbye"`      | `string`                     | `s`         |
-|                              `Builder` | `"Bathtub"`              | `"Bathtub"`      | `builder`                    |             |
-|                          `Show a => a` | `[1, 2, 3]`              | `"[1, 2, 3]"`    | `shown`                      | `sh`        |
-|                                 `Char` | `'!'`                    | `"!"`            | `char`                       | `c`         |
-|                      `Integral a => a` | `23`                     | `"23"`           | `int`                        | `d`         |
-|                          `Real a => a` | `123.32`                 | `"123.32"`       | `float`                      | `sf`        |
-|                          `Real a => a` | `123.32`                 | `"123.320"`      | `fixed 3`                    | `f`         |
-|                           `Scientific` | `scientific 60221409 16` | `"6.0221409e23"` | `sci`                        |             |
-|                           `Scientific` | `scientific 60221409 16` | `"6.022e23"`     | `scifmt Exponent (Just 3)`   |             |
-|         `Buildable n, Integral n => n` | `123456`                 | `"12.34.56"`     | `groupInt 2 '.'`             |             |
-|         `Buildable n, Integral n => n` | `12000`                  | `"12,000"`       | `commas`                     |             |
-|                      `Integral n => n` | `32`                     | `"32nd"`         | `ords`                       |             |
-|                     `Num a, Eq a => a` | `1`                      | `"1 ant"`        | `int <> plural "ant" "ants"` |             |
-|                     `Num a, Eq a => a` | `2`                      | `"2 ants"`       | `int <> plural "ant" "ants"` |             |
-|                          `Enum a => a` | `a`                      | `"97"`           | `asInt`                      |             |
-|                      `Integral a => a` | `23`                     | `"10111"`        | `bin`                        | `b`         |
-|                      `Integral a => a` | `23`                     | `"0b10111"`      | `prefixBin`                  |             |
-|                      `Integral a => a` | `23`                     | `"27"`           | `oct`                        | `o`         |
-|                      `Integral a => a` | `23`                     | `"0o27"`         | `prefixOct`                  |             |
-|                      `Integral a => a` | `23`                     | `"17"`           | `hex`                        | `x`         |
-|                      `Integral a => a` | `23`                     | `"0x17"`         | `prefixHex`                  |             |
-|                      `Integral a => a` | `23`                     | `"13"`           | `base 20`                    |             |
-|                     `Buildable a => a` | `10`                     | `"  10"`         | `left 4 ' '`                 | `l`         |
-|                     `Buildable a => a` | `10`                     | `"10  "`         | `right 4 ' '`                | `r`         |
-|                     `Buildable a => a` | `10`                     | `" 10 "`         | `center 4 ' '`               |             |
-|                     `Buildable a => a` |  `123456`                | `"123"`          | `fitLeft 3`                  |             |
-|                     `Buildable a => a` |  `123456`                | `"456"`          | `fitRight 3`                 |             |
-|                     `Buildable a => a` |  `True`                  | `"True"`         | `build`                      |             |
-|                                    `a` | `undefined`              | `"gronk!"`       | `fconst "gronk!"`            |             |
+| To format a                            | e.g.                     | as               | use                                | short form |
+| --------------------------------------:| ------------------------ | ---------------- | ---------------------------------- | ---------- |
+|                            lazy `Text` | `"Hello"`                | `"Hello"`        | [`text`]                           | [`t`]      |
+|                          strict `Text` | `"World!"`               | `"World!"`       | [`stext`]                          | [`st`]     | 
+|                               `String` | `"Goodbye"`              | `"Goodbye"`      | [`string`]                         | [`s`]      |
+|                              `Builder` | `"Bathtub"`              | `"Bathtub"`      | [`builder`]                        |            |
+|                          `Show a => a` | `[1, 2, 3]`              | `"[1, 2, 3]"`    | [`shown`]                          | [`sh`]     |
+|                                 `Char` | `'!'`                    | `"!"`            | [`char`]                           | [`c`]      |
+|                      `Integral a => a` | `23`                     | `"23"`           | [`int`]                            | [`d`]      |
+|                          `Real a => a` | `123.32`                 | `"123.32"`       | [`float`]                          | [`sf`]     |
+|                          `Real a => a` | `123.32`                 | `"123.320"`      | [`fixed`] `3`                      | [`f`]      |
+|                           `Scientific` | `scientific 60221409 16` | `"6.0221409e23"` | [`sci`]                            |            |
+|                           `Scientific` | `scientific 60221409 16` | `"6.022e23"`     | [`scifmt`] `Exponent (Just 3)`     |            |
+|         `Buildable n, Integral n => n` | `123456`                 | `"12.34.56"`     | [`groupInt`] `2 '.'`               |            |
+|         `Buildable n, Integral n => n` | `12000`                  | `"12,000"`       | [`commas`]                         |            |
+|                      `Integral n => n` | `32`                     | `"32nd"`         | [`ords`]                           |            |
+|                     `Num a, Eq a => a` | `1`                      | `"1 ant"`        | `int <>` [`plural`] `"ant" "ants"` |            |
+|                     `Num a, Eq a => a` | `2`                      | `"2 ants"`       | `int <>` [`plural`] `"ant" "ants"` |            |
+|                          `Enum a => a` | `a`                      | `"97"`           | [`asInt`]                          |            |
+|                      `Integral a => a` | `23`                     | `"10111"`        | [`bin`]                            | [`b`]      |
+|                      `Integral a => a` | `23`                     | `"0b10111"`      | [`prefixBin`]                      |            |
+|                      `Integral a => a` | `23`                     | `"27"`           | [`oct`]                            | [`o`]      |
+|                      `Integral a => a` | `23`                     | `"0o27"`         | [`prefixOct`]                      |            |
+|                      `Integral a => a` | `23`                     | `"17"`           | [`hex`]                            | [`x`]      |
+|                      `Integral a => a` | `23`                     | `"0x17"`         | [`prefixHex`]                      |            |
+|                      `Integral a => a` | `23`                     | `"13"`           | [`base`] `20`                      |            |
+|                     `Buildable a => a` | `10`                     | `"  10"`         | [`left`] `4 ' '`                   | [`l`]      |
+|                     `Buildable a => a` | `10`                     | `"10  "`         | [`right`] `4 ' '`                  | [`r`]      |
+|                     `Buildable a => a` | `10`                     | `" 10 "`         | [`center`] `4 ' '`                 |            |
+|                     `Buildable a => a` |  `123456`                | `"123"`          | [`fitLeft`] `3`                    |            |
+|                     `Buildable a => a` |  `123456`                | `"456"`          | [`fitRight`] `3`                   |            |
+|                     `Buildable a => a` |  `True`                  | `"True"`         | [`build`]                          |            |
+|                                    `a` | `undefined`              | `"gronk!"`       | [`fconst`] `"gronk!"`              |            |
 
 ### Formatter Combinator Quick Reference
 
@@ -99,67 +99,67 @@ Formatter combinators take a formatter and modify it somehow, e.g. by using it t
 Built-in formatter combinators:
 
 
-| To format a                              | e.g.                      | as                                  | use                                  |
-| ----------------------------------------:| ------------------------  | ----------------------------------- | -------------------------------------|
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1st2nd3rd"`                       | `concatenated ords`                  |
-| `Foldable t => t a`                      | `[123, 456, 789]`         | `"789456123"`                       | `joinedWith (mconcat . reverse) int` |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1\|\|2\|\|3"`                     | `intercalated "\|\|" int`            |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1 2 3"`                           | `unworded int`                       |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1\n2\n3"`                         | `unlined d`                          |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1 2 3"`                           | `spaced int`                         |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1,2,3"`                           | `commaSep int`                       |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1st, 2nd, 3rd"`                   | `commaSpaceSep ords`                 |
-| `Foldable t => t a`                      | `["one", "two", "three"]` | `"[one, two, three]"`               | `list t`                             |
-| `Foldable t => t a`                      | `["one", "two", "three"]` | `"[\"one\", \"two\", \"three\"]"`   | `qlist t`                            |
-| `[a]`                                    | `[1..]`                   | `"[1, 10, 11, 100]"`                | `took 4 (list bin)`                  |
-| `[a]`                                    | `[1..6]`                  | `"[4, 5, 6]"`                       | `dropped 3 (list int)`               |
-| `a`                                      | `"one two\tthree\nfour`   | `"one, two, three, four"`           | `splat isSpace commaSpaceSep stext`  |
-| `a`                                      | `1234567890`              | `"[123, 456, 789, 0]"`              | `splatWith (chunksOf 3) list int`    |
-| `a`                                      | `"one,two,three"`         | `"one\ntwo\nthree\n"`               | `splatOn "," unlined t`              |
-| `a`                                      | `"one  two three  "`      | `"[one, two, three]"`               | `worded list text`                   |
-| `a`                                      | `"one\n\ntwo\nthree\n\n`  | `"["one", "", "two", "three", ""]"` | `lined qlist text`                   |
-| `a`                                      | `123456`                  | `"654321"`                          | `alteredWith TL.reverse int`         |
-| `a`                                      | `"look and boot"`         | `"leek and beet"`                   | `replaced "oo" "ee" text`            |
-| `a`                                      | `"look and boot"`         | `"LOOK AND BOOT"`                   | `uppercased`                         |
-| `a`                                      | `"Look and Boot"`         | `"look and boot"`                   | `lowercased`                         |
-| `a`                                      | `"look and boot"`         | `"Look And Boot"`                   | `titlecased`                         |
-| `a`                                      | `"hellos"`                | `"he..."`                           | `ltruncated 5 text`                  |
-| `a`                                      | `"hellos"`                | `"h...s"`                           | `ctruncated`                         |
-| `a`                                      | `"hellos"`                | `"...os"`                           | `rtruncated 5 text`                  |
-| `a`                                      | `1`                       | `"  1"`                             | `lpadded 3 int`                      |
-| `a`                                      | `1`                       | `"1  "`                             | `rpadded 3 int`                      |
-| `a`                                      | `1`                       | `" 1 "`                             | `cpadded 3 int`                      |
-| `a`                                      | `123`                     | `"123 "`                            | `lfixed 4 int`                       |
-| `a`                                      | `123456`                  | `"1..."`                            | `lfixed 4 int`                       |
-| `a`                                      | `123`                     | `" 123"`                            | `rfixed 4 int`                       |
-| `a`                                      | `123456`                  | `"...6"`                            | `rfixed 4 int`                       |
-| `a`                                      | `123`                     | `"  123 "`                          | `cfixed 2 1 ' ' int`                 |
-| `a`                                      | `1234567`                 | `"12...7"`                          | `cfixed 2 1 ' ' int`                 |
-| `a`                                      | `"Goo"`                   | `"McGoo"`                           | `prefixed "Mc" t`                    |
-| `a`                                      | `"Goo"`                   | `"Goosen"`                          | `suffixed "sen" t`                   |
-| `a`                                      | `"Goo"`                   | `"McGooMc"`                         | `surrounded "Mc" t`                  |
-| `a`                                      | `"Goo"`                   | `"McGoosen"`                        | `enclosed "Mc" "sen" t`              |
-| `a`                                      | `"Goo"`                   | `"'Goo'"`                           | `squoted t`                          |
-| `a`                                      | `"Goo"`                   | `"\"Goo\""`                         | `dquoted t`                          |
-| `a`                                      | `"Goo"`                   | `"(Goo)"`                           | `parenthesised t`                    |
-| `a`                                      | `"Goo"`                   | `"[Goo]"`                           | `squared t`                          |
-| `a`                                      | `"Goo"`                   | `"{Goo}"`                           | `braced t`                           |
-| `a`                                      | `"Goo"`                   | `"<Goo>"`                           | `angled t`                           |
-| `a`                                      | `"Goo"`                   | ``"`Goo`"``                         | `backticked t`                       |
-| `a`                                      | `"Goo"`                   | `"   Goo"`                          | `indented 3 t`                       |
-| `Foldable t => t a`                      | `[1, 2, 3]`               | `"  1\n  2\n  3"`                   | `indentedLines 2 d`                  |
-| `a`                                      | `"1\n2\n3"`               | `"  1\n  2\n  3"`                   | `reindented 2 t`                     |
-| `Integral i, RealFrac d => d`            | `6.66`                    | `"7"`                               | `roundedTo int`                      |
-| `Integral i, RealFrac d => d`            | `6.66`                    | `"6"`                               | `truncatedTo int`                    |
-| `Integral i, RealFrac d => d`            | `6.66`                    | `"7"`                               | `ceilingedTo int`                    |
-| `Integral i, RealFrac d => d`            | `6.66`                    | `"6"`                               | `flooredTo int`                      |
-| field through a `Lens' s a`              | `(1, "goo")`              | `"goo"`                             | `viewed _2 t`                        |
-| field through a record accessor `s -> a` | `(1, "goo")`              | `"1"`                               | `accessed fst d`                     |
-| `Integral a => a`                        | `4097`                    | `"0b0001000000000001"`              | `binPrefix 16`                       |
-| `Integral a => a`                        | `4097`                    | `"0o0000000000010001"`              | `octPrefix 16`                       |
-| `Integral a => a`                        | `4097`                    | `"0x0000000000001001"`              | `hexPrefix 16`                       |
-| `Ord f, Integral a, Fractional f => a`   | `1024`                    | `"1KB"`                             | `bytes shortest`                     |
-| `Ord f, Integral a, Fractional f => a`   | `1234567890`              | `"1.15GB"`                          | `bytes (fixed 2)`                    |
+| To format a                              | e.g.                      | as                                  | use                                      |
+| ----------------------------------------:| ------------------------  | ----------------------------------- | ---------------------------------------- |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1st2nd3rd"`                       | [`concatenated`] `ords`                  |
+| `Foldable t => t a`                      | `[123, 456, 789]`         | `"789456123"`                       | [`joinedWith`] `(mconcat . reverse) int` |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1\|\|2\|\|3"`                     | [`intercalated`] `"\|\|" int`            |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1 2 3"`                           | [`unworded`] `int`                       |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1\n2\n3"`                         | [`unlined`] `d`                          |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1 2 3"`                           | [`spaced`] `int`                         |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1,2,3"`                           | [`commaSep`] `int`                       |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"1st, 2nd, 3rd"`                   | [`commaSpaceSep`] `ords`                 |
+| `Foldable t => t a`                      | `["one", "two", "three"]` | `"[one, two, three]"`               | [`list`] `t`                             |
+| `Foldable t => t a`                      | `["one", "two", "three"]` | `"[\"one\", \"two\", \"three\"]"`   | [`qlist`] `t`                            |
+| `[a]`                                    | `[1..]`                   | `"[1, 10, 11, 100]"`                | [`took`] `4 (list bin)`                  |
+| `[a]`                                    | `[1..6]`                  | `"[4, 5, 6]"`                       | [`dropped`] `3 (list int)`               |
+| `a`                                      | `"one two\tthree\nfour`   | `"one, two, three, four"`           | [`splat`] `isSpace commaSpaceSep stext`  |
+| `a`                                      | `1234567890`              | `"[123, 456, 789, 0]"`              | [`splatWith`] `(chunksOf 3) list int`    |
+| `a`                                      | `"one,two,three"`         | `"one\ntwo\nthree\n"`               | [`splatOn`] `"," unlined t`              |
+| `a`                                      | `"one  two three  "`      | `"[one, two, three]"`               | [`worded`] `list text`                   |
+| `a`                                      | `"one\n\ntwo\nthree\n\n`  | `"["one", "", "two", "three", ""]"` | [`lined`] `qlist text`                   |
+| `a`                                      | `123456`                  | `"654321"`                          | [`alteredWith`] `TL.reverse int`         |
+| `a`                                      | `"look and boot"`         | `"leek and beet"`                   | [`replaced`] `"oo" "ee" text`            |
+| `a`                                      | `"look and boot"`         | `"LOOK AND BOOT"`                   | [`uppercased`]                           |
+| `a`                                      | `"Look and Boot"`         | `"look and boot"`                   | [`lowercased`]                           |
+| `a`                                      | `"look and boot"`         | `"Look And Boot"`                   | [`titlecased`]                           |
+| `a`                                      | `"hellos"`                | `"he..."`                           | [`ltruncated`] `5 text`                  |
+| `a`                                      | `"hellos"`                | `"h...s"`                           | [`ctruncated`]                           |
+| `a`                                      | `"hellos"`                | `"...os"`                           | [`rtruncated`] `5 text`                  |
+| `a`                                      | `1`                       | `"  1"`                             | [`lpadded`] `3 int`                      |
+| `a`                                      | `1`                       | `"1  "`                             | [`rpadded`] `3 int`                      |
+| `a`                                      | `1`                       | `" 1 "`                             | [`cpadded`] `3 int`                      |
+| `a`                                      | `123`                     | `"123 "`                            | [`lfixed`] `4 int`                       |
+| `a`                                      | `123456`                  | `"1..."`                            | [`lfixed`] `4 int`                       |
+| `a`                                      | `123`                     | `" 123"`                            | [`rfixed`] `4 int`                       |
+| `a`                                      | `123456`                  | `"...6"`                            | [`rfixed`] `4 int`                       |
+| `a`                                      | `123`                     | `"  123 "`                          | [`cfixed`] `2 1 ' ' int`                 |
+| `a`                                      | `1234567`                 | `"12...7"`                          | [`cfixed`] `2 1 ' ' int`                 |
+| `a`                                      | `"Goo"`                   | `"McGoo"`                           | [`prefixed`] `"Mc" t`                    |
+| `a`                                      | `"Goo"`                   | `"Goosen"`                          | [`suffixed`] `"sen" t`                   |
+| `a`                                      | `"Goo"`                   | `"McGooMc"`                         | [`surrounded`] `"Mc" t`                  |
+| `a`                                      | `"Goo"`                   | `"McGoosen"`                        | [`enclosed`] `"Mc" "sen" t`              |
+| `a`                                      | `"Goo"`                   | `"'Goo'"`                           | [`squoted`] `t`                          |
+| `a`                                      | `"Goo"`                   | `"\"Goo\""`                         | [`dquoted`] `t`                          |
+| `a`                                      | `"Goo"`                   | `"(Goo)"`                           | [`parenthesised`] `t`                    |
+| `a`                                      | `"Goo"`                   | `"[Goo]"`                           | [`squared`] `t`                          |
+| `a`                                      | `"Goo"`                   | `"{Goo}"`                           | [`braced`] `t`                           |
+| `a`                                      | `"Goo"`                   | `"<Goo>"`                           | [`angled`] `t`                           |
+| `a`                                      | `"Goo"`                   | ``"`Goo`"``                         | [`backticked`] `t`                       |
+| `a`                                      | `"Goo"`                   | `"   Goo"`                          | [`indented`] `3 t`                       |
+| `Foldable t => t a`                      | `[1, 2, 3]`               | `"  1\n  2\n  3"`                   | [`indentedLines`] `2 d`                  |
+| `a`                                      | `"1\n2\n3"`               | `"  1\n  2\n  3"`                   | [`reindented`] `2 t`                     |
+| `Integral i, RealFrac d => d`            | `6.66`                    | `"7"`                               | [`roundedTo`] `int`                      |
+| `Integral i, RealFrac d => d`            | `6.66`                    | `"6"`                               | [`truncatedTo`] `int`                    |
+| `Integral i, RealFrac d => d`            | `6.66`                    | `"7"`                               | [`ceilingedTo`] `int`                    |
+| `Integral i, RealFrac d => d`            | `6.66`                    | `"6"`                               | [`flooredTo`] `int`                      |
+| field through a `Lens' s a`              | `(1, "goo")`              | `"goo"`                             | [`viewed`] `_2 t`                        |
+| field through a record accessor `s -> a` | `(1, "goo")`              | `"1"`                               | [`accessed`] `fst d`                     |
+| `Integral a => a`                        | `4097`                    | `"0b0001000000000001"`              | [`binPrefix`] `16`                       |
+| `Integral a => a`                        | `4097`                    | `"0o0000000000010001"`              | [`octPrefix`] `16`                       |
+| `Integral a => a`                        | `4097`                    | `"0x0000000000001001"`              | [`hexPrefix`] `16`                       |
+| `Ord f, Integral a, Fractional f => a`   | `1024`                    | `"1KB"`                             | [`bytes`] `shortest`                     |
+| `Ord f, Integral a, Fractional f => a`   | `1234567890`              | `"1.15GB"`                          | [`bytes`] `(fixed 2)`                    |
 
 ## Composing formatters
 
@@ -504,4 +504,116 @@ Now you can use it to maybe format things:
 "Nope!"
 ```
 
-[`format`]: https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:format
+[`format`]:         https://hackage.haskell.org/package/formatting-7.0.0.2/docs/Formatting.html#v:format
+[`sformat`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:sformat
+[`bformat`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:bformat
+[`formatToString`]: https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:formatToString
+[`fprint`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:fprint
+[`fprintLn`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:fprintLn
+[`hprint`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:hprint
+[`hprintLn`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:hprintLn
+
+[`text`]:           https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:text
+[`stext`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:stext
+[`string`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:string
+[`builder`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:builder
+[`shown`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:shown
+[`char`]:           https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:char
+[`int`]:            https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:int
+[`float`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:float
+[`fixed`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:fixed
+[`sci`]:            https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:sci
+[`scifmt`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:scifmt
+[`groupInt`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:groupInt
+[`commas`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:commas
+[`ords`]:           https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:ords
+[`int`]:            https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:int
+[`int`]:            https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:int
+[`asInt`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:asInt
+[`bin`]:            https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:bin
+[`prefixBin`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:prefixBin
+[`oct`]:            https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:oct
+[`prefixOct`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:prefixOct
+[`hex`]:            https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:hex
+[`prefixHex`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:prefixHex
+[`base`]:           https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:base
+[`left`]:           https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:left
+[`right`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:right
+[`center`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:center
+[`fitLeft`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:fitLeft
+[`fitRight`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:fitRight
+[`build`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:build
+[`fconst`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:fconst
+[`bytes`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Formatters.html#v:bytes
+
+[`t` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:t
+[`st`]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:st
+[`s` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:s
+[`sh`]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:sh
+[`c` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:c
+[`d` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:d
+[`sf`]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:sf
+[`f` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:f
+[`b` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:b
+[`o` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:o
+[`x` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:x
+[`l` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:l
+[`r` ]:             https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-ShortFormatters.html#v:r
+
+[`concatenated`]:   https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting.html#v:concatenated
+[`joinedWith`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:joinedWith
+[`intercalated`]:   https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:intercalated
+[`unworded`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:unworded
+[`unlined`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:unlined
+[`spaced`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:spaced
+[`commaSep`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:commaSep
+[`commaSpaceSep`]:  https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:commaSpaceSep
+[`list`]:           https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:list
+[`qlist`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:qlist
+[`took`]:           https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:took
+[`dropped`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:dropped
+[`splat`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:splat
+[`splatWith`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:splatWith
+[`splatOn`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:splatOn
+[`worded`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:worded
+[`lined`]:          https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:lined
+[`alteredWith`]:    https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:alteredWith
+[`replaced`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:replaced
+[`uppercased`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:uppercased
+[`lowercased`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:lowercased
+[`titlecased`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:titlecased
+[`ltruncated`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:ltruncated
+[`ctruncated`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:ctruncated
+[`rtruncated`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:rtruncated
+[`lpadded`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:lpadded
+[`rpadded`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:rpadded
+[`cpadded`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:cpadded
+[`lfixed`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:lfixed
+[`lfixed`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:lfixed
+[`rfixed`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:rfixed
+[`rfixed`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:rfixed
+[`cfixed`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:cfixed
+[`cfixed`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:cfixed
+[`prefixed`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:prefixed
+[`suffixed`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:suffixed
+[`surrounded`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:surrounded
+[`enclosed`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:enclosed
+[`squoted`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:squoted
+[`dquoted`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:dquoted
+[`parenthesised`]:  https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:parenthesised
+[`squared`]:        https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:squared
+[`braced`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:braced
+[`angled`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:angled
+[`backticked`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:backticked
+[`indented`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:indented
+[`indentedLines`]:  https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:indentedLines
+[`reindented`]:     https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:reindented
+[`roundedTo`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:roundedTo
+[`truncatedTo`]:    https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:truncatedTo
+[`ceilingedTo`]:    https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:ceilingedTo
+[`flooredTo`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:flooredTo
+[`viewed`]:         https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:viewed
+[`accessed`]:       https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:accessed
+[`binPrefix`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:binPrefix
+[`octPrefix`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:octPrefix
+[`hexPrefix`]:      https://hackage.haskell.org/package/formatting/7.0.0.2/docs/Formatting-Combinators.html#v:hexPrefix
