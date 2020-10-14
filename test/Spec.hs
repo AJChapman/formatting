@@ -2,7 +2,7 @@
 {-# OPTIONS -Wno-type-defaults #-}
 
 import Control.Monad
-import Data.Char (isSpace)
+import Data.Char (isSpace, isUpper)
 import Data.Int
 import qualified Data.Monoid
 import Data.Scientific
@@ -159,6 +159,8 @@ spec = do
 
   describe "altering combinators" $ do
     it "alteredWith" $ format (alteredWith LT.reverse int) 123456 `shouldBe` "654321"
+    it "charsKeptIf" $ format (charsKeptIf isUpper text) "Data.Char.isUpper" `shouldBe` "DCU"
+    it "charsRemovedIf" $ format (charsRemovedIf isUpper text) "Data.Char.isUpper" `shouldBe` "ata.har.ispper"
     it "replaced" $ format (replaced "Bruce" "<redacted>" stext) "Bruce replied that Bruce's name was, in fact, '<redacted>'." `shouldBe` "<redacted> replied that <redacted>'s name was, in fact, '<redacted>'."
     it "uppercased" $ format (uppercased text) "I'm not shouting, you're shouting." `shouldBe` "I'M NOT SHOUTING, YOU'RE SHOUTING."
     it "lowercased" $ format (lowercased text) "Cd SrC/; Rm -Rf *" `shouldBe` "cd src/; rm -rf *"

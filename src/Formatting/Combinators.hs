@@ -49,6 +49,8 @@ module Formatting.Combinators
 
   -- * Altering formatted strings
   , alteredWith
+  , charsKeptIf
+  , charsRemovedIf
   , replaced
   , uppercased
   , lowercased
@@ -344,6 +346,20 @@ lined = splatWith TL.lines
 alteredWith :: (Text -> Text) -> Format r a -> Format r a
 alteredWith alterer f =
   later (TLB.toLazyText >>> alterer >>> TLB.fromLazyText) %. f
+
+-- | Filter the formatted string to contain only characters which pass the given predicate:
+--
+-- >>> format (charsKeptIf Data.Char.isUpper text) "Data.Char.isUpper"
+-- "DCU"
+charsKeptIf :: (Char -> Bool) -> Format r a -> Format r a
+charsKeptIf p = alteredWith (TL.filter p)
+
+-- | Filter the formatted string to not contain characters which pass the given predicate:
+--
+-- >>> format (charsRemovedIf Data.Char.isUpper text) "Data.Char.isUpper"
+-- "ata.har.ispper"
+charsRemovedIf :: (Char -> Bool) -> Format r a -> Format r a
+charsRemovedIf p = alteredWith (TL.filter (not . p))
 
 -- | Take a formatter and replace the given needle with the given replacement in its output.
 --

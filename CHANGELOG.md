@@ -1,3 +1,7 @@
+7.1.1
+
+* Added `charsKeptIf` and `charsRemovedIf`.
+
 7.1.0
 
 * Added common container formatter combinators: `maybed`, `optioned`, `eithered`, `lefted`, and `righted`.
