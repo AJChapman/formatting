@@ -4,7 +4,7 @@ version:             7.1.1
 synopsis:            Combinator-based type-safe formatting (like printf() or FORMAT)
 description:         Combinator-based type-safe formatting (like printf() or FORMAT), modelled from the HoleyMonoids package.
                      .
-                     See the README at <https://github.com/AJChapman/formatting/blob/master/README.md> for more info.
+                     See the README at <https://github.com/AJChapman/formatting#readme> for more info.
 homepage:            https://github.com/AJChapman/formatting#readme
 bug-reports:         https://github.com/AJChapman/formatting/issues
 license:             BSD-3-Clause
