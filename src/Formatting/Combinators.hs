@@ -16,7 +16,7 @@ Many of these combinators can be chained together to form a single 'Format'.
 
 Implementation detail: in order to be able to chain multiple combinators to make a single 'Format' we need them all to use the same intermediate string type, and we have chosen 'Builder'.
 This does not tie you to using 'Builder's, because the final output string type 'r' is still polymorphic.
-|-}
+-}
 module Formatting.Combinators
   (
   -- * Formatting common containers
