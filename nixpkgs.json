@@ -1,7 +1,10 @@
 {
   "url": "https://github.com/NixOS/nixpkgs.git",
-  "rev": "2a60d7246558b160156510d8f3d101bd8743eb38",
-  "date": "2020-05-08T20:39:52+02:00",
-  "sha256": "1fcmjkmfxm8i85rhi1i4xqb7fvmh7wv8w22vvyc4zhjfzx2spjnl",
-  "fetchSubmodules": false
+  "rev": "a344386cc4ca8af81c7af04f494c3aaf8afe03f9",
+  "date": "2021-03-23T00:32:53+01:00",
+  "path": "/nix/store/15pgv8d64qvddiy7pcnd8gyi1i5134m6-nixpkgs-haskell-a344386",
+  "sha256": "100d3zvhrhsiv3kgqydixr0axxlqa2qivadsv2wln2gjmf39vjvx",
+  "fetchSubmodules": false,
+  "deepClone": false,
+  "leaveDotGit": false
 }

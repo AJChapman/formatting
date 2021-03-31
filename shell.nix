@@ -7,9 +7,14 @@
 let
   inherit pkgs;
 
+  haskellPackages = if compiler == "default"
+                       then pkgs.haskellPackages
+                       else pkgs.haskell.packages.${compiler};
+  modifiedHaskellPackages = import ./haskell-package-overrides.nix { haskellLib = pkgs.haskell.lib; inherit haskellPackages; };
+
   drv = import ./default.nix { inherit pkgs compiler doBenchmark doTest; };
   drvWithTools = pkgs.haskell.lib.addBuildDepends drv (with pkgs; [
-    cabal-install ghcid haskellPackages.pretty-simple haskellPackages.weeder haskellPackages.doctest haskell-ci
+    cabal-install ghcid modifiedHaskellPackages.pretty-simple modifiedHaskellPackages.weeder modifiedHaskellPackages.doctest modifiedHaskellPackages.haskell-ci
   ]);
 in
   if pkgs.lib.inNixShell then drvWithTools.env else drv
