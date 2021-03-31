@@ -57,7 +57,7 @@ common deps
 
 library
   import: deps
-
+  hs-source-dirs:    src
   exposed-modules:
     Formatting
     Formatting.Formatters
@@ -69,13 +69,10 @@ library
     Formatting.Internal
     Formatting.Internal.Raw
     Formatting.Buildable
-
   other-modules:
     Data.Text.Format.Functions
     Data.Text.Format.Types
     Data.Text.Format
-
-  hs-source-dirs:    src
 
 test-suite formatting-test
   import:              deps
@@ -84,6 +81,13 @@ test-suite formatting-test
   hs-source-dirs:      test
   main-is:             Spec.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+
+benchmark bench
+  import:         deps
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: bench
+  main-is:        bench.hs
+  build-depends:  formatting, criterion, deepseq, QuickCheck
 
 source-repository head
   type:     git
