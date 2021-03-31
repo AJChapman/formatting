@@ -1,3 +1,8 @@
+Unreleased
+
+* Removed direct dependency on integer-gmp, instead using very similar code from the `text` package.
+* TODO: Check that our change to the Buildable instance of Integer hasn't slowed things down.
+
 7.1.1
 
 * Added `charsKeptIf` and `charsRemovedIf`.
