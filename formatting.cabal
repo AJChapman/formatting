@@ -26,13 +26,7 @@ common deps
   build-depends:
     base >= 4.11 && < 5,
     text >= 0.11.0.8,
-    time >= 1.5,
-    old-locale,
-    scientific >= 0.3.0.0,
-    clock >= 0.4,
     ghc-prim,
-    transformers,
-    double-conversion ^>= 2.0.2.0
 
 -- Warnings list list taken from
 -- https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3
@@ -58,6 +52,13 @@ common deps
 library
   import: deps
   hs-source-dirs:    src
+  build-depends:
+    clock >= 0.4,
+    double-conversion ^>= 2.0.2.0,
+    old-locale,
+    scientific >= 0.3.0.0,
+    time >= 1.5,
+    transformers,
   exposed-modules:
     Formatting
     Formatting.Formatters
@@ -76,7 +77,7 @@ library
 
 test-suite formatting-test
   import:              deps
-  build-depends:       formatting, hspec
+  build-depends:       formatting, hspec, scientific
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
@@ -87,7 +88,7 @@ benchmark bench
   type:                exitcode-stdio-1.0
   hs-source-dirs:      bench
   main-is:             bench.hs
-  build-depends:       formatting, criterion, deepseq, QuickCheck
+  build-depends:       formatting, criterion, QuickCheck
   ghc-options:         -O2
 
 source-repository head
