@@ -1,8 +1,8 @@
-Unreleased
+7.1.2
 
-* Removed direct dependency on integer-gmp, instead using very similar code from the `text` package.
-* TODO: Check that our change to the Buildable instance of Integer hasn't slowed things down.
-* formatting now compiles on GHCJS (due to the change above)
+* Removed direct dependency on integer-gmp, instead using very similar code from the `text` package. This changed the implementation of `build` for `Integer`, which results in better performance in some cases, and no performance degradation. See the benchmarking reports in bench/reports for more details.
+* formatting now compiles on GHCJS (due to the change above).
+* Added some benchmarking, starting based on code from the `string-interpolate` package.
 
 7.1.1
 
