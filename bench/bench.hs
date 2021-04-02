@@ -2,11 +2,10 @@
 {-# LANGUAGE RankNTypes        #-}
 {-# LANGUAGE TypeApplications  #-}
 
-import           Criterion                  (Benchmark, bench, bgroup, env, nf)
+import           Criterion                  (bench, env, nf)
 import           Criterion.Main             (defaultMain)
 import           Test.QuickCheck
 
-import           Control.DeepSeq
 import qualified Data.Text                  as T
 import qualified Data.Text.Lazy             as LT
 
@@ -38,24 +37,18 @@ multiLazyTextF (x, y, z) =
   F.format (" foo " % F.d % " bar " % F.t % " baz " % F.sh % " quux ") x y z
 
 main :: IO ()
-main = defaultMain $
-  [ benches @String "Small Strings Bench" "William" $
-        [ ("formatting", stringF) ]
-  , benches @T.Text "Small Text Bench" "William" $
-        [ ("formatting", textF) ]
-  , benches @LT.Text "Small Lazy Text Bench" "William" $
-        [ ("formatting", lazyTextF) ]
-  , benches @String "Multiple Interpolations String Bench" (42, "CATALLAXY", True) $
-        [ ("formatting", multiStringF) ]
-  , benches @T.Text "Multiple Interpolations Text Bench" (42, "CATALLAXY", True) $
-        [ ("formatting", multiTextF) ]
-  , benches @LT.Text "Multiple Interpolations Lazy Text Bench" (42, "CATALLAXY", True) $
-        [ ("formatting", multiLazyTextF) ]
-  , env largeishText $ \ ~t -> benches @T.Text "Largeish Text Bench" t $
-        [ ("formatting", textF) ]
-  , env largeishLazyText $ \ ~lt -> benches @LT.Text "Largeish Lazy Text Bench" lt $
-        [ ("formatting", lazyTextF) ]
-  ]
+main = defaultMain
+    [ bench "Small Strings"                     $ nf stringF        "William"
+    , bench "Small Text"                        $ nf textF          "William"
+    , bench "Small Lazy Text"                   $ nf lazyTextF      "William"
+    , bench "Multiple Interpolations String"    $ nf multiStringF   (42, "CATALLAXY", True)
+    , bench "Multiple Interpolations Text"      $ nf multiTextF     (42, "CATALLAXY", True)
+    , bench "Multiple Interpolations Lazy Text" $ nf multiLazyTextF (42, "CATALLAXY", True)
+    , env largeishText $ \ ~t ->
+        bench "Largeish Text"                   $ nf textF          t
+    , env largeishLazyText $ \ ~lt ->
+        bench "Largeish Lazy Text"              $ nf lazyTextF      lt
+    ]
 
 largeishText :: IO T.Text
 largeishText =
@@ -64,7 +57,3 @@ largeishText =
 largeishLazyText :: IO LT.Text
 largeishLazyText =
   generate $ LT.pack <$> Prelude.take 100000 <$> infiniteListOf arbitrary
-
-benches :: forall b a. NFData b => String -> a -> [(String, a -> b)] -> Benchmark
-benches groupname arg fs = bgroup groupname (fmap benchF fs)
-  where benchF (bname, f) = bench bname $ nf f arg
