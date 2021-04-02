@@ -1,0 +1,163 @@
+Resolving dependencies...
+Build profile: -w ghc-8.10.4 -O1
+In order, the following will be built (use -v for more details):
+ - formatting-7.1.1 (lib) (configuration changed)
+ - formatting-7.1.1 (bench:bench) (configuration changed)
+Configuring library for formatting-7.1.1..
+Preprocessing library for formatting-7.1.1..
+Building library for formatting-7.1.1..
+Configuring benchmark 'bench' for formatting-7.1.1..
+Preprocessing benchmark 'bench' for formatting-7.1.1..
+Building benchmark 'bench' for formatting-7.1.1..
+[1 of 1] Compiling Main             ( bench/bench.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/b/bench/build/bench/bench-tmp/Main.o )
+Linking /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/b/bench/build/bench/bench ...
+Running 1 benchmarks...
+Benchmark bench: RUNNING...
+benchmarking Small Strings
+time                 526.8 ns   (521.8 ns .. 533.5 ns)
+                     0.999 R²   (0.997 R² .. 1.000 R²)
+mean                 529.2 ns   (523.1 ns .. 542.1 ns)
+std dev              27.22 ns   (13.98 ns .. 51.80 ns)
+variance introduced by outliers: 69% (severely inflated)
+
+benchmarking Small Text
+time                 175.6 ns   (173.0 ns .. 178.7 ns)
+                     0.998 R²   (0.996 R² .. 1.000 R²)
+mean                 174.7 ns   (173.3 ns .. 178.0 ns)
+std dev              6.587 ns   (3.599 ns .. 11.59 ns)
+variance introduced by outliers: 56% (severely inflated)
+
+benchmarking Small Lazy Text
+time                 178.0 ns   (175.5 ns .. 181.3 ns)
+                     0.998 R²   (0.995 R² .. 1.000 R²)
+mean                 179.4 ns   (177.1 ns .. 184.9 ns)
+std dev              10.88 ns   (5.871 ns .. 19.49 ns)
+variance introduced by outliers: 77% (severely inflated)
+
+benchmarking Multiple Interpolations String
+time                 1.064 μs   (1.045 μs .. 1.089 μs)
+                     0.997 R²   (0.995 R² .. 0.999 R²)
+mean                 1.057 μs   (1.044 μs .. 1.077 μs)
+std dev              54.67 ns   (38.42 ns .. 74.00 ns)
+variance introduced by outliers: 68% (severely inflated)
+
+benchmarking Multiple Interpolations Text
+time                 593.9 ns   (582.5 ns .. 607.1 ns)
+                     0.997 R²   (0.995 R² .. 0.999 R²)
+mean                 592.8 ns   (582.9 ns .. 616.7 ns)
+std dev              52.32 ns   (20.03 ns .. 102.8 ns)
+variance introduced by outliers: 87% (severely inflated)
+
+benchmarking Multiple Interpolations Lazy Text
+time                 543.3 ns   (536.8 ns .. 552.6 ns)
+                     0.998 R²   (0.997 R² .. 0.999 R²)
+mean                 544.3 ns   (538.0 ns .. 555.7 ns)
+std dev              27.76 ns   (19.82 ns .. 47.01 ns)
+variance introduced by outliers: 68% (severely inflated)
+
+benchmarking Largeish Text
+time                 9.777 μs   (9.686 μs .. 9.886 μs)
+                     0.999 R²   (0.998 R² .. 1.000 R²)
+mean                 9.774 μs   (9.693 μs .. 9.942 μs)
+std dev              389.4 ns   (190.6 ns .. 714.8 ns)
+variance introduced by outliers: 49% (moderately inflated)
+
+benchmarking Largeish Lazy Text
+time                 323.0 ns   (317.7 ns .. 329.7 ns)
+                     0.997 R²   (0.995 R² .. 0.999 R²)
+mean                 324.3 ns   (319.8 ns .. 336.4 ns)
+std dev              23.35 ns   (10.82 ns .. 44.19 ns)
+variance introduced by outliers: 82% (severely inflated)
+
+benchmarking Integers/0
+time                 135.3 ns   (133.2 ns .. 138.0 ns)
+                     0.997 R²   (0.994 R² .. 0.999 R²)
+mean                 135.6 ns   (133.7 ns .. 139.0 ns)
+std dev              8.012 ns   (5.035 ns .. 12.40 ns)
+variance introduced by outliers: 77% (severely inflated)
+
+benchmarking Integers/1
+time                 145.4 ns   (143.0 ns .. 148.1 ns)
+                     0.998 R²   (0.996 R² .. 0.999 R²)
+mean                 146.3 ns   (144.2 ns .. 153.2 ns)
+std dev              11.51 ns   (4.850 ns .. 24.05 ns)
+variance introduced by outliers: 85% (severely inflated)
+
+benchmarking Integers/-1
+time                 160.8 ns   (157.6 ns .. 165.1 ns)
+                     0.996 R²   (0.993 R² .. 0.999 R²)
+mean                 158.7 ns   (156.9 ns .. 162.9 ns)
+std dev              8.456 ns   (4.413 ns .. 13.56 ns)
+variance introduced by outliers: 73% (severely inflated)
+
+benchmarking Integers/10
+time                 232.0 ns   (229.0 ns .. 235.6 ns)
+                     0.998 R²   (0.997 R² .. 1.000 R²)
+mean                 230.6 ns   (228.8 ns .. 233.9 ns)
+std dev              7.614 ns   (4.993 ns .. 11.25 ns)
+variance introduced by outliers: 49% (moderately inflated)
+
+benchmarking Integers/-10
+time                 235.0 ns   (232.6 ns .. 238.8 ns)
+                     0.999 R²   (0.997 R² .. 1.000 R²)
+mean                 236.8 ns   (234.3 ns .. 241.2 ns)
+std dev              10.74 ns   (6.793 ns .. 14.72 ns)
+variance introduced by outliers: 65% (severely inflated)
+
+benchmarking Integers/99
+time                 232.8 ns   (230.0 ns .. 237.1 ns)
+                     0.997 R²   (0.994 R² .. 1.000 R²)
+mean                 232.6 ns   (230.1 ns .. 238.9 ns)
+std dev              12.82 ns   (6.129 ns .. 23.12 ns)
+variance introduced by outliers: 73% (severely inflated)
+
+benchmarking Integers/-99
+time                 235.0 ns   (231.6 ns .. 238.8 ns)
+                     0.998 R²   (0.997 R² .. 1.000 R²)
+mean                 236.6 ns   (233.7 ns .. 249.6 ns)
+std dev              15.43 ns   (6.539 ns .. 33.93 ns)
+variance introduced by outliers: 80% (severely inflated)
+
+benchmarking Integers/100
+time                 279.4 ns   (275.5 ns .. 285.8 ns)
+                     0.998 R²   (0.995 R² .. 0.999 R²)
+mean                 279.9 ns   (276.6 ns .. 285.4 ns)
+std dev              14.04 ns   (9.129 ns .. 19.68 ns)
+variance introduced by outliers: 69% (severely inflated)
+
+benchmarking Integers/123
+time                 281.0 ns   (276.6 ns .. 286.2 ns)
+                     0.998 R²   (0.996 R² .. 0.999 R²)
+mean                 283.2 ns   (278.6 ns .. 294.1 ns)
+std dev              22.65 ns   (10.54 ns .. 42.80 ns)
+variance introduced by outliers: 85% (severely inflated)
+
+benchmarking Integers/12345678
+time                 580.5 ns   (573.4 ns .. 591.3 ns)
+                     0.998 R²   (0.996 R² .. 1.000 R²)
+mean                 586.6 ns   (579.7 ns .. 602.9 ns)
+std dev              31.74 ns   (18.64 ns .. 55.16 ns)
+variance introduced by outliers: 71% (severely inflated)
+
+benchmarking Integers/9223372036854775807
+time                 1.219 μs   (1.200 μs .. 1.241 μs)
+                     0.998 R²   (0.997 R² .. 1.000 R²)
+mean                 1.216 μs   (1.207 μs .. 1.234 μs)
+std dev              42.30 ns   (27.41 ns .. 71.03 ns)
+variance introduced by outliers: 48% (moderately inflated)
+
+benchmarking Integers/-9223372036854775807
+time                 1.205 μs   (1.189 μs .. 1.225 μs)
+                     0.998 R²   (0.996 R² .. 1.000 R²)
+mean                 1.203 μs   (1.190 μs .. 1.243 μs)
+std dev              67.08 ns   (33.07 ns .. 126.3 ns)
+variance introduced by outliers: 71% (severely inflated)
+
+benchmarking Integers/18446744073709551614
+time                 1.274 μs   (1.260 μs .. 1.291 μs)
+                     0.999 R²   (0.997 R² .. 0.999 R²)
+mean                 1.276 μs   (1.264 μs .. 1.298 μs)
+std dev              49.25 ns   (34.06 ns .. 79.66 ns)
+variance introduced by outliers: 53% (severely inflated)
+
+Benchmark bench: FINISH
