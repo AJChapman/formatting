@@ -516,6 +516,27 @@ Now you can use it to maybe format things:
 "Nope!"
 ```
 
+## Hacking
+
+### Building with Nix
+
+See [README-nix.md](./README-nix.md).
+
+### Running the Tests
+
+From within your `nix-shell`, run `cabal test`.
+
+The tests are in `test/Spec.hs`.
+
+### Running the Benchmarks
+
+From within your `nix-shell`, run `cabal bench`.
+
+To build the html benchmarking reports, run `cabal bench --benchmark-option=-obench/reports/7.2.0.html > bench/reports/7.2.0.txt`, replacing '7.2.0' with the current version.
+This will output the file `bench.html` which you can open in a browser.
+
+The benchmarks are in `bench/bench.hs`.
+
 [`format`]:         https://hackage.haskell.org/package/formatting-7.1.1/docs/Formatting.html#v:format
 [`sformat`]:        https://hackage.haskell.org/package/formatting-7.1.1/docs/Formatting.html#v:sformat
 [`bformat`]:        https://hackage.haskell.org/package/formatting-7.1.1/docs/Formatting.html#v:bformat
