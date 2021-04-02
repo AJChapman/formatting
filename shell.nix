@@ -14,7 +14,7 @@ let
 
   drv = import ./default.nix { inherit pkgs compiler doBenchmark doTest; };
   drvWithTools = pkgs.haskell.lib.addBuildDepends drv (with pkgs; [
-    cabal-install ghcid modifiedHaskellPackages.pretty-simple modifiedHaskellPackages.weeder modifiedHaskellPackages.doctest modifiedHaskellPackages.haskell-ci
+    cabal-install ghcid modifiedHaskellPackages.pretty-simple modifiedHaskellPackages.weeder modifiedHaskellPackages.doctest modifiedHaskellPackages.haskell-ci modifiedHaskellPackages.hkgr
   ]);
 in
   if pkgs.lib.inNixShell then drvWithTools.env else drv
