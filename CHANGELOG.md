@@ -2,6 +2,7 @@ Unreleased
 
 * Removed direct dependency on integer-gmp, instead using very similar code from the `text` package.
 * TODO: Check that our change to the Buildable instance of Integer hasn't slowed things down.
+* formatting now compiles on GHCJS (due to the change above)
 
 7.1.1
 
