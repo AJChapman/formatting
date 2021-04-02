@@ -68,8 +68,8 @@ main = defaultMain
 
 largeishText :: IO T.Text
 largeishText =
-  generate $ T.pack <$> Prelude.take 100000 <$> infiniteListOf arbitrary
+  generate $ T.pack . Prelude.take 100000 <$> infiniteListOf arbitrary
 
 largeishLazyText :: IO LT.Text
 largeishLazyText =
-  generate $ LT.pack <$> Prelude.take 100000 <$> infiniteListOf arbitrary
+  generate $ LT.pack . Prelude.take 100000 <$> infiniteListOf arbitrary
