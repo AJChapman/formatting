@@ -71,14 +71,17 @@ import           Numeric (showIntAtBase)
 -- | Output a lazy text.
 text :: Format r (Text -> r)
 text = later T.fromLazyText
+{-# INLINE text #-}
 
 -- | Output a strict text.
 stext :: Format r (S.Text -> r)
 stext = later T.fromText
+{-# INLINE stext #-}
 
 -- | Output a string.
 string :: Format r (String -> r)
 string = later (T.fromText . T.pack)
+{-# INLINE string #-}
 
 -- | Output a showable value (instance of 'Show') by turning it into
 -- 'Text':
@@ -87,49 +90,60 @@ string = later (T.fromText . T.pack)
 -- "Value number 42 is False."
 shown :: Show a => Format r (a -> r)
 shown = later (T.fromText . T.pack . show)
+{-# INLINE shown #-}
 
 -- | Output a character.
 char :: Format r (Char -> r)
 char = later B.build
+{-# INLINE char #-}
 
 -- | Build a builder.
 builder :: Format r (Builder -> r)
 builder = later id
+{-# INLINE builder #-}
 
 -- | Like `const` but for formatters.
 fconst :: Builder -> Format r (a -> r)
 fconst m = later (const m)
+{-# INLINE fconst #-}
 
 -- | Build anything that implements the "Buildable" class.
 build :: Buildable a => Format r (a -> r)
 build = later B.build
+{-# INLINE build #-}
 
 -- | Render an integral e.g. 123 -> \"123\", 0 -> \"0\".
 int :: Integral a => Format r (a -> r)
 int = base 10
+{-# INLINE int #-}
 
 -- | Render some floating point with the usual notation, e.g. 123.32 => \"123.32\"
 float :: Real a => Format r (a -> r)
 float = later T.shortest
+{-# INLINE float #-}
 
 -- | Render a floating point number using normal notation, with the
 -- given number of decimal places.
 fixed :: Real a => Int -> Format r (a -> r)
 fixed i = later (T.fixed i)
+{-# INLINE fixed #-}
 
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it. Note that in the case of whole
 -- numbers it will still add one decimal place, e.g. "1.0".
 shortest :: Real a => Format r (a -> r)
 shortest = later T.shortest
+{-# INLINE shortest #-}
 
 -- | Render a scientific number.
 sci :: Format r (Scientific -> r)
 sci = later scientificBuilder
+{-# INLINE sci #-}
 
 -- | Render a scientific number with options.
 scifmt :: FPFormat -> Maybe Int -> Format r (Scientific -> r)
 scifmt f i = later (formatScientificBuilder f i)
+{-# INLINE scifmt #-}
 
 -- | Shows the Int value of Enum instances using 'fromEnum'.
 --
@@ -137,16 +151,19 @@ scifmt f i = later (formatScientificBuilder f i)
 -- "Got: a (97)"
 asInt :: Enum a => Format r (a -> r)
 asInt = later (T.shortest . fromEnum)
+{-# INLINE asInt #-}
 
 -- | Pad the left hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
 left :: Buildable a => Int -> Char -> Format r (a -> r)
 left i c = later (T.left i c)
+{-# INLINE left #-}
 
 -- | Pad the right hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
 right :: Buildable a => Int -> Char -> Format r (a -> r)
 right i c = later (T.right i c)
+{-# INLINE right #-}
 
 -- | Pad the left & right hand side of a string until it reaches k characters
 -- wide, if necessary filling with character c.
@@ -192,6 +209,7 @@ fitRight size = later (fit (fromIntegral size)) where
 -- | Add commas to an integral, e.g 12000 -> \ "12,000".
 commas :: (Buildable n,Integral n) => Format r (n -> r)
 commas = groupInt 3 ','
+{-# INLINE commas #-}
 
 -- | Add a suffix to an integral, e.g. 1st, 2nd, 3rd, 21st.
 ords :: Integral n => Format r (n -> r)
@@ -223,6 +241,7 @@ plural s p = later (\i -> if i == 1 then B.build s else B.build p)
 -- | Render an integral at base n.
 base :: Integral a => Int -> Format r (a -> r)
 base numBase = later (B.build . atBase numBase)
+{-# INLINE base #-}
 
 -- | Render an integer using binary notation. (No leading 0b is
 -- added.) Defined as @bin = 'base' 2@.
