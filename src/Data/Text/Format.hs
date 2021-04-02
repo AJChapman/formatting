@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, RelaxedPolyRec #-}
+{-# LANGUAGE RelaxedPolyRec #-}
 
 -- |
 -- Module      : Data.Text.Format
