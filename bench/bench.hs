@@ -2,7 +2,7 @@
 {-# LANGUAGE RankNTypes        #-}
 {-# LANGUAGE TypeApplications  #-}
 
-import           Criterion                  (bench, env, nf)
+import           Criterion                  (bench, bgroup, env, nf, whnf)
 import           Criterion.Main             (defaultMain)
 import           Test.QuickCheck
 
@@ -36,6 +36,9 @@ multiLazyTextF :: (Int, LT.Text, Bool) -> LT.Text
 multiLazyTextF (x, y, z) =
   F.format (" foo " % F.d % " bar " % F.t % " baz " % F.sh % " quux ") x y z
 
+integerF :: Integer -> LT.Text
+integerF = F.format F.int
+
 main :: IO ()
 main = defaultMain
     [ bench "Small Strings"                     $ nf stringF        "William"
@@ -48,7 +51,13 @@ main = defaultMain
         bench "Largeish Text"                   $ nf textF          t
     , env largeishLazyText $ \ ~lt ->
         bench "Largeish Lazy Text"              $ nf lazyTextF      lt
+    , bgroup "Integers" $
+      (\n -> bench (show n) $ whnf integerF n) <$>
+        ([0, 1, -1, 10, -10, 99, -99, 100, 123, 12345678, maxIntInteger, -maxIntInteger, maxIntInteger * 2])
     ]
+  where
+    maxIntInteger :: Integer
+    maxIntInteger = fromIntegral (maxBound @Int)
 
 largeishText :: IO T.Text
 largeishText =
