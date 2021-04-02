@@ -1,0 +1,177 @@
+Resolving dependencies...
+Build profile: -w ghc-8.10.4 -O1
+In order, the following will be built (use -v for more details):
+ - formatting-7.1.1 (lib) (first run)
+ - formatting-7.1.1 (bench:bench) (first run)
+Configuring library for formatting-7.1.1..
+Preprocessing library for formatting-7.1.1..
+Building library for formatting-7.1.1..
+[ 1 of 14] Compiling Data.Text.Format.Functions ( src/Data/Text/Format/Functions.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format/Functions.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format/Functions.dyn_o )
+[ 2 of 14] Compiling Data.Text.Format.Int ( src/Data/Text/Format/Int.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format/Int.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format/Int.dyn_o )
+[ 3 of 14] Compiling Data.Text.Format.Types ( src/Data/Text/Format/Types.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format/Types.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format/Types.dyn_o )
+[ 4 of 14] Compiling Formatting.Buildable ( src/Formatting/Buildable.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Buildable.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Buildable.dyn_o )
+[ 5 of 14] Compiling Data.Text.Format ( src/Data/Text/Format.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Data/Text/Format.dyn_o )
+[ 6 of 14] Compiling Formatting.Internal ( src/Formatting/Internal.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Internal.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Internal.dyn_o )
+[ 7 of 14] Compiling Formatting.Formatters ( src/Formatting/Formatters.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Formatters.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Formatters.dyn_o )
+[ 8 of 14] Compiling Formatting.Combinators ( src/Formatting/Combinators.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Combinators.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Combinators.dyn_o )
+[ 9 of 14] Compiling Formatting       ( src/Formatting.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting.dyn_o )
+[10 of 14] Compiling Formatting.Examples ( src/Formatting/Examples.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Examples.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Examples.dyn_o )
+[11 of 14] Compiling Formatting.Clock ( src/Formatting/Clock.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Clock.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Clock.dyn_o )
+[12 of 14] Compiling Formatting.Internal.Raw ( src/Formatting/Internal/Raw.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Internal/Raw.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Internal/Raw.dyn_o )
+[13 of 14] Compiling Formatting.ShortFormatters ( src/Formatting/ShortFormatters.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/ShortFormatters.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/ShortFormatters.dyn_o )
+[14 of 14] Compiling Formatting.Time  ( src/Formatting/Time.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Time.o, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/build/Formatting/Time.dyn_o )
+Configuring benchmark 'bench' for formatting-7.1.1..
+Preprocessing benchmark 'bench' for formatting-7.1.1..
+Building benchmark 'bench' for formatting-7.1.1..
+[1 of 1] Compiling Main             ( bench/bench.hs, /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/b/bench/build/bench/bench-tmp/Main.o )
+Linking /home/cha748/src/formatting/dist-newstyle/build/x86_64-linux/ghc-8.10.4/formatting-7.1.1/b/bench/build/bench/bench ...
+Running 1 benchmarks...
+Benchmark bench: RUNNING...
+benchmarking Small Strings
+time                 590.1 ns   (581.7 ns .. 601.1 ns)
+                     0.998 R²   (0.997 R² .. 1.000 R²)
+mean                 587.3 ns   (582.8 ns .. 595.6 ns)
+std dev              19.01 ns   (12.20 ns .. 32.56 ns)
+variance introduced by outliers: 46% (moderately inflated)
+
+benchmarking Small Text
+time                 199.1 ns   (197.0 ns .. 202.5 ns)
+                     0.998 R²   (0.995 R² .. 0.999 R²)
+mean                 201.9 ns   (198.6 ns .. 207.5 ns)
+std dev              13.14 ns   (9.149 ns .. 18.95 ns)
+variance introduced by outliers: 80% (severely inflated)
+
+benchmarking Small Lazy Text
+time                 202.0 ns   (199.5 ns .. 204.8 ns)
+                     0.998 R²   (0.997 R² .. 1.000 R²)
+mean                 200.9 ns   (198.9 ns .. 205.0 ns)
+std dev              9.114 ns   (5.670 ns .. 14.72 ns)
+variance introduced by outliers: 65% (severely inflated)
+
+benchmarking Multiple Interpolations String
+time                 1.118 μs   (1.101 μs .. 1.138 μs)
+                     0.998 R²   (0.997 R² .. 0.999 R²)
+mean                 1.121 μs   (1.106 μs .. 1.155 μs)
+std dev              70.58 ns   (38.72 ns .. 141.5 ns)
+variance introduced by outliers: 76% (severely inflated)
+
+benchmarking Multiple Interpolations Text
+time                 592.9 ns   (586.7 ns .. 602.2 ns)
+                     0.999 R²   (0.997 R² .. 1.000 R²)
+mean                 593.2 ns   (588.0 ns .. 603.9 ns)
+std dev              24.88 ns   (12.22 ns .. 45.44 ns)
+variance introduced by outliers: 59% (severely inflated)
+
+benchmarking Multiple Interpolations Lazy Text
+time                 568.1 ns   (558.6 ns .. 580.1 ns)
+                     0.998 R²   (0.996 R² .. 0.999 R²)
+mean                 570.8 ns   (561.9 ns .. 595.1 ns)
+std dev              53.22 ns   (19.79 ns .. 97.44 ns)
+variance introduced by outliers: 88% (severely inflated)
+
+benchmarking Largeish Text
+time                 9.888 μs   (9.828 μs .. 9.976 μs)
+                     0.999 R²   (0.999 R² .. 1.000 R²)
+mean                 9.960 μs   (9.888 μs .. 10.07 μs)
+std dev              302.7 ns   (224.8 ns .. 442.5 ns)
+variance introduced by outliers: 36% (moderately inflated)
+
+benchmarking Largeish Lazy Text
+time                 356.7 ns   (349.8 ns .. 363.8 ns)
+                     0.997 R²   (0.996 R² .. 0.999 R²)
+mean                 353.3 ns   (349.4 ns .. 359.2 ns)
+std dev              16.09 ns   (11.64 ns .. 22.18 ns)
+variance introduced by outliers: 64% (severely inflated)
+
+benchmarking Integers/0
+time                 135.5 ns   (133.5 ns .. 137.9 ns)
+                     0.997 R²   (0.994 R² .. 0.999 R²)
+mean                 137.1 ns   (134.3 ns .. 143.5 ns)
+std dev              12.44 ns   (6.704 ns .. 23.78 ns)
+variance introduced by outliers: 89% (severely inflated)
+
+benchmarking Integers/1
+time                 144.2 ns   (142.4 ns .. 146.6 ns)
+                     0.998 R²   (0.997 R² .. 0.999 R²)
+mean                 145.0 ns   (143.0 ns .. 148.0 ns)
+std dev              7.618 ns   (5.158 ns .. 10.26 ns)
+variance introduced by outliers: 72% (severely inflated)
+
+benchmarking Integers/-1
+time                 170.4 ns   (161.5 ns .. 181.8 ns)
+                     0.981 R²   (0.964 R² .. 0.997 R²)
+mean                 165.4 ns   (160.7 ns .. 174.2 ns)
+std dev              20.57 ns   (12.74 ns .. 30.25 ns)
+variance introduced by outliers: 94% (severely inflated)
+
+benchmarking Integers/10
+time                 227.9 ns   (224.7 ns .. 232.1 ns)
+                     0.997 R²   (0.995 R² .. 0.999 R²)
+mean                 232.1 ns   (228.6 ns .. 239.1 ns)
+std dev              16.40 ns   (10.45 ns .. 25.23 ns)
+variance introduced by outliers: 82% (severely inflated)
+
+benchmarking Integers/-10
+time                 250.5 ns   (243.2 ns .. 261.4 ns)
+                     0.983 R²   (0.972 R² .. 0.991 R²)
+mean                 278.5 ns   (264.3 ns .. 295.8 ns)
+std dev              52.73 ns   (40.99 ns .. 66.51 ns)
+variance introduced by outliers: 97% (severely inflated)
+
+benchmarking Integers/99
+time                 230.3 ns   (227.6 ns .. 234.1 ns)
+                     0.998 R²   (0.995 R² .. 1.000 R²)
+mean                 231.1 ns   (227.7 ns .. 238.6 ns)
+std dev              15.01 ns   (9.028 ns .. 27.34 ns)
+variance introduced by outliers: 79% (severely inflated)
+
+benchmarking Integers/-99
+time                 234.5 ns   (230.7 ns .. 239.8 ns)
+                     0.998 R²   (0.996 R² .. 1.000 R²)
+mean                 233.6 ns   (231.6 ns .. 237.9 ns)
+std dev              9.513 ns   (5.955 ns .. 16.35 ns)
+variance introduced by outliers: 60% (severely inflated)
+
+benchmarking Integers/100
+time                 276.7 ns   (272.9 ns .. 280.7 ns)
+                     0.998 R²   (0.997 R² .. 0.999 R²)
+mean                 278.7 ns   (274.4 ns .. 286.2 ns)
+std dev              18.17 ns   (10.58 ns .. 31.63 ns)
+variance introduced by outliers: 79% (severely inflated)
+
+benchmarking Integers/123
+time                 276.8 ns   (273.2 ns .. 281.1 ns)
+                     0.998 R²   (0.997 R² .. 1.000 R²)
+mean                 276.8 ns   (274.1 ns .. 280.8 ns)
+std dev              11.14 ns   (7.856 ns .. 17.86 ns)
+variance introduced by outliers: 59% (severely inflated)
+
+benchmarking Integers/12345678
+time                 572.8 ns   (563.6 ns .. 584.9 ns)
+                     0.998 R²   (0.996 R² .. 0.999 R²)
+mean                 571.1 ns   (565.5 ns .. 580.1 ns)
+std dev              24.90 ns   (16.07 ns .. 39.44 ns)
+variance introduced by outliers: 61% (severely inflated)
+
+benchmarking Integers/9223372036854775807
+time                 1.188 μs   (1.175 μs .. 1.207 μs)
+                     0.998 R²   (0.996 R² .. 1.000 R²)
+mean                 1.197 μs   (1.182 μs .. 1.234 μs)
+std dev              74.70 ns   (38.30 ns .. 139.4 ns)
+variance introduced by outliers: 75% (severely inflated)
+
+benchmarking Integers/-9223372036854775807
+time                 1.199 μs   (1.184 μs .. 1.220 μs)
+                     0.998 R²   (0.997 R² .. 1.000 R²)
+mean                 1.199 μs   (1.187 μs .. 1.219 μs)
+std dev              48.21 ns   (29.23 ns .. 79.31 ns)
+variance introduced by outliers: 55% (severely inflated)
+
+benchmarking Integers/18446744073709551614
+time                 1.290 μs   (1.266 μs .. 1.313 μs)
+                     0.998 R²   (0.997 R² .. 0.999 R²)
+mean                 1.286 μs   (1.266 μs .. 1.349 μs)
+std dev              110.1 ns   (42.33 ns .. 236.2 ns)
+variance introduced by outliers: 85% (severely inflated)
+
+Benchmark bench: FINISH
