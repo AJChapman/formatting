@@ -3,6 +3,7 @@
 * Removed direct dependency on integer-gmp, instead using very similar code from the `text` package. This changed the implementation of `build` for `Integer`, which results in better performance in some cases, and no performance degradation. See the benchmarking reports in bench/reports for more details.
 * formatting now compiles on GHCJS (due to the change above).
 * Added some benchmarking, starting based on code from the `string-interpolate` package.
+* Added INLINE pragmas to many very short functions. Results in better performance in the benchmarks.
 
 7.1.1
 
