@@ -39,6 +39,9 @@ multiLazyTextF (x, y, z) =
 integerF :: Integer -> LT.Text
 integerF = F.format F.int
 
+buildF :: F.Buildable a => a -> LT.Text
+buildF = F.format F.build
+
 main :: IO ()
 main = defaultMain
     [ bench "Small Strings"                     $ nf stringF        "William"
@@ -52,10 +55,14 @@ main = defaultMain
     , env largeishLazyText $ \ ~lt ->
         bench "Largeish Lazy Text"              $ nf lazyTextF      lt
     , bgroup "Integers" $
-      (\n -> bench (show n) $ whnf integerF n) <$>
-        ([0, 1, -1, 10, -10, 99, -99, 100, 123, 12345678, maxIntInteger, -maxIntInteger, maxIntInteger * 2])
+      (\n -> bench (show n) $ whnf integerF n) <$> integersToTest
+    , bgroup "Buildable (Integer)" $
+      (\n -> bench (show n) $ whnf buildF n) <$> integersToTest
     ]
   where
+    integersToTest :: [Integer]
+    integersToTest = [0, 1, -1, 10, -10, 99, -99, 100, 123, 12345678, maxIntInteger, -maxIntInteger, maxIntInteger * 2]
+
     maxIntInteger :: Integer
     maxIntInteger = fromIntegral (maxBound @Int)
 
