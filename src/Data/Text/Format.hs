@@ -1,4 +1,5 @@
 {-# LANGUAGE RelaxedPolyRec #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Data.Text.Format
@@ -23,7 +24,11 @@ module Data.Text.Format
     , shortest
     ) where
 
-import           Data.Double.Conversion.Text
+#ifdef ghcjs_HOST_OS
+import           Text.Printf
+#else
+import           Data.Double.Conversion.Text (toFixed, toShortest)
+#endif
 import qualified Formatting.Buildable as B
 import           Data.Text.Format.Types (Hex(..))
 import qualified Data.Text.Lazy as LT
@@ -48,13 +53,27 @@ fixed :: (Real a) =>
          Int
       -- ^ Number of digits of precision after the decimal.
       -> a -> Builder
+#ifdef ghcjs_HOST_OS
+fixed decs = fromString . toFixed . realToFrac
+  where
+    toFixed :: Double -> String
+    toFixed = printf ("%f." ++ show decs)
+#else
 fixed decs = fromText . toFixed decs . realToFrac
+#endif
 {-# NOINLINE[0] fixed #-}
 
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it.
 shortest :: Real a => a -> Builder
+#ifdef ghcjs_HOST_OS
+shortest = fromString . toShortest . realToFrac
+  where
+    toShortest :: Double -> String
+    toShortest = printf "%f"
+#else
 shortest = fromText . toShortest . realToFrac
+#endif
 {-# INLINE shortest #-}
 
 -- | Render an integer using hexadecimal notation.  (No leading "0x"

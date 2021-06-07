@@ -11,7 +11,7 @@ let
 
   haskellPackages = if compiler == "default"
                        then pkgs.haskellPackages
-                       else pkgs.haskell.packages.${compiler};
+                       else pkgs.haskell.compiler.${compiler};
 
   modifiedHaskellPackages = import ./haskell-package-overrides.nix { haskellLib = pkgs.haskell.lib; inherit haskellPackages; };
 

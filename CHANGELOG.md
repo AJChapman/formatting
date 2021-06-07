@@ -1,3 +1,7 @@
+Unreleased
+
+* Don't use the `double-conversion` package in GHCJS builds, as it relies on a native C library which obviously isn't available in GHCJS.
+
 7.1.2
 
 * Removed direct dependency on integer-gmp, instead using very similar code from the `text` package. This changed the implementation of `build` for `Integer`, which results in better performance in some cases, and no performance degradation. See the benchmarking reports in bench/reports for more details.
