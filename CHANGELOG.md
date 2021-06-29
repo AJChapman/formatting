@@ -1,6 +1,6 @@
-Unreleased
+7.1.3
 
-* Don't use the `double-conversion` package in GHCJS builds, as it relies on a native C library which obviously isn't available in GHCJS.
+* Fix the GHCJS build by not using `double-conversion`, as it relies on a native C library which obviously isn't available in GHCJS (it is still used in native builds).
 
 7.1.2
 
