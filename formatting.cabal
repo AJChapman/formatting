@@ -72,6 +72,7 @@ library
     Formatting.Internal
     Formatting.Internal.Raw
     Formatting.Buildable
+    Formatting.FromBuilder
   other-modules:
     Data.Text.Format.Functions
     Data.Text.Format.Types

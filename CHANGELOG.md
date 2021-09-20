@@ -1,3 +1,7 @@
+Unreleased
+
+* Added `FromBuilder` and `formatted` to simplify using formatting with other APIs
+
 7.1.3
 
 * Fix the GHCJS build by not using `double-conversion`, as it relies on a native C library which obviously isn't available in GHCJS (it is still used in native builds).
