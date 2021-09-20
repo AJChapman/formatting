@@ -37,6 +37,7 @@ module Formatting
   hprint,
   hprintLn,
   formatToString,
+  formatted,
   -- * Formatting library
   module Formatting.Formatters,
   module Formatting.Combinators
@@ -44,4 +45,5 @@ module Formatting
 
 import Formatting.Formatters
 import Formatting.Combinators
+import Formatting.FromBuilder
 import Formatting.Internal

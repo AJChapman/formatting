@@ -516,6 +516,22 @@ Now you can use it to maybe format things:
 "Nope!"
 ```
 
+## Using it with other APIs
+
+As a convenience, we provide the `FromBuilder` typeclass and the `formatted`
+combinator.  `formatted` makes it simple to add formatting to any API that is
+expecting a `Builder`, a strict or lazy `Text`, or a `String`. For example if
+you have functions `logDebug`, `logWarning` and `logInfo` all of type
+`Text -> IO ()` you can do the following:
+
+``` haskell
+> formatted logDebug ("x is: " % int) x
+> formatted logInfo ("y is: " % squared int) y
+> formatted logWarning ("z is: " % braced int) z
+```
+
+The above example will work for either strict or lazy `Text`
+
 ## Hacking
 
 ### Building with Nix
