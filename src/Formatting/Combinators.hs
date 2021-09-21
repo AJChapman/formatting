@@ -111,6 +111,17 @@ import qualified Data.Text.Lazy.Builder as TLB
 import Formatting.Internal
 import Formatting.Formatters
 
+
+-- $setup
+-- >>> import Formatting.Internal
+-- >>> import Formatting.Formatters
+-- >>> import qualified Data.Text.Lazy as TL
+-- >>> _1 g (a, x) = fmap (\b -> (b, x)) $ g a
+--
+-- We define a simplistic implementation of the lens _1, Not polymorphic in
+-- tuple length, but it works for our example without requiring the lens
+-- package.
+
 -- | Render a Maybe value either as a default (if Nothing) or using the given formatter:
 --
 -- >>> format (maybed "Goodbye" text) Nothing
@@ -140,7 +151,7 @@ optioned = maybed ""
 
 -- | Render the value in an Either:
 --
--- >>> format (eithered text int) (Left "Error!"
+-- >>> format (eithered text int) (Left "Error!")
 -- "Error!"
 --
 -- >>> format (eithered text int) (Right 69)
@@ -285,7 +296,7 @@ took n = fmap (. take n)
 
 -- | Drop the first n items from the list of items.
 --
--- >>> format (dropped 3 (list int) [1..6]
+-- >>> format (dropped 3 (list int)) [1..6]
 -- "[4, 5, 6]"
 dropped :: Int -> Format r ([a] -> r) -> Format r ([a] -> r)
 dropped n = fmap (. drop n)
@@ -327,7 +338,7 @@ splat p = splatWith (TL.split p)
 -- two
 -- three
 --
--- >>> fprint (splatOn "," indentedLines text) "one,two,three"
+-- >>> fprint (splatOn "," (indentedLines 4) text) "one,two,three"
 --     one
 --     two
 --     three
@@ -420,10 +431,10 @@ titlecased = alteredWith TL.toTitle
 
 -- | Truncate the formatted string at the end so that it is no more than the given number of characters in length, placing an ellipsis at the end such that it does not exceed this length.
 --
--- >>> format (truncated 5 text) "hello"
+-- >>> format (ltruncated 5 text) "hello"
 -- "hello"
 --
--- >>> format (truncated 5 text) "hellos"
+-- >>> format (ltruncated 5 text) "hellos"
 -- "he..."
 ltruncated :: Int64 -> Format r a -> Format r a
 ltruncated n = ctruncated (n - 3) 0
@@ -641,7 +652,7 @@ indented n = prefixed spaces
 
 -- | Format a list of items, placing one per line, indented by the given number of spaces.
 --
--- >>> fprintLn ("The lucky numbers are:\n" % indentedLines 4 int) [7, 13, 1, 42]
+-- >>> fprint ("The lucky numbers are:\n" % indentedLines 4 int) [7, 13, 1, 42]
 -- The lucky numbers are:
 --     7
 --     13
