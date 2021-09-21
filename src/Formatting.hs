@@ -1,6 +1,9 @@
 {-# LANGUAGE RankNTypes #-}
 {-# OPTIONS -Wall #-}
 
+-- $setup
+-- >>> :set -XOverloadedStrings
+
 -- |
 -- Module      : Text.Format
 -- Copyright   : (c) 2013 Chris Done, 2013 Shachaf Ben-Kiki
@@ -14,6 +17,7 @@
 -- Example:
 --
 -- >>> format ("Person's name is " % text % ", age is " % hex) "Dave" 54
+-- "Person's name is Dave, age is 36"
 --
 -- See "Formatting.Formatters" for a list of formatters.
 -- See "Formatting.Combinators" for a list of formatting combinators, for combining and altering formatters.

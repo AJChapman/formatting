@@ -52,6 +52,9 @@ module Formatting.Formatters
   Buildable,
   ) where
 
+-- $setup
+-- >>> import Formatting.Internal
+
 import           Formatting.Internal
 
 import           Data.Char (chr, ord)
@@ -229,7 +232,7 @@ ords = later go
 --
 -- For example:
 --
--- >>> set -XOverloadedStrings
+-- >>> :set -XOverloadedStrings
 -- >>> formatPeople = format (int % " " <> plural "person" "people" % ".") :: Int -> Data.Text.Lazy.Text
 -- >>> formatPeople 1
 -- "1 person."
