@@ -197,7 +197,7 @@ spec = do
     it "squared" $ format (squared int) 7 `shouldBe` "[7]"
     it "braced" $ format ("\\begin" % braced text) "section" `shouldBe` "\\begin{section}"
     it "angled" $ format (list (angled text)) ["html", "head", "title", "body", "div", "span"] `shouldBe` "[<html>, <head>, <title>, <body>, <div>, <span>]"
-    it "backticked" $ format ("Be sure to run " % backticked builder % " as root.") ":(){:|:&};:" `shouldBe` "Be sure to run `:(){:|:&};:` as root."
+    it "backticked" $ format ("Be sure to run" %% backticked builder %% "as root.") ":(){:|:&};:" `shouldBe` "Be sure to run `:(){:|:&};:` as root."
 
   describe "indenters" $ do
     it "indented" $ format (indented 4 int) 7 `shouldBe` "    7"
