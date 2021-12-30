@@ -24,6 +24,7 @@ module Formatting
   (
   Format,
   (%),
+  (%%),
   (%.),
   now,
   later,

@@ -6,6 +6,7 @@
 module Formatting.Internal
   ( Format(..)
   , (%)
+  , (%%)
   , (%.)
   , now
   , bind
@@ -36,6 +37,9 @@ import qualified Data.Text.Lazy.Builder as TLB
 import qualified Data.Text.Lazy.IO as T
 import           Prelude hiding ((.),id)
 import           System.IO
+
+-- $setup
+-- >>> import Formatting.Formatters
 
 -- | A formatter. When you construct formatters the first type
 -- parameter, @r@, will remain polymorphic.  The second type
@@ -137,6 +141,20 @@ instance Category Format where
 (%) :: Format r a -> Format r' r -> Format r' a
 (%) = (.)
 infixr 9 %
+
+-- | Concatenate two formatters with a space in between.
+--
+-- >>> :set -XOverloadedStrings
+-- >>> format (int %% "+" %% int %% "=" %% int) 2 3 5
+-- "2 + 3 = 5"
+--
+(%%) :: Format r a -> Format r' r -> Format r' a
+f %% g =
+    f `bind`
+    \a ->
+      g `bind`
+      \b -> now (a `mappend` TLB.singleton ' ' `mappend` b)
+infixr 9 %%
 
 -- | Function compose two formatters. Will feed the result of one
 -- formatter into another.
