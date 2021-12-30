@@ -87,7 +87,7 @@ instance Monoid (Format r (a -> r)) where
   mempty = Format (\k _ -> k mempty)
 
 -- | Useful instance for writing format string. With this you can
--- write @"Foo"@ instead of @now "Foo!"@.
+-- write @\"Foo\"@ instead of @now "Foo!"@.
 instance (a ~ r) => IsString (Format r a) where
   fromString = now . fromString
 

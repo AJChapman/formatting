@@ -52,9 +52,6 @@ module Formatting.Formatters
   Buildable,
   ) where
 
--- $setup
--- >>> import Formatting.Internal
-
 import           Formatting.Internal
 
 import           Data.Char (chr, ord)
@@ -70,6 +67,9 @@ import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as T
 import           Data.Text.Lazy.Builder.Scientific
 import           Numeric (showIntAtBase)
+
+-- $setup
+-- >>> import Formatting.Internal
 
 -- | Output a lazy text.
 text :: Format r (Text -> r)
