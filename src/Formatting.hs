@@ -1,8 +1,6 @@
 {-# LANGUAGE RankNTypes #-}
 {-# OPTIONS -Wall #-}
 
--- $setup
--- >>> :set -XOverloadedStrings
 
 -- |
 -- Module      : Text.Format
@@ -47,7 +45,11 @@ module Formatting
   module Formatting.Combinators
  ) where
 
+
 import Formatting.Formatters
 import Formatting.Combinators
 import Formatting.FromBuilder
 import Formatting.Internal
+
+-- $setup
+-- >>> :set -XOverloadedStrings
