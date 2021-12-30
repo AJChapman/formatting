@@ -23,6 +23,7 @@ module Formatting.Internal
   ) where
 
 import           Control.Category (Category(..))
+import           Control.Monad.IO.Class (MonadIO (..))
 import           Data.Monoid
 import           Data.String
 import qualified Data.Text as S (Text)
@@ -180,20 +181,20 @@ bformat :: Format Builder a -> a
 bformat m = runFormat m id
 
 -- | Run the formatter and print out the text to stdout.
-fprint :: Format (IO ()) a -> a
-fprint m = runFormat m (T.putStr . T.toLazyText)
+fprint :: MonadIO m => Format (m ()) a -> a
+fprint m = runFormat m (liftIO . T.putStr . T.toLazyText)
 
 -- | Run the formatter and print out the text to stdout, followed by a newline.
-fprintLn :: Format (IO ()) a -> a
-fprintLn m = runFormat m (T.putStrLn . T.toLazyText)
+fprintLn :: MonadIO m => Format (m ()) a -> a
+fprintLn m = runFormat m (liftIO . T.putStrLn . T.toLazyText)
 
 -- | Run the formatter and put the output onto the given 'Handle'.
-hprint :: Handle -> Format (IO ()) a -> a
-hprint h m = runFormat m (T.hPutStr h . T.toLazyText)
+hprint :: MonadIO m => Handle -> Format (m ()) a -> a
+hprint h m = runFormat m (liftIO . T.hPutStr h . T.toLazyText)
 
 -- | Run the formatter and put the output and a newline onto the given 'Handle'.
-hprintLn :: Handle -> Format (IO ()) a -> a
-hprintLn h m = runFormat m (T.hPutStrLn h . T.toLazyText)
+hprintLn :: MonadIO m => Handle -> Format (m ()) a -> a
+hprintLn h m = runFormat m (liftIO . T.hPutStrLn h . T.toLazyText)
 
 -- | Run the formatter and return a list of characters.
 formatToString :: Format String a -> a
