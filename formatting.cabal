@@ -60,7 +60,8 @@ library
     transformers,
   if !impl(ghcjs)
     build-depends:
-      double-conversion ^>= 2.0.2.0,
+      -- The 2.0.3.0 release of double-conversion changes the module name
+      double-conversion >= 2.0.2.0 && < 2.0.3.0,
   exposed-modules:
     Formatting
     Formatting.Formatters
