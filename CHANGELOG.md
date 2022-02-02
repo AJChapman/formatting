@@ -1,6 +1,9 @@
 Unreleased
 
-* Added `FromBuilder` and `formatted` to simplify using formatting with other APIs
+* Added `FromBuilder` and `formatted` to simplify using formatting with other APIs (thanks Kyle Butt).
+* Updated examples in comments to pass cabal-docspec (thanks Kyle Butt).
+* Fixed haddock parsing in ghc-8.8.4 (thanks Oleg Grenrus).
+* Generalised IO printing functions to use MonadIO (thanks Oleg Grenrus).
 
 7.1.3
 
