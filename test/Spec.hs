@@ -24,12 +24,12 @@ spec = do
       it "format (later id <> later id) \"x\"" $ format (later id Data.Semigroup.<> later id) "x" `shouldBe` "xx"
 
     describe "https://github.com/AJChapman/formatting/issues/31" $
-      it "10^6-1" $ F.format F.int (10 ^ (16 :: Int) - 1 :: Int) `shouldBe` "9999999999999999"
+      it "10^16-1" $ F.format F.int (10 ^ (16 :: Int) - 1 :: Int) `shouldBe` "9999999999999999"
 
     describe "https://github.com/AJChapman/formatting/issues/28" $ do
       it "-100"         $ sformat (groupInt 3 ',') (-100 :: Int)       `shouldBe` "-100"
       it "-100,000,000" $ sformat (groupInt 3 ',') (-100000000 :: Int) `shouldBe` "-100,000,000"
-      it "100,000,000"  $ sformat (groupInt 3 ',') (-100000000 :: Int) `shouldBe` "-100,000,000"
+      it "100,000,000"  $ sformat (groupInt 3 ',') (100000000 :: Int)  `shouldBe` "100,000,000"
 
     describe "https://github.com/bos/text-format/issues/18" $ do
       it "build (minBound :: Int)" $ format build (minBound :: Int64) `shouldBe` "-9223372036854775808"
