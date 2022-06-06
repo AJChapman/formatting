@@ -6,8 +6,9 @@
 module Formatting.Internal
   ( Format(..)
   , (%)
-  , (%%)
+  , (%+)
   , (%.)
+  , (<%+>)
   , now
   , bind
   , mapf
@@ -85,6 +86,13 @@ instance Semigroup (Format r (a -> r)) where
     Format (\k a ->
               runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> b2)) a) a)
 
+-- | Like @(<>)@ except put a space between the two formatters. For example:
+-- @format (year <%+> month <%+> dayOfMonth) now@ will yield @"2022 06 06"@
+(<%+>) :: Format r (a -> r) -> Format r (a -> r) -> Format r (a -> r)
+m <%+> n =
+  Format (\k a ->
+            runFormat m (\b1 -> runFormat n (\b2 -> k (b1 <> TLB.singleton ' ' <> b2)) a) a)
+
 -- | Useful instance for applying two formatters to the same input
 -- argument. For example: @format (year <> "/" % month) now@ will
 -- yield @"2015/01"@.
@@ -145,16 +153,16 @@ infixr 9 %
 -- | Concatenate two formatters with a space in between.
 --
 -- >>> :set -XOverloadedStrings
--- >>> format (int %% "+" %% int %% "=" %% int) 2 3 5
+-- >>> format (int %+ "+" %+ int %+ "=" %+ int) 2 3 5
 -- "2 + 3 = 5"
 --
-(%%) :: Format r a -> Format r' r -> Format r' a
-f %% g =
+(%+) :: Format r a -> Format r' r -> Format r' a
+f %+ g =
     f `bind`
     \a ->
       g `bind`
       \b -> now (a `mappend` TLB.singleton ' ' `mappend` b)
-infixr 9 %%
+infixr 9 %+
 
 -- | Function compose two formatters. Will feed the result of one
 -- formatter into another.

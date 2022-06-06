@@ -8,6 +8,7 @@ import qualified Data.Monoid
 import Data.Scientific
 import qualified Data.Semigroup
 import qualified Data.Text.Lazy as LT
+import Data.Time (Day)
 import Formatting as F
 import Formatting.Time
 import Test.Hspec
@@ -197,7 +198,7 @@ spec = do
     it "squared" $ format (squared int) 7 `shouldBe` "[7]"
     it "braced" $ format ("\\begin" % braced text) "section" `shouldBe` "\\begin{section}"
     it "angled" $ format (list (angled text)) ["html", "head", "title", "body", "div", "span"] `shouldBe` "[<html>, <head>, <title>, <body>, <div>, <span>]"
-    it "backticked" $ format ("Be sure to run" %% backticked builder %% "as root.") ":(){:|:&};:" `shouldBe` "Be sure to run `:(){:|:&};:` as root."
+    it "backticked" $ format ("Be sure to run" %+ backticked builder %+ "as root.") ":(){:|:&};:" `shouldBe` "Be sure to run `:(){:|:&};:` as root."
 
   describe "indenters" $ do
     it "indented" $ format (indented 4 int) 7 `shouldBe` "    7"
@@ -219,3 +220,7 @@ spec = do
     it "binPrefix" $ format (binPrefix 16) 4097 `shouldBe` "0b0001000000000001"
     it "octPrefix" $ format (octPrefix 16) 4097 `shouldBe` "0o0000000000010001"
     it "hexPrefix" $ format (hexPrefix 16) 4097 `shouldBe` "0x0000000000001001"
+
+  describe "mappend with added space (<%+>)" $ do
+    let testTime = (read "2022-06-06") :: Day
+    it "combines formatters, adding a space" $ format (year <%+> month <%+> dayOfMonth) testTime `shouldBe` "2022 06 06"

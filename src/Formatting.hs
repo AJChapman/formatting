@@ -24,8 +24,9 @@ module Formatting
   (
   Format,
   (%),
-  (%%),
+  (%+),
   (%.),
+  (<%+>),
   now,
   later,
   mapf,

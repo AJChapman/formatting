@@ -80,7 +80,7 @@ library
 
 test-suite formatting-test
   import:              deps
-  build-depends:       formatting, hspec, scientific
+  build-depends:       formatting, hspec, scientific, time
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
