@@ -1,10 +1,12 @@
 Unreleased
 
-* Added `(%+)` and `(<%+>)` for appending formatters with a space between them, the latter also behaving like `(<>)` (thanks Oleg Grenrus).
 * Added `FromBuilder` and `formatted` to simplify using formatting with other APIs (thanks Kyle Butt).
 * Updated examples in comments to pass cabal-docspec (thanks Kyle Butt).
 * Fixed haddock parsing in ghc-8.8.4 (thanks Oleg Grenrus).
 * Generalised IO printing functions to use MonadIO (thanks Oleg Grenrus).
+* Added `(%+)` and `(<%+>)` for appending formatters with a space between them, the latter also behaving like `(<>)` (thanks Oleg Grenrus).
+* Allow building with Cabal 2.2 (thanks Jens Petersen).
+* Removed unused dependency on `ghc-prim`
 
 7.1.3
 
