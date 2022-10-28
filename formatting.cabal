@@ -48,6 +48,11 @@ common deps
     ghc-options:       -Wno-prepositive-qualified-module
                        -Wno-missing-safe-haskell-mode
 
+flag avoid-double-conversion
+  description: Avoid 'double-conversion' dependency, which is large and uses C code
+  manual: False
+  default: False
+
 library
   import: deps
   hs-source-dirs:    src
@@ -57,7 +62,7 @@ library
     scientific >= 0.3.0.0,
     time >= 1.5,
     transformers,
-  if !impl(ghcjs)
+  if !impl(ghcjs) && !flag(avoid-double-conversion)
     build-depends:
       double-conversion ^>= 2.0.2.0,
   exposed-modules:

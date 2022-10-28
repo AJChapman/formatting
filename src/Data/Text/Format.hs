@@ -24,8 +24,9 @@ module Data.Text.Format
     , shortest
     ) where
 
-#ifdef ghcjs_HOST_OS
-import           Text.Printf
+#ifndef MIN_VERSION_double_conversion
+import           Data.List (dropWhileEnd, isSuffixOf)
+import           Numeric (showFFloat)
 #else
 import           Data.Double.Conversion.Text (toFixed, toShortest)
 #endif
@@ -53,11 +54,11 @@ fixed :: (Real a) =>
          Int
       -- ^ Number of digits of precision after the decimal.
       -> a -> Builder
-#ifdef ghcjs_HOST_OS
+#ifndef MIN_VERSION_double_conversion
 fixed decs = fromString . toFixed . realToFrac
   where
     toFixed :: Double -> String
-    toFixed = printf ("%f." ++ show decs)
+    toFixed dbl = showFFloat (Just decs) dbl ""
 #else
 fixed decs = fromText . toFixed decs . realToFrac
 #endif
@@ -66,11 +67,16 @@ fixed decs = fromText . toFixed decs . realToFrac
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it.
 shortest :: Real a => a -> Builder
-#ifdef ghcjs_HOST_OS
+#ifndef MIN_VERSION_double_conversion
 shortest = fromString . toShortest . realToFrac
   where
     toShortest :: Double -> String
-    toShortest = printf "%f"
+    toShortest dbl = do
+      let shownFullPrec = showFFloat Nothing dbl ""
+          strip = dropWhileEnd (== '0') shownFullPrec
+      if "." `isSuffixOf` strip
+         then take (length strip - 1) strip
+         else strip
 #else
 shortest = fromText . toShortest . realToFrac
 #endif
