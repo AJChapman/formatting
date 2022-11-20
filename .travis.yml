@@ -8,12 +8,12 @@
 #
 # For more information, see https://github.com/haskell-CI/haskell-ci
 #
-# version: 0.12
+# version: 0.14.3
 #
 version: ~> 1.0
 language: c
 os: linux
-dist: xenial
+dist: bionic
 git:
   # whether to recursively clone submodules
   submodules: false
@@ -33,20 +33,23 @@ before_cache:
   - rm -rfv $CABALHOME/packages/head.hackage
 jobs:
   include:
-    - compiler: ghc-9.0.1
-      addons: {"apt":{"packages":["ghc-9.0.1","cabal-install-3.4"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu xenial main"}]}}
+    - compiler: ghc-9.2.2
+      addons: {"apt":{"packages":["ghc-9.2.2","cabal-install-3.6"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main"}]}}
       os: linux
-    - compiler: ghc-8.10.1
-      addons: {"apt":{"packages":["ghc-8.10.1","cabal-install-3.4"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu xenial main"}]}}
+    - compiler: ghc-9.0.2
+      addons: {"apt":{"packages":["ghc-9.0.2","cabal-install-3.6"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main"}]}}
       os: linux
-    - compiler: ghc-8.8.3
-      addons: {"apt":{"packages":["ghc-8.8.3","cabal-install-3.4"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu xenial main"}]}}
+    - compiler: ghc-8.10.7
+      addons: {"apt":{"packages":["ghc-8.10.7","cabal-install-3.6"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main"}]}}
+      os: linux
+    - compiler: ghc-8.8.4
+      addons: {"apt":{"packages":["ghc-8.8.4","cabal-install-3.6"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main"}]}}
       os: linux
     - compiler: ghc-8.6.5
-      addons: {"apt":{"packages":["ghc-8.6.5","cabal-install-3.4"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu xenial main"}]}}
+      addons: {"apt":{"packages":["ghc-8.6.5","cabal-install-3.6"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main"}]}}
       os: linux
     - compiler: ghc-8.4.4
-      addons: {"apt":{"packages":["ghc-8.4.4","cabal-install-3.4"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu xenial main"}]}}
+      addons: {"apt":{"packages":["ghc-8.4.4","cabal-install-3.6"],"sources":[{"key_url":"https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x063dab2bdc0b3f9fcebc378bff3aeacef6f88286","sourceline":"deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main"}]}}
       os: linux
 before_install:
   - HC=$(echo "/opt/$CC/bin/ghc" | sed 's/-/\//')
@@ -98,7 +101,7 @@ install:
     echo "packages: ." >> cabal.project
   - echo 'package formatting' >> cabal.project
   - "echo '  ghc-options: -Werror=missing-methods' >> cabal.project"
-  - |
+  - ""
   - "for pkg in $($HCPKG list --simple-output); do echo $pkg | sed 's/-[^-]*$//' | (grep -vE -- '^(formatting)$' || true) | sed 's/^/constraints: /' | sed 's/$/ installed/' >> cabal.project.local; done"
   - cat cabal.project || true
   - cat cabal.project.local || true
@@ -125,7 +128,7 @@ script:
     echo "packages: ${PKGDIR_formatting}" >> cabal.project
   - echo 'package formatting' >> cabal.project
   - "echo '  ghc-options: -Werror=missing-methods' >> cabal.project"
-  - |
+  - ""
   - "for pkg in $($HCPKG list --simple-output); do echo $pkg | sed 's/-[^-]*$//' | (grep -vE -- '^(formatting)$' || true) | sed 's/^/constraints: /' | sed 's/$/ installed/' >> cabal.project.local; done"
   - cat cabal.project || true
   - cat cabal.project.local || true
@@ -145,5 +148,5 @@ script:
   - rm -f cabal.project.local
   - ${CABAL} v2-build $WITHCOMPILER --disable-tests --disable-benchmarks all
 
-# REGENDATA ("0.12",["formatting.cabal","--output",".travis.yml"])
+# REGENDATA ("0.14.3",["formatting.cabal","--output",".travis.yml"])
 # EOF
