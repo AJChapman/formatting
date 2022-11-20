@@ -1,4 +1,4 @@
-Unreleased
+7.2.0
 
 * Added `FromBuilder` and `formatted` to simplify using formatting with other APIs (thanks Kyle Butt).
 * Updated examples in comments to pass cabal-docspec (thanks Kyle Butt).
@@ -7,6 +7,8 @@ Unreleased
 * Added `(%+)` and `(<%+>)` for appending formatters with a space between them, the latter also behaving like `(<>)` (thanks Oleg Grenrus).
 * Allow building with Cabal 2.2 (thanks Jens Petersen).
 * Removed unused dependency on `ghc-prim`
+* Add a `no-double-conversion` build flag to optionally remove the dependency on `double-conversion` (Thanks Janus Troelsen)
+* The `no-double-conversion` flag also fixes the build on GHC 9.4 on which `double-conversion` is apparently broken
 
 7.1.3
 
