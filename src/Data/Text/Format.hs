@@ -24,11 +24,10 @@ module Data.Text.Format
     , shortest
     ) where
 
-#ifndef MIN_VERSION_double_conversion
-import           Data.List (dropWhileEnd, isSuffixOf)
-import           Numeric (showFFloat)
-#else
+#ifdef MIN_VERSION_double_conversion
 import           Data.Double.Conversion.Text (toFixed, toShortest)
+#else
+import           Numeric (showFFloat, showInt)
 #endif
 import qualified Formatting.Buildable as B
 import           Data.Text.Format.Types (Hex(..))
@@ -54,31 +53,31 @@ fixed :: (Real a) =>
          Int
       -- ^ Number of digits of precision after the decimal.
       -> a -> Builder
-#ifndef MIN_VERSION_double_conversion
+#ifdef MIN_VERSION_double_conversion
+fixed decs = fromText . toFixed decs . realToFrac
+#else
 fixed decs = fromString . toFixed . realToFrac
   where
     toFixed :: Double -> String
     toFixed dbl = showFFloat (Just decs) dbl ""
-#else
-fixed decs = fromText . toFixed decs . realToFrac
 #endif
 {-# NOINLINE[0] fixed #-}
 
 -- | Render a floating point number using the smallest number of
 -- digits that correctly represent it.
 shortest :: Real a => a -> Builder
-#ifndef MIN_VERSION_double_conversion
+#ifdef MIN_VERSION_double_conversion
+shortest = fromText . toShortest . realToFrac
+#else
 shortest = fromString . toShortest . realToFrac
   where
     toShortest :: Double -> String
-    toShortest dbl = do
-      let shownFullPrec = showFFloat Nothing dbl ""
-          strip = dropWhileEnd (== '0') shownFullPrec
-      if "." `isSuffixOf` strip
-         then take (length strip - 1) strip
-         else strip
-#else
-shortest = fromText . toShortest . realToFrac
+    toShortest dbl =
+      -- `showFFloat (Just 0) "" 1.0` gives "1.", but we want "1"
+      let intPart = (floor dbl :: Int) in
+        if dbl == (fromIntegral intPart)
+          then showInt intPart ""
+          else showFFloat Nothing dbl ""
 #endif
 {-# INLINE shortest #-}
 
