@@ -27,7 +27,8 @@ module Data.Text.Format
 #ifdef MIN_VERSION_double_conversion
 import           Data.Double.Conversion.Text (toFixed, toShortest)
 #else
-import           Numeric (showFFloat, showInt)
+import           Numeric (showInt)
+import           Data.Text.Lazy.Builder.RealFloat (FPFormat(Fixed), formatRealFloat)
 #endif
 import qualified Formatting.Buildable as B
 import           Data.Text.Format.Types (Hex(..))
@@ -56,10 +57,10 @@ fixed :: (Real a) =>
 #ifdef MIN_VERSION_double_conversion
 fixed decs = fromText . toFixed decs . realToFrac
 #else
-fixed decs = fromString . toFixed . realToFrac
+fixed decs = toFixed . realToFrac
   where
-    toFixed :: Double -> String
-    toFixed dbl = showFFloat (Just decs) dbl ""
+    toFixed :: Double -> Builder
+    toFixed = formatRealFloat Fixed (Just decs)
 #endif
 {-# NOINLINE[0] fixed #-}
 
@@ -69,15 +70,15 @@ shortest :: Real a => a -> Builder
 #ifdef MIN_VERSION_double_conversion
 shortest = fromText . toShortest . realToFrac
 #else
-shortest = fromString . toShortest . realToFrac
+shortest = toShortest . realToFrac
   where
-    toShortest :: Double -> String
+    toShortest :: Double -> Builder
     toShortest dbl =
       -- `showFFloat (Just 0) "" 1.0` gives "1.", but we want "1"
       let intPart = (floor dbl :: Int) in
         if dbl == (fromIntegral intPart)
-          then showInt intPart ""
-          else showFFloat Nothing dbl ""
+          then fromString (showInt intPart "")
+          else formatRealFloat Fixed Nothing dbl
 #endif
 {-# INLINE shortest #-}
 
