@@ -26,7 +26,7 @@ tested-with:           GHC == 8.4.4
 common deps
   build-depends:
     base >= 4.11 && < 5,
-    text >= 0.11.0.8
+    text >= 0.11.1.0
 
 -- Warnings list list taken from
 -- https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3
