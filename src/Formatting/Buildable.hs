@@ -32,6 +32,7 @@ import           Data.Word (Word8, Word16, Word32, Word64)
 import           Foreign.Ptr (IntPtr, WordPtr, Ptr, ptrToWordPtr)
 import qualified Data.Text as ST
 import qualified Data.Text.Lazy as LT
+import           Numeric.Natural (Natural)
 
 -- | The class of types that can be rendered to a 'Builder'.
 class Buildable p where
@@ -84,6 +85,10 @@ instance Buildable Int64 where
     {-# INLINE build #-}
 
 instance Buildable Integer where
+    build = decimal
+    {-# INLINE build #-}
+
+instance Buildable Natural where
     build = decimal
     {-# INLINE build #-}
 
