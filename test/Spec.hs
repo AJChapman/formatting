@@ -49,6 +49,7 @@ spec = do
     it "Fixed"    $ format (fixed 4) (12.123456 :: Double) `shouldBe` "12.1235"
     it "Variable" $ format float     (12.123456 :: Double) `shouldBe` "12.123456"
     it "Shortest" $ format shortest  (12.0000 :: Double) `shouldBe` "12"
+    it "Negative" $ format float     (-1.0000 :: Double) `shouldBe` "-1"
 
   describe "Scientific" $ do
     it "sci" $ format sci (scientific 60221409 16) `shouldBe` "6.0221409e23"

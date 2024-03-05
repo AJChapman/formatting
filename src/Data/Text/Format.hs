@@ -73,10 +73,9 @@ shortest = fromString . toShortest . realToFrac
   where
     toShortest :: Double -> String
     toShortest dbl =
-      -- `showFFloat (Just 0) "" 1.0` gives "1.", but we want "1"
-      let intPart = (floor dbl :: Int) in
-        if dbl == (fromIntegral intPart)
-          then showInt intPart ""
+      let intPart = fromIntegral (floor dbl :: Int) in
+        if dbl == intPart
+          then showFFloat (Just 0) intPart ""
           else showFFloat Nothing dbl ""
 #endif
 {-# INLINE shortest #-}
