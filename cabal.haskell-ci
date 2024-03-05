@@ -1,0 +1,9 @@
+constraint-set double-conversion
+    constraints: formatting -no-double-conversion
+    tests: True
+    run-tests: True
+
+constraint-set no-double-conversion
+    constraints: formatting +no-double-conversion
+    tests: True
+    run-tests: True
